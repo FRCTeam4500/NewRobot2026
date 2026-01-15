@@ -63,11 +63,11 @@ public class HoundLog extends DogLog {
     log(path + "/" + key, value);
   }
 
-  public static void log(String path, String key, Enum<?> value) {
+  public static <E extends Enum<E>> void log(String path, String  key, E value) {
     log(path + "/" + key, value);
   }
 
-  public static void log(String path, String key, Enum<?>[] value) {
+  public static <E extends Enum<E>> void log(String path, String  key, E[] value) {
     log(path + "/" + key, value);
   }
 }
