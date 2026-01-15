@@ -16,11 +16,13 @@ import frc.robot.utilities.logging.Loggable;
 public class Climber extends SubsystemBase implements Loggable {
     
     
-    private Motor climberMotor;
+    private Motor climberMotor1;
+    private Motor climberMotor2;
 
     public Climber(){
-        climberMotor = Motor.fromTalonFX(
-            0, 
+        climberMotor1 = Motor.fromTalonFX(
+            WiringConstants.ClimberMotors.climberMotor1, 
+            false,
             (TalonFX motorFx) -> {
                 TalonFXConfiguration config = new TalonFXConfiguration();
                 config.CurrentLimits.SupplyCurrentLimit = 40;
@@ -33,19 +35,51 @@ public class Climber extends SubsystemBase implements Loggable {
             {pid.setTolerance(1);}), 
             FeedforwardController.forArmGravity(0, 0, 0, 0), 
             TargetType.Position);
-            climberMotor.getSysIDCommands("climber", 0, 0, 0);
+            climberMotor1.getSysIDCommands("climber", 0, 0, 0);
+
+
+            climberMotor2 = Motor.TalonFX(
+                WiringConstants.ClimberMotors.climberMotor2,
+                false,
+                (TalonFX motorFx) -> {
+                    TalonFXConfiguration config = new TalonFXConfiguration();
+                    config.CurrentLimits.SupplyCurrentLimit = 40;
+                },
+                (FeedforwardSim ball) -> {
+
+                },
+                0,
+                FeedbackController.fromPID(0, 0, 0, (PIDController pid) -> 
+                {pid.setTolerance(1);}),
+                FeedforwardController.forArmGravity(0, 0, 0, 0),
+                TargetType.Position);
+                climberMotor2.getSysIDCommands("climber", 0, 0, 0);
             
         
     }
     
-    
-
-
 
     public Command runClimber() {
-        return Commands.runOnce();
+        return Commands.runOnce(() -> {
+            climberMotor1.setTarget();
+        }, this).andThen(
+            Commands.waitUntil(() -> {
+                return climberMotor1.atTarget();
+            })
+        );
+
     }
-    
+
+    //end of auto climb
+    public Command releaseClimber() {
+        return Commands.runOnce(() -> {
+            climberMotor1.setTarget();
+        }, this).andThen(
+            Commands.waitUntil(() -> {
+                return climberMotor1.atTarget();
+            })
+        )
+    }
 
 
 

@@ -31,4 +31,14 @@ public class WiringConstants {
 
     //sparkmax 20 id
   }
+
+  public static class ClimberMotors {
+    public static final int ClimberMotor1 = 30;
+    public static final int ClimberMotor2 = 31;
+  } 
+
+  public static class IntakeMotors {
+    public static final int IntakeMotor = 25;
+    public static final int IntakeMotor2 = 26;
+  }
 }
