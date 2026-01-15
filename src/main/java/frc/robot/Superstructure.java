@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.orchestra.Orc;
+import frc.robot.subsystems.shooter.Flywheel;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.Loggable;
 
@@ -13,6 +14,8 @@ import frc.robot.utilities.logging.Loggable;
  */
 public class Superstructure implements Loggable {
   // Create objects for all non-drivebase subsystems
+
+  Flywheel shooterFly = new Flywheel();
 
   public Superstructure() {
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
@@ -33,5 +36,13 @@ public class Superstructure implements Loggable {
 
   public Command stow() {
     return Commands.none();
+  }
+
+  public Command StartShooter(){
+    return shooterFly.speedup();
+  }
+
+  public Command StopShooter(){
+    return shooterFly.stopShooter();
   }
 }
