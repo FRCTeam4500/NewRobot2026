@@ -149,7 +149,7 @@ public class Swerve extends SubsystemBase implements Loggable {
       HoundLog.logFault("[Swerve] Failed to read auto config...", AlertType.kError);
       System.out.println(e.getMessage());
       config =
-          new RobotConfig( // TODO fix
+          new RobotConfig( // TODO final robot values
               53.126, // robot's mass in kg
               4.954, // Robot's moment of inertia
               new ModuleConfig(0.045, 4.500, 1.1, DCMotor.getKrakenX60(1).withReduction(6), 40, 1),

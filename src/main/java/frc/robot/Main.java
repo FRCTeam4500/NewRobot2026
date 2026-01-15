@@ -5,10 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.programs.swerve.SwerveSysID;
+import frc.robot.programs.Robot;
+
 
 public final class Main {
   public static void main(String... args) {
-    RobotBase.startRobot(SwerveSysID::new);
+    RobotBase.startRobot(Robot::new);
   }
 }
