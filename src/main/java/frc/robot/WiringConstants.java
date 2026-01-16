@@ -26,7 +26,7 @@ public class WiringConstants {
   }
   public static class ShooterMotors {
 
-    public static final int FlywheelMotor = 20;
+   // public static final int FlywheelMotor = 20;
     public static final int FlywheelMotor2 =19;
 
     //sparkmax 20 id
