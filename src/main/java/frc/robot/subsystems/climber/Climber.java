@@ -1,0 +1,98 @@
+package frc.robot.subsystems.climber;
+
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.WiringConstants;
+import frc.robot.hardware.Motor;
+import frc.robot.hardware.Motor.TargetType;
+import frc.robot.utilities.FeedbackController;
+import frc.robot.utilities.FeedforwardController;
+import frc.robot.utilities.FeedforwardSim;
+import frc.robot.utilities.logging.Loggable;
+
+public class Climber extends SubsystemBase implements Loggable {
+    
+    
+    private Motor climberMotor1;
+    private Motor climberMotor2;
+
+    public Climber(){
+        climberMotor1 = Motor.fromTalonFX(
+            WiringConstants.ClimberMotors.ClimberMotor1, 
+            false,
+            (TalonFX motorFx) -> {
+                TalonFXConfiguration config = new TalonFXConfiguration();
+                config.CurrentLimits.SupplyCurrentLimit = 40;
+
+            }, 
+            (FeedforwardSim balls) -> {
+                
+            }, 
+            0, 
+            FeedbackController.fromPID(1, 0, 0, (PIDController pid) ->
+            {pid.setTolerance(1);}), 
+            FeedforwardController.forArmGravity(0, 0, 0, 0), 
+            TargetType.Position);
+            climberMotor1.getSysIDCommands("climber", 0, 0, 0);
+
+
+            climberMotor2 = Motor.TalonFX(
+                WiringConstants.ClimberMotors.ClimberMotor2,
+                false,
+                (TalonFX motorFx) -> {
+                    TalonFXConfiguration config = new TalonFXConfiguration();
+                    config.CurrentLimits.SupplyCurrentLimit = 40;
+                },
+                (FeedforwardSim ball) -> {
+
+                },
+                0,
+                FeedbackController.fromPID(0, 0, 0, (PIDController pid) -> 
+                {pid.setTolerance(1);}),
+                FeedforwardController.forArmGravity(0, 0, 0, 0),
+                TargetType.Position);
+                climberMotor2.getSysIDCommands("climber", 0, 0, 0);
+            
+        
+    }
+    
+
+    public Command runClimber() {
+        return Commands.runOnce(() -> {
+            climberMotor1.setTarget(0);
+        }, this).andThen(
+            Commands.waitUntil(() -> {
+                return climberMotor1.atTarget();
+            })
+        );
+
+    }
+
+    //end of auto climb
+    public Command releaseClimber() {
+        return Commands.runOnce(() -> {
+            climberMotor1.setTarget(0);
+        }, this).andThen(
+            Commands.waitUntil(() -> {
+                return climberMotor1.atTarget();
+            })
+        )
+    }
+
+
+
+    
+    @Override
+    public void log(String path) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'log'");
+    }
+
+
+
+}
