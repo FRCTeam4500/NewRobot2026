@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.WiringConstants;
 import frc.robot.hardware.Motor;
 import frc.robot.hardware.Motor.TargetType;
 import frc.robot.utilities.FeedbackController;
@@ -22,11 +23,12 @@ public class Climber extends SubsystemBase implements Loggable {
 
     public Climber(){
         climberMotor1 = Motor.fromTalonFX(
-            WiringConstants.ClimberMotors.climberMotor1, 
+            WiringConstants.ClimberMotors.ClimberMotor1, 
             false,
             (TalonFX motorFx) -> {
                 TalonFXConfiguration config = new TalonFXConfiguration();
                 config.CurrentLimits.SupplyCurrentLimit = 40;
+
             }, 
             (FeedforwardSim balls) -> {
                 
@@ -40,7 +42,7 @@ public class Climber extends SubsystemBase implements Loggable {
 
 
             climberMotor2 = Motor.TalonFX(
-                WiringConstants.ClimberMotors.climberMotor2,
+                WiringConstants.ClimberMotors.ClimberMotor2,
                 false,
                 (TalonFX motorFx) -> {
                     TalonFXConfiguration config = new TalonFXConfiguration();
@@ -62,7 +64,7 @@ public class Climber extends SubsystemBase implements Loggable {
 
     public Command runClimber() {
         return Commands.runOnce(() -> {
-            climberMotor1.setTarget();
+            climberMotor1.setTarget(0);
         }, this).andThen(
             Commands.waitUntil(() -> {
                 return climberMotor1.atTarget();
@@ -74,7 +76,7 @@ public class Climber extends SubsystemBase implements Loggable {
     //end of auto climb
     public Command releaseClimber() {
         return Commands.runOnce(() -> {
-            climberMotor1.setTarget();
+            climberMotor1.setTarget(0);
         }, this).andThen(
             Commands.waitUntil(() -> {
                 return climberMotor1.atTarget();
