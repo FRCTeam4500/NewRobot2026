@@ -29,12 +29,13 @@ import frc.robot.utilities.logging.Loggable;
 
 public class Intake extends SubsystemBase implements Loggable{
     
-    private Motor intakeMotor;
+    private Motor intakeMotorDrive;
+    private Motor intakeMotorExtension;
     private final int intakeSpeed = 100;
 
 
     public Intake(){
-        intakeMotor = Motor.fromSparkMax(
+        intakeMotorDrive = Motor.fromSparkMax(
             WiringConstants.IntakeMotors.IntakeMotor,
             false,
             (SparkMax sparkmotor) -> {
@@ -52,31 +53,66 @@ public class Intake extends SubsystemBase implements Loggable{
             }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
-            intakeMotor.getSysIDCommands("intakeneo", 0, 0, 0);
+            intakeMotorDrive.getSysIDCommands("intake drive neo", 0, 0, 0);
             
+             
+        intakeMotorExtension = Motor.fromSparkMax(
+            WiringConstants.IntakeMotors.IntakeMotorExtension,
+        false,
+        (SparkMax sparkmotor) -> {
+            SparkMaxConfig config = new SparkMaxConfig();
+            config.encoder.positionConversionFactor(1.0);
+            config.encoder.velocityConversionFactor(1.0);
+            config.smartCurrentLimit(60);
+            config.idleMode(IdleMode.kCoast);
+            sparkmotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        },
+        (FeedforwardSim sim) -> {sim.withHardstops(0, 20);},
+        0,
+        FeedbackController.fromPID(0, 0, 0, (PIDController pid) -> {
+            pid.setTolerance(0.5);
+        }),
+        FeedforwardController.forConstantGravity(0, 0, 0, 0),
+        TargetType.Velocity);
+        intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0);
+        
     }
-
 
     public Command startIntake() {
         return Commands.runOnce(() -> {
-            intakeMotor.setTarget(intakeSpeed);
+            intakeMotorDrive.setTarget(intakeSpeed);
         }, this).andThen(Commands.waitUntil(()-> {
-            return intakeMotor.atTarget();
+            return intakeMotorDrive.atTarget();
         }));
             
-        
     }
 
     public Command stopIntake() {
         return Commands.runOnce(() -> {
-            intakeMotor.setTarget(0);
+            intakeMotorDrive.setTarget(0);
         }, this).andThen(() -> {
             Commands.waitUntil(()->{
-                return intakeMotor.atTarget();
+                return intakeMotorDrive.atTarget();
             });
         });
     }
 
+
+    public Command extendIntake(){
+        return Commands.runOnce(() -> {
+            intakeMotorExtension.setTarget(20);
+        }, this). andThen(Commands.waitUntil(() -> {
+            return intakeMotorExtension.atTarget();
+        }));
+    }
+
+    public Command retractIntake(){
+        return Commands.runOnce(() -> {
+            intakeMotorExtension.setTarget(0);
+        }, this).andThen(Commands.waitUntil(() -> {
+            return intakeMotorExtension.atTarget();
+        }));
+    }
 
     @Override
     public void log(String path) {

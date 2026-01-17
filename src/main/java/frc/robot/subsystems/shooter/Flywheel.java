@@ -25,11 +25,13 @@ public class Flywheel extends SubsystemBase implements Loggable{
 
     private Motor flywheelMotor1;
     private Motor flywheelMotor2;
-    private static int flywheelSpeed = 100; //RPM
-// 5600
+    private Motor turretheadMotor;
+    private Motor turretturnMotor;
+    private static int flywheelSpeed = 5600; //RPM
+
     public Flywheel () {
 
-        /*flywheelMotor1 = Motor.fromSparkMax(                             
+        flywheelMotor1 = Motor.fromSparkMax(                             
             WiringConstants.ShooterMotors.FlywheelMotor, 
             false, 
             (SparkMax sparkmotor) -> {
@@ -37,7 +39,6 @@ public class Flywheel extends SubsystemBase implements Loggable{
                 config.encoder.positionConversionFactor(1.0);
                 config.encoder.velocityConversionFactor(1.0);
                 config.smartCurrentLimit(60);
-            
                 config.idleMode(IdleMode.kCoast);
                 sparkmotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             }, 
@@ -48,7 +49,7 @@ public class Flywheel extends SubsystemBase implements Loggable{
             }), 
             FeedforwardController.forConstantGravity(0, 0, 0, 0), 
             TargetType.Velocity);  
-            flywheelMotor1.getSysIDCommands("flywheelneo", 1, 10, 10);*/
+            flywheelMotor1.getSysIDCommands("flywheelneo", 1, 10, 10);
 
 
 
@@ -59,7 +60,7 @@ public class Flywheel extends SubsystemBase implements Loggable{
                     config.CurrentLimits.SupplyCurrentLimit = 60;
                     config.CurrentLimits.SupplyCurrentLimitEnable = true;
                     config.Feedback.SensorToMechanismRatio = 1;
-                    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+                    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
                     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
                     MotorFx.getConfigurator().apply(config);
                 }, 
@@ -74,6 +75,49 @@ public class Flywheel extends SubsystemBase implements Loggable{
 
 
 
+    public TurretHead (){
+        turretheadMotor = Motor.fromSparkMax(                             
+            WiringConstants.ShooterMotors.turretheadMotor 
+            false, 
+            (SparkMax sparkmotor) -> {
+                SparkMaxConfig config = new SparkMaxConfig();
+                config.encoder.positionConversionFactor(1.0);
+                config.encoder.velocityConversionFactor(1.0);
+                config.smartCurrentLimit(60);
+                config.idleMode(IdleMode.kCoast);
+                sparkmotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            }, 
+            null, 
+            0, 
+            FeedbackController.fromPID(0.04, 0, 0, (PIDController pid) ->{
+                pid.setTolerance(0.5);
+            }), 
+            FeedforwardController.forArmGravity(0, 0, 0, 0), 
+            TargetType.Position);  
+            turretheadMotor.getSysIDCommands("turrethead neo", 0, 0, 0);
+    }
+
+public TurretTurn (){
+        turretturnMotor = Motor.fromSparkMax(                             
+            WiringConstants.ShooterMotors.turretturnMotor 
+            false, 
+            (SparkMax sparkmotor) -> {
+                SparkMaxConfig config = new SparkMaxConfig();
+                config.encoder.positionConversionFactor(1.0);
+                config.encoder.velocityConversionFactor(1.0);
+                config.smartCurrentLimit(60);
+                config.idleMode(IdleMode.kCoast);
+                sparkmotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            }, 
+            null, 
+            0, 
+            FeedbackController.fromPID(0.04, 0, 0, (PIDController pid) ->{
+                pid.setTolerance(0.5);
+            }), 
+            FeedforwardController.forConstantGravity(0, 0, 0, 0), 
+            TargetType.Position);  
+            turretheadMotor.getSysIDCommands("turret turn neo", 0, 0, 0);
+}
     }
 
     public Command speedup(){

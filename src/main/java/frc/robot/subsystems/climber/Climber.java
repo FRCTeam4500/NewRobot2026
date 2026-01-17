@@ -40,7 +40,7 @@ public class Climber extends SubsystemBase implements Loggable {
             climberMotor1.getSysIDCommands("climber", 0, 0, 0);
 
 
-            climberMotor2 = Motor.fromTalonFX(
+           /* climberMotor2 = Motor.fromTalonFX(
                 WiringConstants.ClimberMotors.ClimberMotor2,
                
                 (TalonFX motorFx) -> {
@@ -57,7 +57,7 @@ public class Climber extends SubsystemBase implements Loggable {
                 TargetType.Position);
                 climberMotor2.getSysIDCommands("climber", 0, 0, 0);
             
-        
+        */
     }
     
 
