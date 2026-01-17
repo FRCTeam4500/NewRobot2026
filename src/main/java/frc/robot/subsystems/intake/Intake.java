@@ -1,8 +1,36 @@
 package frc.robot.subsystems.intake;
 
-public class Intake extends SubsystemBase implements Loggable {
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utilities.logging.Loggable;
+
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.WiringConstants;
+import frc.robot.hardware.Motor;
+import frc.robot.hardware.Motor.TargetType;
+import frc.robot.utilities.FeedbackController;
+import frc.robot.utilities.FeedforwardController;
+import frc.robot.utilities.FeedforwardSim;
+import frc.robot.utilities.logging.Loggable;
+
+
+
+public class Intake extends SubsystemBase implements Loggable{
     
     private Motor intakeMotor;
+    private final int intakeSpeed = 100;
 
 
     public Intake(){
@@ -16,11 +44,11 @@ public class Intake extends SubsystemBase implements Loggable {
                 config.smartCurrentLimit(60);
                 config.idleMode(IdleMode.kCoast);
                 sparkmotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-            }
-            null,
+            },
+            (FeedforwardSim sim) ->{},
             0,
-            FeedbackController.fromPID(0, 0, 0, (PID Controller pid) -> {
-                pid.setTolerance(0.5)
+            FeedbackController.fromPID(0, 0, 0, (PIDController pid) -> {
+                pid.setTolerance(0.5);
             }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
@@ -30,19 +58,30 @@ public class Intake extends SubsystemBase implements Loggable {
 
 
     public Command startIntake() {
-        Commands.runOnce(() -> {
-            intakeMotor.setTarget(2.0);
-        }, this).andThen(() -> {
-            Commands.waitUntil(intake.atTarget());
-        })
+        return Commands.runOnce(() -> {
+            intakeMotor.setTarget(intakeSpeed);
+        }, this).andThen(Commands.waitUntil(()-> {
+            return intakeMotor.atTarget();
+        }));
+            
+        
     }
 
     public Command stopIntake() {
-        Commands.runOnce(() -> {
+        return Commands.runOnce(() -> {
             intakeMotor.setTarget(0);
         }, this).andThen(() -> {
-            Commands.waitUntil(intake.atTarget());
-        })
+            Commands.waitUntil(()->{
+                return intakeMotor.atTarget();
+            });
+        });
+    }
+
+
+    @Override
+    public void log(String path) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'log'");
     }
 
 

@@ -24,7 +24,6 @@ public class Climber extends SubsystemBase implements Loggable {
     public Climber(){
         climberMotor1 = Motor.fromTalonFX(
             WiringConstants.ClimberMotors.ClimberMotor1, 
-            false,
             (TalonFX motorFx) -> {
                 TalonFXConfiguration config = new TalonFXConfiguration();
                 config.CurrentLimits.SupplyCurrentLimit = 40;
@@ -41,9 +40,9 @@ public class Climber extends SubsystemBase implements Loggable {
             climberMotor1.getSysIDCommands("climber", 0, 0, 0);
 
 
-            climberMotor2 = Motor.TalonFX(
+            climberMotor2 = Motor.fromTalonFX(
                 WiringConstants.ClimberMotors.ClimberMotor2,
-                false,
+               
                 (TalonFX motorFx) -> {
                     TalonFXConfiguration config = new TalonFXConfiguration();
                     config.CurrentLimits.SupplyCurrentLimit = 40;
@@ -81,7 +80,7 @@ public class Climber extends SubsystemBase implements Loggable {
             Commands.waitUntil(() -> {
                 return climberMotor1.atTarget();
             })
-        )
+        );
     }
 
 
