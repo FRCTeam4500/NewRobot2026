@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.orchestra.Orc;
-import frc.robot.subsystems.shooter.Flywheel;
+
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.Loggable;
@@ -23,7 +23,7 @@ import frc.robot.utilities.logging.Loggable;
 public class Superstructure implements Loggable {
   // Create objects for all non-drivebase subsystems
 
-  Flywheel shooterFly = new Flywheel();
+  
   private Shooter shooter;
   private Supplier<Pose2d> robotPose;
 
