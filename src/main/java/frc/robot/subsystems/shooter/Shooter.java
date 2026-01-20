@@ -43,9 +43,22 @@ public class Shooter extends SubsystemBase implements Loggable {
     private DoubleSubscriber andgleSuscriber;
 
     public Shooter() {
+
+        //find flywheel speed
         flywheelSpeed.put(1.0, 500.0);  // meters , motor speed units
-        flywheelSpeed.put(2.0, 1000.0);
+        flywheelSpeed.put(2.0, 1000.0); 
+        flywheelSpeed.put(2.0, 1000.0); 
+        flywheelSpeed.put(2.0, 1000.0); 
+        flywheelSpeed.put(2.0, 1000.0); 
+
+        // find hood angle
         hoodAngle.put(1.0, 60.0);  // meters , angle degrees
+        hoodAngle.put(1.0, 60.0);
+        hoodAngle.put(1.0, 60.0);
+        hoodAngle.put(1.0, 60.0);
+        hoodAngle.put(1.0, 60.0);
+
+        // for testing
         flywheelSubscriber = HoundLog.tunable("Flywheel Speed", 0.0);
         turetSubscriber = HoundLog.tunable( "TuretHood", 0.0);
         andgleSuscriber = HoundLog.tunable("turetangle", 0.0);
@@ -59,7 +72,7 @@ public class Shooter extends SubsystemBase implements Loggable {
                     config.Feedback.SensorToMechanismRatio = 1;
                     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
                     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-                    MotorFx.getConfigurator().apply(config);
+                    MotorFx.getConfigurator().apply(config); 
                 }, 
                 null, 
                 0, 
@@ -78,7 +91,7 @@ public class Shooter extends SubsystemBase implements Loggable {
                 config.encoder.positionConversionFactor(1/360);
                 config.encoder.velocityConversionFactor(1/360);
                 config.smartCurrentLimit(30);
-                config.idleMode(IdleMode.kBrake);
+                config.idleMode(IdleMode.kBrake); 
                 config.inverted(true);
                 sparkMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             }, 
@@ -124,12 +137,12 @@ public class Shooter extends SubsystemBase implements Loggable {
         // spin up the wheels
         // make the hood at the right angle
         return Commands.run(() -> {
+            // a lot of math
             Rotation2d targetAngle = robotPose.get().plus(shooterTransform).getTranslation().minus(target.get()).getAngle();
             Rotation2d turretAngle = targetAngle.plus(robotPose.get().getRotation()); // might be minus
             double distance = robotPose.get().getTranslation().getDistance(target.get());
             flywheel.setTarget(flywheelSpeed.get(distance));
             hood.setTarget(hoodAngle.get(distance));
-            flywheel.setTarget(flywheelSpeed.get(distance));
             turret.setTarget(turretAngle.getDegrees());
 
         }, this);

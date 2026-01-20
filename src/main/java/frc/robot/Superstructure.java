@@ -54,14 +54,14 @@ public class Superstructure implements Loggable {
     // return shooterFly.speedup();
     return shooter.readyShoot(this.robotPose, () -> {
       if(DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
-        return new Translation2d(1.0,1.0); // red hub
+        return new Translation2d(4.625594,4.034536); // red hub
       } else {
-        return new Translation2d(); // blue hub
+        return new Translation2d(4.625594,4.034536); // blue hub
       }
     });
   }
 
   public Command StopShooter(){
-    return shooterFly.stopShooter();
+    return shooter.idle();
   }
 }

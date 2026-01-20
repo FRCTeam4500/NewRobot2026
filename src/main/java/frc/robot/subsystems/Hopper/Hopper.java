@@ -19,7 +19,7 @@ import frc.robot.utilities.FeedforwardSim;
 import frc.robot.utilities.logging.Loggable;
 
 public class Hopper extends SubsystemBase implements Loggable {
-
+    private static boolean pulse = false;
     private Motor hopperMotorExtension;
     private Motor hopperMotorBeltdrive;
     private Motor hopperMotorDish;
@@ -129,8 +129,18 @@ public class Hopper extends SubsystemBase implements Loggable {
 
     public Command runDish(){
         return Commands.runOnce(() -> {
-            hopperMotorDish.setTarget(dishspeed);
+            
+            if(pulse){
+                hopperMotorDish.setTarget(dishspeed);
+                pulse=false;
+            }
+            else{
+                hopperMotorDish.setTarget(0);
+                pulse = true;
+            }
+            
         }, this).andThen(Commands.waitUntil(() -> {
+            Commands.waitSeconds(5).execute();
             return hopperMotorDish.atTarget();
         }));
     }

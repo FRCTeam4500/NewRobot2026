@@ -2,6 +2,8 @@ package frc.robot.subsystems.climber;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +29,12 @@ public class Climber extends SubsystemBase implements Loggable {
             (TalonFX motorFx) -> {
                 TalonFXConfiguration config = new TalonFXConfiguration();
                 config.CurrentLimits.SupplyCurrentLimit = 40;
+                config.CurrentLimits.SupplyCurrentLimitEnable = true;
+                config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+                config.Feedback.SensorToMechanismRatio =1;
+                config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+                motorFx.getConfigurator().apply(config);
+
 
             }, 
             (FeedforwardSim balls) -> {

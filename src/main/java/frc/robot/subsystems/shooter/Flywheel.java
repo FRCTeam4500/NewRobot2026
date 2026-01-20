@@ -14,6 +14,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.WiringConstants;
 import frc.robot.hardware.Motor;
 import frc.robot.hardware.Motor.TargetType;
@@ -60,7 +61,7 @@ public class Flywheel extends SubsystemBase implements Loggable{
                     config.CurrentLimits.SupplyCurrentLimit = 60;
                     config.CurrentLimits.SupplyCurrentLimitEnable = true;
                     config.Feedback.SensorToMechanismRatio = 1;
-                    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+                    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
                     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
                     MotorFx.getConfigurator().apply(config);
                 }, 
