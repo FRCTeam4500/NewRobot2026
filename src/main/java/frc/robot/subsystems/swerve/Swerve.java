@@ -8,6 +8,9 @@ import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.studica.frc.Navx;
+
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -39,12 +42,12 @@ import frc.robot.utilities.PoseFeedbackController;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
-import com.studica.frc.Navx;
+
 
 /** The subsystem that controls our drivetrain, which is known as a swerve drive. */
 public class Swerve extends SubsystemBase implements Loggable {
   private Gyro gyro;
-  private Navx navx;
+ 
   private SwerveModule[] modules;
   private SwerveDriveKinematics kinematics;
   private SwerveDrivePoseEstimator estimator;
@@ -61,8 +64,9 @@ public class Swerve extends SubsystemBase implements Loggable {
       new Limelight("limelight-right"),
       new Limelight("limelight-left")
     };
+    
 
-    gyro = Gyro.fromNavX(() -> getSpeeds().omegaRadiansPerSecond, navx -> {});
+    gyro = Gyro.fromNavX(() -> getSpeeds().omegaRadiansPerSecond, navx -> {}, 100);
 
     modules =
         new SwerveModule[] {
