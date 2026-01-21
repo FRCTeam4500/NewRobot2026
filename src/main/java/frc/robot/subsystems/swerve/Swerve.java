@@ -39,10 +39,12 @@ import frc.robot.utilities.PoseFeedbackController;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
+import com.studica.frc.Navx;
 
 /** The subsystem that controls our drivetrain, which is known as a swerve drive. */
 public class Swerve extends SubsystemBase implements Loggable {
   private Gyro gyro;
+  private Navx navx;
   private SwerveModule[] modules;
   private SwerveDriveKinematics kinematics;
   private SwerveDrivePoseEstimator estimator;
@@ -61,6 +63,7 @@ public class Swerve extends SubsystemBase implements Loggable {
     };
 
     gyro = Gyro.fromNavX(() -> getSpeeds().omegaRadiansPerSecond, navx -> {});
+
     modules =
         new SwerveModule[] {
           new SwerveModule(FRONT_LEFT_DRIVE_MOTOR, FRONT_LEFT_ANGLE_MOTOR),

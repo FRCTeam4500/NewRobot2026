@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.orchestra.Orc;
 
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.Loggable;
 
@@ -26,10 +27,12 @@ public class Superstructure implements Loggable {
   
   private Shooter shooter;
   private Supplier<Pose2d> robotPose;
+  private Swerve swerve;
 
-  public Superstructure(Supplier<Pose2d> robotPose) {
+  public Superstructure(Supplier<Pose2d> robotPose, Swerve swerve) {
     shooter = new Shooter();
     this.robotPose = robotPose;
+    this.swerve =swerve;
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
   }
 
@@ -58,7 +61,7 @@ public class Superstructure implements Loggable {
       } else {
         return new Translation2d(4.625594,4.034536); // blue hub
       }
-    });
+    },this.swerve);
   }
 
   public Command StopShooter(){

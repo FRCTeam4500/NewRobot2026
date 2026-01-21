@@ -1,5 +1,7 @@
 package frc.robot.subsystems.shooter;
 
+
+
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.WiringConstants;
 import frc.robot.hardware.Motor;
 import frc.robot.hardware.Motor.TargetType;
+import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.FeedbackController;
 import frc.robot.utilities.FeedforwardController;
 import frc.robot.utilities.FeedforwardSim;
@@ -132,7 +135,7 @@ public class Shooter extends SubsystemBase implements Loggable {
 
     }
 
-    public Command readyShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
+    public Command readyShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target, Swerve swerve ) {
         // face the turret at the target
         // spin up the wheels
         // make the hood at the right angle
@@ -142,6 +145,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             Rotation2d turretAngle = targetAngle.plus(robotPose.get().getRotation()); // might be minus
             double distance = robotPose.get().getTranslation().getDistance(target.get());
             flywheel.setTarget(flywheelSpeed.get(distance));
+            swerve.setTargetHeading(targetAngle);
             hood.setTarget(hoodAngle.get(distance));
             turret.setTarget(turretAngle.getDegrees());
 
