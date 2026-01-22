@@ -5,7 +5,9 @@
   "pathFolders": [
     "Auto 1",
     "Auto 2",
-    "Auto 3"
+    "Auto 3",
+    "Auto 5a",
+    "Auto 4b"
   ],
   "autoFolders": [],
   "defaultMaxVel": 4.0,
