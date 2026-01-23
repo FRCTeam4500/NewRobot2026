@@ -44,16 +44,16 @@ public class SwerveConstants {
   public static final double SKEW_COEFFICIENT = -0.129;
 
   /** The position of the front left module from the robot's center */
-  public static final Translation2d FRONT_LEFT_TRANSLATION = new Translation2d(0.368, 0.266);
+  public static final Translation2d FRONT_LEFT_TRANSLATION = new Translation2d(0.2159, 0.3556);
 
   /** The position of the front right module from the robot's center */
-  public static final Translation2d FRONT_RIGHT_TRANSLATION = new Translation2d(0.368, -0.266);
+  public static final Translation2d FRONT_RIGHT_TRANSLATION = new Translation2d(0.2159, -0.3556);
 
   /** The position of the back left module from the robot's center */
-  public static final Translation2d BACK_LEFT_TRANSLATION = new Translation2d(-0.368, 0.266);
+  public static final Translation2d BACK_LEFT_TRANSLATION = new Translation2d(-0.2159, 0.3556);
 
   /** The position of the back right module from the robot's center */
-  public static final Translation2d BACK_RIGHT_TRANSLATION = new Translation2d(-0.368, -0.266);
+  public static final Translation2d BACK_RIGHT_TRANSLATION = new Translation2d(-0.2159, -0.3556);
 
   /**
    * Config for the swerve modules...
@@ -106,7 +106,7 @@ public class SwerveConstants {
           FeedforwardController.forConstantGravity(0, 0.19635, 2.0292, 0.19562), // drive sysID
           20,
           25,
-          0.415,
+          0.838,
           new FeedbackConstants(0.1, 0, 0), // angle PID
           1,
           FeedforwardController.forConstantGravity(
@@ -124,7 +124,7 @@ public class SwerveConstants {
           FeedforwardController.forConstantGravity(0, 0.20427, 2.0144, 0.25467),
           20,
           25,
-          0.588,
+          0.341,
           new FeedbackConstants(0.1, 0, 0),
           1,
           FeedforwardController.forConstantGravity(0, 0.27701, 0.0089885, 0.0010955));
@@ -141,7 +141,7 @@ public class SwerveConstants {
           FeedforwardController.forConstantGravity(0, 0.2049, 2.0169, 0.2644),
           20,
           25,
-          0.830,
+          0.169,
           new FeedbackConstants(0.1, 0, 0),
           1,
           FeedforwardController.forConstantGravity(0, 0.25886, 0.0090872, 0.0012662));
@@ -158,7 +158,7 @@ public class SwerveConstants {
           FeedforwardController.forConstantGravity(0, 0.20206, 2.0934, 0.18192), // drive sysID
           20,
           25,
-          0.594,
+          0.078,
           new FeedbackConstants(0.1, 0, 0), // angle PID
           1,
           FeedforwardController.forConstantGravity(
