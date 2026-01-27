@@ -31,7 +31,7 @@ public class WiringConstants {
     public static final int FlywheelMotor = 20;
     public static final int FlywheelMotor2 =19;
     public static final int turretheadMotor = 27;
-    public static final int turretturnMotor = 67;
+    //public static final int turretturnMotor = 67;
 
     //sparkmax 20 id
   }

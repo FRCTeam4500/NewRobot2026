@@ -66,8 +66,8 @@ public class Robot extends LoggedRobot {
     faceBackwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceBackwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
     stow.onTrue(structure.stow());
-    revShooter.whileTrue(structure.StartShooter());
-    revShooter.whileFalse(structure.StopShooter());
+    //revShooter.whileTrue(structure.StartShooter());
+    //revShooter.whileFalse(structure.StopShooter());
   }
 
   private void setupAuto() {

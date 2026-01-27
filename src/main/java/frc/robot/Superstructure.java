@@ -30,7 +30,7 @@ public class Superstructure implements Loggable {
   private Swerve swerve;
 
   public Superstructure(Supplier<Pose2d> robotPose, Swerve swerve) {
-    shooter = new Shooter();
+    //shooter = new Shooter();
     this.robotPose = robotPose;
     this.swerve =swerve;
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
@@ -53,7 +53,7 @@ public class Superstructure implements Loggable {
     return Commands.none();
   }
 
-  public Command StartShooter(){
+  /*public Command StartShooter(){
     // return shooterFly.speedup();
     return shooter.readyShoot(this.robotPose, () -> {
       if(DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
@@ -66,5 +66,5 @@ public class Superstructure implements Loggable {
 
   public Command StopShooter(){
     return shooter.idle();
-  }
+  }*/
 }
