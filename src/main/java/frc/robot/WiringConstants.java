@@ -30,7 +30,25 @@ public class WiringConstants {
 
     public static final int FlywheelMotor = 20;
     public static final int FlywheelMotor2 =19;
+    public static final int turretheadMotor = 27;
+    public static final int turretturnMotor = 67;
 
     //sparkmax 20 id
+  }
+
+  public static class ClimberMotors {
+    public static final int ClimberMotor1 = 30;
+    public static final int ClimberMotor2 = 31;
+  } 
+
+  public static class IntakeMotors {
+    public static final int IntakeMotor = 25;
+    public static final int IntakeMotorExtension = 26;
+  }
+
+    public static class HopperMotors {
+    public static final int hopperMotorExtension = 32;
+    public static final int hopperMotorBeltdrive = 33;
+    public static final int hopperMotorDish = 34;
   }
 }

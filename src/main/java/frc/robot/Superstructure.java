@@ -1,10 +1,19 @@
 package frc.robot;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.orchestra.Orc;
-import frc.robot.subsystems.shooter.Flywheel;
+
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.Loggable;
 
@@ -15,9 +24,15 @@ import frc.robot.utilities.logging.Loggable;
 public class Superstructure implements Loggable {
   // Create objects for all non-drivebase subsystems
 
-  Flywheel shooterFly = new Flywheel();
+  
+  private Shooter shooter;
+  private Supplier<Pose2d> robotPose;
+  private Swerve swerve;
 
-  public Superstructure() {
+  public Superstructure(Supplier<Pose2d> robotPose, Swerve swerve) {
+    shooter = new Shooter();
+    this.robotPose = robotPose;
+    this.swerve =swerve;
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
   }
 
@@ -39,10 +54,17 @@ public class Superstructure implements Loggable {
   }
 
   public Command StartShooter(){
-    return shooterFly.speedup();
+    // return shooterFly.speedup();
+    return shooter.readyShoot(this.robotPose, () -> {
+      if(DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+        return new Translation2d(4.625594,4.034536); // red hub
+      } else {
+        return new Translation2d(4.625594,4.034536); // blue hub
+      }
+    },this.swerve);
   }
 
   public Command StopShooter(){
-    return shooterFly.stopShooter();
+    return shooter.idle();
   }
 }

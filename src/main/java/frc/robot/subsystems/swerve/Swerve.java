@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -42,6 +43,7 @@ import frc.robot.utilities.logging.Loggable;
 /** The subsystem that controls our drivetrain, which is known as a swerve drive. */
 public class Swerve extends SubsystemBase implements Loggable {
   private Gyro gyro;
+
   private SwerveModule[] modules;
   private SwerveDriveKinematics kinematics;
   private SwerveDrivePoseEstimator estimator;
@@ -49,12 +51,21 @@ public class Swerve extends SubsystemBase implements Loggable {
   private Rotation2d targetHeading;
   private FeedbackController headingFeedback;
   private PoseFeedbackController poseFeedback;
+  private Translation2d robotAcceleration;
+  private ChassisSpeeds previousSpeeds;
 
   /** Creates a new {@link Swerve} using the constants defined in {@link SwerveConstants} */
   public Swerve() {
-    tagCameras = new Limelight[] {};
+     previousSpeeds=new ChassisSpeeds(0.0, 0.0, 0.0);
+    //previousSpeeds.vxMetersPerSecond=0;
+    //previousSpeeds.vyMetersPerSecond=0;
+    tagCameras = new Limelight[] {
+      new Limelight("limelight-right"),
+      new Limelight("limelight-left")
+    };
 
     gyro = Gyro.fromNavX(() -> getSpeeds().omegaRadiansPerSecond, navx -> {});
+
     modules =
         new SwerveModule[] {
           new SwerveModule(FRONT_LEFT_DRIVE_MOTOR, FRONT_LEFT_ANGLE_MOTOR),
@@ -485,8 +496,12 @@ public class Swerve extends SubsystemBase implements Loggable {
     targetHeading = pose.getRotation();
   }
 
-  private ChassisSpeeds getSpeeds() {
+  public ChassisSpeeds getSpeeds() {
     return kinematics.toChassisSpeeds(getModuleStates());
+  }
+
+  public Translation2d getAcceleration() {
+    return robotAcceleration;
   }
 
   private SwerveModuleState[] getModuleStates() {
@@ -525,6 +540,11 @@ public class Swerve extends SubsystemBase implements Loggable {
     for (SwerveModule module : modules) {
       module.periodic();
     }
+    ChassisSpeeds speeds = getSpeeds();
+    robotAcceleration = new Translation2d(
+      (speeds.vxMetersPerSecond - previousSpeeds.vxMetersPerSecond) / 0.02,
+      (speeds.vyMetersPerSecond - previousSpeeds.vyMetersPerSecond) / 0.02
+    );
   }
 
   @Override
