@@ -45,7 +45,7 @@ public class Climber extends SubsystemBase implements Loggable {
             {pid.setTolerance(1);}), 
             FeedforwardController.forArmGravity(0, 0, 0, 0), 
             TargetType.Position);
-            climberMotor1.getSysIDCommands("climber", 0, 0, 0);
+            climberMotor1.getSysIDCommands("climber", 0, 0, 0); // add motor 2 to end for correcnt sysid template
 
 
            /* climberMotor2 = Motor.fromTalonFX(
@@ -63,7 +63,7 @@ public class Climber extends SubsystemBase implements Loggable {
                 {pid.setTolerance(1);}),
                 FeedforwardController.forArmGravity(0, 0, 0, 0),
                 TargetType.Position);
-                climberMotor2.getSysIDCommands("climber", 0, 0, 0);
+                
             
         */
     }

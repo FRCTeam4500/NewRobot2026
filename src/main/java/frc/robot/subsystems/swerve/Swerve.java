@@ -56,6 +56,9 @@ public class Swerve extends SubsystemBase implements Loggable {
 
   /** Creates a new {@link Swerve} using the constants defined in {@link SwerveConstants} */
   public Swerve() {
+     previousSpeeds=new ChassisSpeeds(0.0, 0.0, 0.0);
+    //previousSpeeds.vxMetersPerSecond=0;
+    //previousSpeeds.vyMetersPerSecond=0;
     tagCameras = new Limelight[] {
       new Limelight("limelight-right"),
       new Limelight("limelight-left")

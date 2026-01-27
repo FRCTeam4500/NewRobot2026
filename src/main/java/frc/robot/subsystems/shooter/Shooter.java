@@ -39,8 +39,8 @@ public class Shooter extends SubsystemBase implements Loggable {
     private Motor hood;
     private Motor turret;
     private Transform2d shooterTransform = new Transform2d(0.5, 0.0, Rotation2d.kZero);
-    private InterpolatingDoubleTreeMap flywheelSpeed;
-    private InterpolatingDoubleTreeMap hoodAngle;
+    private InterpolatingDoubleTreeMap flywheelSpeed = new InterpolatingDoubleTreeMap();
+    private InterpolatingDoubleTreeMap hoodAngle = new InterpolatingDoubleTreeMap();
     private DoubleSubscriber flywheelSubscriber;
     private DoubleSubscriber turetSubscriber;
     private DoubleSubscriber andgleSuscriber;
@@ -87,7 +87,7 @@ public class Shooter extends SubsystemBase implements Loggable {
                 flywheel.getSysIDCommands("flywheelMotorkraken", 1, 10, 10);
         
         hood = Motor.fromSparkMax(
-            0, 
+            990, 
             false, 
             (SparkMax sparkMotor) ->{
                 SparkMaxConfig config = new SparkMaxConfig();
@@ -109,7 +109,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             TargetType.Position);
         
         turret = Motor.fromSparkMax(
-            0, 
+            90, 
             false, 
             (SparkMax sparkMotor) ->{
                 SparkMaxConfig config = new SparkMaxConfig();
