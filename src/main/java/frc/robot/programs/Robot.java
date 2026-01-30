@@ -58,6 +58,7 @@ public class Robot extends LoggedRobot {
     Trigger resetHeading = xbox.a();
     Trigger stow = xbox.y();
     Trigger revShooter = xbox.rightTrigger();
+    Trigger shoot = xbox.leftTrigger();
 
     resetHeading.and(onBlue).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(0)));
     resetHeading.and(onRed).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(180)));
@@ -66,8 +67,8 @@ public class Robot extends LoggedRobot {
     faceBackwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceBackwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
     stow.onTrue(structure.stow());
-    //revShooter.whileTrue(structure.StartShooter());
-    //revShooter.whileFalse(structure.StopShooter());
+    revShooter.whileTrue(structure.StartShooter());
+    revShooter.whileFalse(structure.StopShooter());
   }
 
   private void setupAuto() {

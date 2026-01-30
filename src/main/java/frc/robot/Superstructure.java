@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Hopper.Hopper;
 import frc.robot.subsystems.orchestra.Orc;
 
 import frc.robot.subsystems.shooter.Shooter;
@@ -26,11 +27,13 @@ public class Superstructure implements Loggable {
 
   
   private Shooter shooter;
+  private Hopper hopper;
   private Supplier<Pose2d> robotPose;
   private Swerve swerve;
 
   public Superstructure(Supplier<Pose2d> robotPose, Swerve swerve) {
-    //shooter = new Shooter();
+    shooter = new Shooter();
+    hopper = new Hopper();
     this.robotPose = robotPose;
     this.swerve =swerve;
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
@@ -53,7 +56,7 @@ public class Superstructure implements Loggable {
     return Commands.none();
   }
 
-  /*public Command StartShooter(){
+  public Command StartShooter(){
     // return shooterFly.speedup();
     return shooter.readyShoot(this.robotPose, () -> {
       if(DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
@@ -66,5 +69,12 @@ public class Superstructure implements Loggable {
 
   public Command StopShooter(){
     return shooter.idle();
-  }*/
+  }
+
+  public Command shoot(){
+    return hopper.beltDriveShoot();
+  }
+  public Command stopShoot(){
+    return hopper.beltDriveStop();
+  }
 }

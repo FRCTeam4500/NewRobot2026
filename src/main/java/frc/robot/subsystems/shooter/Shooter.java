@@ -35,9 +35,10 @@ import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
 
 public class Shooter extends SubsystemBase implements Loggable {
-    private Motor flywheel;
+    private Motor flywheel1;
+    private Motor flywheel2;
     private Motor hood;
-    private Motor turret;
+    
     private Transform2d shooterTransform = new Transform2d(0.5, 0.0, Rotation2d.kZero);
     private InterpolatingDoubleTreeMap flywheelSpeed = new InterpolatingDoubleTreeMap();
     private InterpolatingDoubleTreeMap hoodAngle = new InterpolatingDoubleTreeMap();
@@ -66,8 +67,8 @@ public class Shooter extends SubsystemBase implements Loggable {
         turetSubscriber = HoundLog.tunable( "TuretHood", 0.0);
         andgleSuscriber = HoundLog.tunable("turetangle", 0.0);
 
-        flywheel = Motor.fromTalonFX(
-                WiringConstants.ShooterMotors.FlywheelMotor2, 
+        flywheel1 = Motor.fromTalonFX(
+                WiringConstants.ShooterMotors.flywheelMotor1, 
                 (TalonFX MotorFx) -> {
                     TalonFXConfiguration config = new TalonFXConfiguration();
                     config.CurrentLimits.SupplyCurrentLimit = 60;
@@ -84,7 +85,25 @@ public class Shooter extends SubsystemBase implements Loggable {
                 }), 
                 FeedforwardController.forConstantGravity(0, 0, 0, 0), 
                 TargetType.Velocity);
-                flywheel.getSysIDCommands("flywheelMotorkraken", 1, 10, 10);
+        flywheel2 = Motor.fromTalonFX(
+                WiringConstants.ShooterMotors.flywheelMotor2, 
+                (TalonFX MotorFx) -> {
+                    TalonFXConfiguration config = new TalonFXConfiguration();
+                    config.CurrentLimits.SupplyCurrentLimit = 60;
+                    config.CurrentLimits.SupplyCurrentLimitEnable = true;
+                    config.Feedback.SensorToMechanismRatio = 1;
+                    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+                    config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+                    MotorFx.getConfigurator().apply(config); 
+                }, 
+                null, 
+                0, 
+                FeedbackController.fromPID(0.1, 0, 0, (PIDController pid) -> { 
+                    pid.setTolerance(0.5);
+                }), 
+                FeedforwardController.forConstantGravity(0, 0, 0, 0), 
+                TargetType.Velocity);
+                flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2);
         
         hood = Motor.fromSparkMax(
             990, 
@@ -95,7 +114,7 @@ public class Shooter extends SubsystemBase implements Loggable {
                 config.encoder.velocityConversionFactor(1/360);
                 config.smartCurrentLimit(30);
                 config.idleMode(IdleMode.kBrake); 
-                config.inverted(true);
+                config.inverted(false);
                 sparkMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             }, 
             (FeedforwardSim sim) ->{
@@ -108,28 +127,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             FeedforwardController.forConstantGravity(0, 0, 0, 0), 
             TargetType.Position);
         
-        turret = Motor.fromSparkMax(
-            90, 
-            false, 
-            (SparkMax sparkMotor) ->{
-                SparkMaxConfig config = new SparkMaxConfig();
-                config.encoder.positionConversionFactor(1/360);
-                config.encoder.velocityConversionFactor(1/360);
-                config.smartCurrentLimit(30);
-                config.inverted(false);
-                config.idleMode(IdleMode.kBrake);
-                sparkMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-                
-            }, 
-            (FeedforwardSim sim) ->{
-                sim.withHardstops(0, 90);
-            }, 
-            0, 
-            FeedbackController.fromPID(1, 0, 0, (PIDController pid) ->{
-                pid.setTolerance(0.5);
-            }), 
-            FeedforwardController.forConstantGravity(0, 0, 0, 0), 
-            TargetType.Position);
+        
 
 
 
@@ -144,27 +142,33 @@ public class Shooter extends SubsystemBase implements Loggable {
             Rotation2d targetAngle = robotPose.get().plus(shooterTransform).getTranslation().minus(target.get()).getAngle();
             Rotation2d turretAngle = targetAngle.plus(robotPose.get().getRotation()); // might be minus
             double distance = robotPose.get().getTranslation().getDistance(target.get());
-            flywheel.setTarget(flywheelSpeed.get(distance));
+            flywheel1.setTarget(flywheelSpeed.get(distance));
+            flywheel2.setTarget(flywheelSpeed.get(distance));
             swerve.setTargetHeading(targetAngle);
             hood.setTarget(hoodAngle.get(distance));
-            turret.setTarget(turretAngle.getDegrees());
+            
 
         }, this);
     }
     
-    public Command test() {
+    public Command test(Swerve swerve) {
         return Commands.run(() -> {
-            flywheel.setTarget(flywheelSubscriber.get());
+            flywheel1.setTarget(flywheelSubscriber.get());
+            flywheel2.setTarget(flywheelSubscriber.get());
+
             hood.setTarget(turetSubscriber.get());
-            turret.setTarget(andgleSuscriber.get());
+            swerve.setTargetHeading(Rotation2d.fromDegrees(andgleSuscriber.get()));
+           
+            
         },this);
     }
 
     public Command idle() {
         // flywheel.setTarget(0);
         return Commands.runOnce(() -> {
-            flywheel.setVoltage(0);
-            turret.setVoltage(0);
+            flywheel1.setVoltage(0);
+            flywheel2.setVoltage(0);
+            
             hood.setVoltage(0);  
 
         }, this).andThen(Commands.idle());

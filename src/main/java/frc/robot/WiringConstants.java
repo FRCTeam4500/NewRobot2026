@@ -28,8 +28,8 @@ public class WiringConstants {
   }
   public static class ShooterMotors {
 
-    public static final int FlywheelMotor = 20;
-    public static final int FlywheelMotor2 =19;
+    public static final int flywheelMotor1 = 20;
+    public static final int flywheelMotor2 =19;
     public static final int turretheadMotor = 27;
     //public static final int turretturnMotor = 67;
 
