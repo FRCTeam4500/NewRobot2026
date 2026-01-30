@@ -19,15 +19,15 @@ import frc.robot.utilities.FeedforwardSim;
 import frc.robot.utilities.logging.Loggable;
 
 public class Hopper extends SubsystemBase implements Loggable {
-    private static boolean pulse = false;
-    private Motor hopperMotorExtension;
+    //private static boolean pulse = false;
+    //private Motor hopperMotorExtension;
     private Motor hopperMotorBeltdrive;
-    private Motor hopperMotorDish;
+    //private Motor hopperMotorDish;
     public static int beltdrivespeed = 10; //placeholder
-    private static int dishspeed = 10; //placeholder
+    //private static int dishspeed = 10; //placeholder
 
     public Hopper(){
-        hopperMotorExtension = Motor.fromSparkMax(
+        /*hopperMotorExtension = Motor.fromSparkMax(
             WiringConstants.HopperMotors.hopperMotorExtension,
             false,
             (SparkMax sparkmotor) -> {
@@ -45,7 +45,7 @@ public class Hopper extends SubsystemBase implements Loggable {
             }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Position);
-            hopperMotorExtension.getSysIDCommands("hopper extension neo", 0, 0, 0);
+            hopperMotorExtension.getSysIDCommands("hopper extension neo", 0, 0, 0);*/
 
             
             hopperMotorBeltdrive = Motor.fromSparkMax(
@@ -68,7 +68,7 @@ public class Hopper extends SubsystemBase implements Loggable {
             TargetType.Velocity);
             hopperMotorBeltdrive.getSysIDCommands("hopper belt drive neo", 0, 0, 0);
 
-               hopperMotorDish = Motor.fromSparkMax(
+              /*  hopperMotorDish = Motor.fromSparkMax(
             WiringConstants.HopperMotors.hopperMotorExtension,
             false,
             (SparkMax sparkmotor) -> {
@@ -86,12 +86,12 @@ public class Hopper extends SubsystemBase implements Loggable {
             }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
-            hopperMotorDish.getSysIDCommands("hopper dish neo", 0, 0, 0);
+            hopperMotorDish.getSysIDCommands("hopper dish neo", 0, 0, 0);*/
         
 
     }
 
-    public Command extendHopper(){
+    /*public Command extendHopper(){
         return Commands.runOnce(() -> {
             hopperMotorExtension.setTarget(20);
         }, this).andThen(Commands.waitUntil(() -> {
@@ -105,7 +105,7 @@ public class Hopper extends SubsystemBase implements Loggable {
         }, this).andThen(Commands.waitUntil(() -> {
             return hopperMotorExtension.atTarget();
         }));
-    }
+    }*/
 
     public Command beltDriveShoot(){
         return Commands.runOnce(() -> {
@@ -127,7 +127,7 @@ public class Hopper extends SubsystemBase implements Loggable {
         });
     }
 
-    public Command runDish(){
+    /*public Command runDish(){
         return Commands.runOnce(() -> {
             
             if(pulse){
@@ -151,7 +151,7 @@ public class Hopper extends SubsystemBase implements Loggable {
         }, this).andThen(Commands.waitUntil(() -> {
             return hopperMotorDish.atTarget();
         }));
-    }
+    }*/
 
 
 
