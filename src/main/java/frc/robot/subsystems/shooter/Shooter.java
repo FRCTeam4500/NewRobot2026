@@ -39,6 +39,7 @@ public class Shooter extends SubsystemBase implements Loggable {
     private Motor flywheel2;
     private Motor hood;
     private double flywheelSpeedlog;
+    private double hoodAngleLog;
     private Transform2d shooterTransform = new Transform2d(0.5, 0.0, Rotation2d.kZero);
     private InterpolatingDoubleTreeMap flywheelSpeed = new InterpolatingDoubleTreeMap();
     private InterpolatingDoubleTreeMap hoodAngle = new InterpolatingDoubleTreeMap();
@@ -143,6 +144,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             Rotation2d targetAngle = robotPose.get().plus(shooterTransform).getTranslation().minus(target.get()).getAngle();
             double distance = robotPose.get().getTranslation().getDistance(target.get());
             flywheelSpeedlog = flywheelSpeed.get(distance);
+            hoodAngleLog= hoodAngle.get(distance);
             flywheel1.setTarget(flywheelSpeed.get(distance));
             flywheel2.setTarget(flywheelSpeed.get(distance));
             swerve.setTargetHeading(targetAngle);
@@ -186,11 +188,14 @@ public class Shooter extends SubsystemBase implements Loggable {
     
     @Override
     public void log(String path) {
-        // TODO finish log items
-        //bot requested angle
-        //turet head angle
+        
         HoundLog.log(path, "flywheelSpeed", flywheel1.getPosition());
-        //HoundLog.log(path, "neededFlywheelSpeed", );
+        HoundLog.log(path, "hoodAnlge", hood.getPosition());
+        HoundLog.log(path, "expectedFlywheelSpeed", flywheelSpeedlog);
+        HoundLog.log(path, "expectedHoodAngle",hoodAngleLog);
+        HoundLog.log(path, "flywheelAtTrarget", flywheel1.atTarget());
+        HoundLog.log(path, "HoodAtTarget", hood.atTarget());
+
     }
     
 }

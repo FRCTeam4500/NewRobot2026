@@ -71,6 +71,10 @@ public class Superstructure implements Loggable {
     return shooter.idle();
   }
 
+  public Shooter getShooter(){
+    return shooter;
+  }
+
   public Command shoot(){
     return hopper.beltDriveShoot();
   }

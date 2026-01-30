@@ -85,6 +85,7 @@ public class Robot extends LoggedRobot {
     double start = Timer.getFPGATimestamp();
     HoundLog.log("Swerve", swerve);
     HoundLog.log("Superstrucutre", structure);
+    HoundLog.log("shooter", structure.getShooter());
     double loggingLoop = Timer.getFPGATimestamp() - start;
 
     start = Timer.getFPGATimestamp();
