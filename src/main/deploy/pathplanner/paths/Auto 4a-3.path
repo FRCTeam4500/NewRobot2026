@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.584197120949074,
-        "y": 7.41702611400463
+        "x": 4.584055013309671,
+        "y": 7.555962732919253
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.7775156249923576,
-        "y": 7.468595992473874
+        "x": 3.777373517352954,
+        "y": 7.607532611388498
       },
       "isLocked": false,
       "linkedName": "Auto 4a-2"
     },
     {
       "anchor": {
-        "x": 3.2984275173534687,
-        "y": 6.533645905668319
+        "x": 2.6042679680567873,
+        "y": 7.306477373558119
       },
       "prevControl": {
-        "x": 3.212871383094209,
-        "y": 7.237122034140541
+        "x": 3.2078615794143737,
+        "y": 7.724968944099377
+      },
+      "nextControl": {
+        "x": 2.0218932078639633,
+        "y": 6.902697539824429
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.2582076308784376,
+        "y": 6.4775421472937005
+      },
+      "prevControl": {
+        "x": 2.2421118012422356,
+        "y": 7.065039929015083
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +49,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -50,5 +66,5 @@
     "velocity": 0,
     "rotation": -88.98278411297026
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
