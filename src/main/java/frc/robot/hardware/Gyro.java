@@ -1,8 +1,10 @@
 package frc.robot.hardware;
 
-import com.studica.frc.AHRS;
-import com.studica.frc.AHRS.NavXComType;
+
+import com.studica.frc.Navx;
+
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -46,28 +48,30 @@ public interface Gyro extends Loggable {
    * @param config Method to configure the navX
    * @return the navX on the RIO wrapped as a {@link Gyro}
    */
-  public static Gyro fromNavX(DoubleSupplier radiansPerSecond, Consumer<AHRS> config) {
+  public static Gyro fromNavX(DoubleSupplier radiansPerSecond, Consumer<Navx> config, int canID) {
     if (RobotBase.isSimulation()) {
       return fromSim(radiansPerSecond);
     }
-    AHRS navx = new AHRS(NavXComType.kMXP_SPI);
+    Navx navx = new Navx(canID);
+    
+    
     config.accept(navx);
-    Trigger connected = new Trigger(navx::isConnected);
-    connected.onFalse(
+    //Trigger connected = new Trigger(navx);
+    /*connected.onFalse(
         Commands.runOnce(() -> HoundLog.logFault("Gyro Disconnected...", AlertType.kError))
             .ignoringDisable(true));
     connected.onTrue(
-        Commands.runOnce(() -> HoundLog.clearFault("Gyro Disconnected...")).ignoringDisable(true));
+        Commands.runOnce(() -> HoundLog.clearFault("Gyro Disconnected...")).ignoringDisable(true));*/
     return new Gyro() {
-      double lastAngle = navx.getRotation2d().getRadians();
+      double lastAngle = navx.getRotation2d().getRadians(); 
 
       @Override
       public void log(String path) {
-        HoundLog.log(path, "Connected", navx.isConnected());
-        HoundLog.log(path, "Pitch", navx.getPitch());
-        HoundLog.log(path, "Roll", navx.getRoll());
-        HoundLog.log(path, "Angle", navx.getYaw());
-        if (!navx.isConnected()) {
+        //HoundLog.log(path, "Connected", navx.isConnected());
+        HoundLog.log(path, "Pitch", navx.getPitch().in(Units.Degree));
+        HoundLog.log(path, "Roll", navx.getRoll().in(Units.Degree));
+        HoundLog.log(path, "Angle", navx.getYaw().in(Units.Degree));
+        if (RobotBase.isSimulation()) {
           lastAngle += radiansPerSecond.getAsDouble() * 0.02;
         } else {
           lastAngle = getAngle().getRadians();
@@ -76,7 +80,7 @@ public interface Gyro extends Loggable {
 
       @Override
       public Rotation2d getAngle() {
-        if (navx.isConnected()) {
+        if (RobotBase.isReal()) {
           return navx.getRotation2d();
         } else {
           return Rotation2d.fromRadians(lastAngle);
@@ -85,11 +89,11 @@ public interface Gyro extends Loggable {
 
       @Override
       public Rotation2d getAngularVelocity() {
-        if (navx.isConnected()) {
+        return Rotation2d.fromRadians(radiansPerSecond.getAsDouble());
+        /*if (RobotBase.isReal()) {
           return Rotation2d.fromDegrees(-navx.getRate());
         } else {
-          return Rotation2d.fromRadians(radiansPerSecond.getAsDouble());
-        }
+        }*/
       }
     };
   }
