@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.673355263157895,
+        "y": 1.1116666666666664
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.942609649122807,
+        "y": 2.6887280701754377
+      },
+      "isLocked": false,
+      "linkedName": "auto 4b shoot"
+    },
+    {
+      "anchor": {
+        "x": 1.6540350877192984,
+        "y": 3.736896929824561
+      },
+      "prevControl": {
+        "x": 2.34640350877193,
+        "y": 3.3137828947368417
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Auto 4b",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 44.99999999999996
+  },
+  "useDefaultConstraints": true
+}

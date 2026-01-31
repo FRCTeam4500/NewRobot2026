@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.557960526313704,
+        "y": 6.525603070178659
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.384868421052632,
+        "y": 7.487225877192982
+      },
+      "isLocked": false,
+      "linkedName": "auto 5a shoot 2"
+    },
+    {
+      "anchor": {
+        "x": 5.84671052631579,
+        "y": 7.410296052631579
+      },
+      "prevControl": {
+        "x": 4.144638157894737,
+        "y": 7.55453947368421
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "auto 5a path 5 end"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 4.0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Auto 5a",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -50.063616853079814
+  },
+  "useDefaultConstraints": true
+}

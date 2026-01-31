@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.0485635964912285,
+        "y": 7.391063596491227
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.510054824561404,
+        "y": 7.381447368421052
+      },
+      "isLocked": false,
+      "linkedName": "auto 5a path 3 end"
+    },
+    {
+      "anchor": {
+        "x": 3.615745614035088,
+        "y": 7.391063596491227
+      },
+      "prevControl": {
+        "x": 4.298497807017547,
+        "y": 7.410296052631579
+      },
+      "nextControl": {
+        "x": 2.9329934210526316,
+        "y": 7.371831140350875
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.557960526313704,
+        "y": 6.525603070178659
+      },
+      "prevControl": {
+        "x": 2.5098793859649122,
+        "y": 7.333366228070175
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "auto 5a shoot 2"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": -50.063616853079814
+  },
+  "reversed": false,
+  "folder": "Auto 5a",
+  "idealStartingState": {
+    "velocity": 4.0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
