@@ -67,8 +67,8 @@ public class Robot extends LoggedRobot {
     faceBackwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceBackwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
     stow.onTrue(structure.stow());
-    revShooter.whileTrue(structure.StartShooter());
-    revShooter.onFalse(structure.StopShooter());
+    //revShooter.whileTrue(structure.StartShooter());
+    //revShooter.onFalse(structure.StopShooter());
     
   }
 
@@ -85,7 +85,7 @@ public class Robot extends LoggedRobot {
     double start = Timer.getFPGATimestamp();
     HoundLog.log("Swerve", swerve);
     HoundLog.log("Superstrucutre", structure);
-    HoundLog.log("shooter", structure.getShooter());
+    //HoundLog.log("shooter", structure.getShooter());
     double loggingLoop = Timer.getFPGATimestamp() - start;
 
     start = Timer.getFPGATimestamp();
