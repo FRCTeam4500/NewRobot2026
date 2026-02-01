@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.2582076308784376,
-        "y": 6.4775421472937005
+        "x": 4.584055013309671,
+        "y": 7.555962732919253
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6705997026453394,
-        "y": 4.034337141509641
+        "x": -0.1964063886424139,
+        "y": 8.103220940550132
       },
       "isLocked": false,
-      "linkedName": "Auto 4a-3"
+      "linkedName": "Auto 4a-2"
     },
     {
       "anchor": {
@@ -48,7 +48,7 @@
   "folder": "Auto 4a",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -60.67526936893285
+    "rotation": -88.98278411297026
   },
   "useDefaultConstraints": false
 }
