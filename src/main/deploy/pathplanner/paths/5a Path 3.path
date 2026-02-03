@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.635241228070175,
-        "y": 5.76592105263158
+        "x": 8.25706134094151,
+        "y": 6.435121255349501
       },
       "isLocked": false,
       "linkedName": "auto 5a path 2 end"
     },
     {
       "anchor": {
-        "x": 5.0485635964912285,
-        "y": 7.391063596491227
+        "x": 5.035335235378032,
+        "y": 7.483152639087019
       },
       "prevControl": {
-        "x": 6.375603070175439,
-        "y": 7.467993421052631
+        "x": 6.238340825762695,
+        "y": 7.678750954150714
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -41,7 +41,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 4.0,
+    "velocity": 1.0,
     "rotation": 0.0
   },
   "reversed": false,
@@ -50,5 +50,5 @@
     "velocity": 2.0,
     "rotation": -90.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

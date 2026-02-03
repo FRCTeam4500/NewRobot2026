@@ -69,6 +69,7 @@ public class Robot extends LoggedRobot {
     faceBackwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceBackwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
     stow.onTrue(structure.stow());
+    revShooter.onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(90)));
     //revShooter.whileTrue(structure.StartShooter());
     //revShooter.onFalse(structure.StopShooter());
     
@@ -82,6 +83,7 @@ public class Robot extends LoggedRobot {
     chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
     chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
     chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
+    chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
     RobotModeTriggers.autonomous().whileTrue(Commands.deferredProxy(chooser::getSelected));
   }
 

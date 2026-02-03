@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.0485635964912285,
-        "y": 7.391063596491227
+        "x": 5.035335235378032,
+        "y": 7.483152639087019
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.510054824561404,
-        "y": 7.381447368421052
+        "x": 4.496826463448207,
+        "y": 7.473536411016845
       },
       "isLocked": false,
       "linkedName": "auto 5a path 3 end"
@@ -63,7 +63,7 @@
   "reversed": false,
   "folder": "Auto 5a",
   "idealStartingState": {
-    "velocity": 4.0,
+    "velocity": 1.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true
