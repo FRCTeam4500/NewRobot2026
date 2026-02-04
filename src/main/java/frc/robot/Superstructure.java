@@ -16,6 +16,7 @@ import frc.robot.subsystems.orchestra.Orc;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.StopTilting;
+import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
 
 /**
@@ -42,7 +43,9 @@ public class Superstructure implements Loggable {
   public void log(String path) {
     // Call log() methods for contained subsystems
     StopTilting.updateCenterOfMass(new Transform3d[] {});
+    //HoundLog.log(path, "shooter", shooter);
   }
+
 
   public Command sing() {
     return Orc.startSinging();

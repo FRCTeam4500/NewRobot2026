@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -28,7 +27,8 @@ public class Robot extends LoggedRobot {
   private Swerve swerve;
   private Superstructure structure;
   private CommandXboxController xbox;
-  private CommandJoystick stick;
+  private CommandXboxController xbox2;
+
 
   /** make a robot */
   public Robot() {
@@ -38,7 +38,7 @@ public class Robot extends LoggedRobot {
     }, swerve);
     DriverStation.silenceJoystickConnectionWarning(true);
     xbox = new CommandXboxController(2);
-    stick = new CommandJoystick(1);
+    xbox2 = new CommandXboxController(1);
     swerve.setDefaultCommand(swerve.angleCentric(xbox.getHID()));
 
     setupDriveController();
@@ -47,8 +47,9 @@ public class Robot extends LoggedRobot {
   }
 
   private void setupOperatorController() {
-    Trigger stowButton = stick.button(11);
-    stowButton.onTrue(structure.stow());
+      Trigger revShooter = xbox2.rightTrigger();
+      revShooter.whileTrue(Commands.none());
+      
   }
 
   private void setupDriveController() {
@@ -59,7 +60,7 @@ public class Robot extends LoggedRobot {
     Trigger faceBackwards = new Trigger(() -> xbox.getRightY() > 0.5);
     Trigger resetHeading = xbox.a();
     Trigger stow = xbox.y();
-    Trigger revShooter = xbox.rightTrigger();
+    
     Trigger shoot = xbox.leftTrigger();
 
     resetHeading.and(onBlue).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(0)));
@@ -92,7 +93,6 @@ public class Robot extends LoggedRobot {
     double start = Timer.getFPGATimestamp();
     HoundLog.log("Swerve", swerve);
     HoundLog.log("Superstrucutre", structure);
-    //HoundLog.log("shooter", structure.getShooter());
     double loggingLoop = Timer.getFPGATimestamp() - start;
 
     start = Timer.getFPGATimestamp();
