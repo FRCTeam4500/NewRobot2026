@@ -49,7 +49,7 @@ public class Robot extends LoggedRobot {
   private void setupOperatorController() {
       Trigger revShooter = xbox2.rightTrigger();
       revShooter.whileTrue(Commands.none());
-      
+
   }
 
   private void setupDriveController() {
@@ -60,7 +60,7 @@ public class Robot extends LoggedRobot {
     Trigger faceBackwards = new Trigger(() -> xbox.getRightY() > 0.5);
     Trigger resetHeading = xbox.a();
     Trigger stow = xbox.y();
-    
+    Trigger revShooter = xbox.rightTrigger();
     Trigger shoot = xbox.leftTrigger();
 
     resetHeading.and(onBlue).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(0)));
