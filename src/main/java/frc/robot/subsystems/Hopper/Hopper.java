@@ -16,6 +16,7 @@ import frc.robot.hardware.Motor.TargetType;
 import frc.robot.utilities.FeedbackController;
 import frc.robot.utilities.FeedforwardController;
 import frc.robot.utilities.FeedforwardSim;
+import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
 
 public class Hopper extends SubsystemBase implements Loggable {
@@ -157,8 +158,9 @@ public class Hopper extends SubsystemBase implements Loggable {
 
 	@Override
 	public void log(String path) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'log'");
+	
+        HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive.atTarget());
+
 	}
 
 }
