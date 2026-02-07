@@ -20,6 +20,7 @@ import frc.robot.hardware.Motor.TargetType;
 import frc.robot.utilities.FeedbackController;
 import frc.robot.utilities.FeedforwardController;
 import frc.robot.utilities.FeedforwardSim;
+import frc.robot.utilities.logging.HoundLog;
 
 
 
@@ -113,8 +114,10 @@ public class Intake extends SubsystemBase implements Loggable{
 
     @Override
     public void log(String path) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'log'");
+        
+        HoundLog.log(path, "intakeMotorDrive", intakeMotorDrive.atTarget());
+        HoundLog.log(path, "intakeMotorExtension", intakeMotorExtension.getPosition());
+
     }
 
 
