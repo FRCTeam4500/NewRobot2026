@@ -70,9 +70,11 @@ public class Robot extends LoggedRobot {
     faceBackwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceBackwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
     stow.onTrue(structure.stow());
-    revShooter.onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(90)));
-    //revShooter.whileTrue(structure.StartShooter());
-    //revShooter.onFalse(structure.StopShooter());
+    
+    revShooter.whileTrue(structure.StartShooterTest());
+    revShooter.onFalse(structure.StopShooter());
+    shoot.onTrue(structure.shoot());
+    shoot.onFalse(structure.stopShoot());
     
   }
 

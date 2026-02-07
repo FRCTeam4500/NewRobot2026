@@ -1,10 +1,11 @@
 package frc.robot.subsystems.Hopper;
 
-import com.revrobotics.PersistMode;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
+
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,7 +24,7 @@ public class Hopper extends SubsystemBase implements Loggable {
     //private Motor hopperMotorExtension;
     private Motor hopperMotorBeltdrive;
     //private Motor hopperMotorDish;
-    public static int beltdrivespeed = 10; //placeholder
+    public static int beltdrivespeed = 600; //placeholder
     //private static int dishspeed = 10; //placeholder
 
     public Hopper(){
@@ -48,24 +49,24 @@ public class Hopper extends SubsystemBase implements Loggable {
             hopperMotorExtension.getSysIDCommands("hopper extension neo", 0, 0, 0);*/
 
             
-            hopperMotorBeltdrive = Motor.fromSparkMax(
-            WiringConstants.HopperMotors.hopperMotorExtension,
-            false,
-            (SparkMax sparkmotor) -> {
-                SparkMaxConfig config = new SparkMaxConfig();
-                config.encoder.positionConversionFactor(1.0);
-                config.encoder.velocityConversionFactor(1.0);
-                config.smartCurrentLimit(40);
-                config.idleMode(IdleMode.kCoast);
-                sparkmotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-            },
-            (FeedforwardSim sim) -> {},
-            0,
-            FeedbackController.fromPID(0, 0, 0, (PIDController pid) -> {
-                pid.setTolerance(0.5);
-            }),
-            FeedforwardController.forConstantGravity(0, 0, 0, 0),
-            TargetType.Velocity);
+            hopperMotorBeltdrive = Motor.fromTalonFX(
+                WiringConstants.HopperMotors.hopperMotorBeltdrive, 
+                (TalonFX MotorFx) -> {
+                    TalonFXConfiguration config = new TalonFXConfiguration();
+                    config.CurrentLimits.SupplyCurrentLimit = 60;
+                    config.CurrentLimits.SupplyCurrentLimitEnable = true;
+                    config.Feedback.SensorToMechanismRatio = 1;
+                    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+                    config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+                    MotorFx.getConfigurator().apply(config); 
+                }, 
+                null, 
+                0, 
+                FeedbackController.fromPID(0.1, 0, 0, (PIDController pid) -> { 
+                    pid.setTolerance(0.5);
+                }), 
+                FeedforwardController.forConstantGravity(0, 0, 0, 0), 
+                TargetType.Velocity);
             hopperMotorBeltdrive.getSysIDCommands("hopper belt drive neo", 0, 0, 0);
 
               /*  hopperMotorDish = Motor.fromSparkMax(

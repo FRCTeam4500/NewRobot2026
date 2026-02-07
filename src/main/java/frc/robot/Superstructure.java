@@ -33,8 +33,8 @@ public class Superstructure implements Loggable {
   private Swerve swerve;
 
   public Superstructure(Supplier<Pose2d> robotPose, Swerve swerve) {
-    //shooter = new Shooter();
-    //hopper = new Hopper();
+    shooter = new Shooter();
+    hopper = new Hopper();
     this.robotPose = robotPose;
     this.swerve =swerve;
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
@@ -43,7 +43,7 @@ public class Superstructure implements Loggable {
   public void log(String path) {
     // Call log() methods for contained subsystems
     StopTilting.updateCenterOfMass(new Transform3d[] {});
-    //HoundLog.log(path, "shooter", shooter);
+    HoundLog.log(path, "shooter", shooter);
   }
 
 
@@ -59,7 +59,7 @@ public class Superstructure implements Loggable {
     return Commands.none();
   }
 
-  /*public Command StartShooter(){
+  public Command StartShooter(){
     // return shooterFly.speedup();
     return shooter.readyShoot(this.robotPose, () -> {
       if(DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
@@ -70,18 +70,25 @@ public class Superstructure implements Loggable {
     },this.swerve);
   }
 
+  public Command StartShooterTest(){
+    return shooter.test(this.swerve,
+    () -> {
+      if(DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+        return new Translation2d(4.625594,4.034536); // red hub
+      } else {
+        return new Translation2d(4.625594,4.034536); // blue hub
+      }});
+  }
+
   public Command StopShooter(){
     return shooter.idle();
   }
 
-  public Shooter getShooter(){
-    return shooter;
-  }
 
   public Command shoot(){
     return hopper.beltDriveShoot();
   }
   public Command stopShoot(){
     return hopper.beltDriveStop();
-  }*/
+  }
 }

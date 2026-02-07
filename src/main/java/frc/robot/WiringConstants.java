@@ -49,8 +49,8 @@ public class WiringConstants {
   }
 
     public static class HopperMotors {
-    public static final int hopperMotorExtension = 32;
+    //public static final int hopperMotorExtension = 32;
     public static final int hopperMotorBeltdrive = 33;
-    public static final int hopperMotorDish = 34;
+    //public static final int hopperMotorDish = 34;
   }
 }

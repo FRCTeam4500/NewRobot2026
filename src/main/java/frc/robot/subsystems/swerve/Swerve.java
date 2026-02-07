@@ -65,7 +65,7 @@ public class Swerve extends SubsystemBase implements Loggable {
     //previousSpeeds.vxMetersPerSecond=0;
     //previousSpeeds.vyMetersPerSecond=0;
     tagCameras = new Limelight[] {
-      new Limelight("limelight-right"),
+      new Limelight("limelight"),
       new Limelight("limelight-left")
     };
     
