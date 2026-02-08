@@ -21,33 +21,14 @@ import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
 
 public class Hopper extends SubsystemBase implements Loggable {
-    //private static boolean pulse = false;
-    //private Motor hopperMotorExtension;
+
     private Motor hopperMotorBeltdrive;
-    //private Motor hopperMotorDish;
+
     public static int beltdrivespeed = 600; //placeholder
-    //private static int dishspeed = 10; //placeholder
+
 
     public Hopper(){
-        /*hopperMotorExtension = Motor.fromSparkMax(
-            WiringConstants.HopperMotors.hopperMotorExtension,
-            false,
-            (SparkMax sparkmotor) -> {
-                SparkMaxConfig config = new SparkMaxConfig();
-                config.encoder.positionConversionFactor(1.0);
-                config.encoder.velocityConversionFactor(1.0);
-                config.smartCurrentLimit(40);
-                config.idleMode(IdleMode.kCoast);
-                sparkmotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-            },
-            (FeedforwardSim sim) -> {sim.withHardstops(0, 20);},
-            0,
-            FeedbackController.fromPID(0, 0, 0, (PIDController pid) -> {
-                pid.setTolerance(0.5);
-            }),
-            FeedforwardController.forConstantGravity(0, 0, 0, 0),
-            TargetType.Position);
-            hopperMotorExtension.getSysIDCommands("hopper extension neo", 0, 0, 0);*/
+       
 
             
             hopperMotorBeltdrive = Motor.fromTalonFX(
@@ -70,44 +51,12 @@ public class Hopper extends SubsystemBase implements Loggable {
                 TargetType.Velocity);
             hopperMotorBeltdrive.getSysIDCommands("hopper belt drive neo", 0, 0, 0);
 
-              /*  hopperMotorDish = Motor.fromSparkMax(
-            WiringConstants.HopperMotors.hopperMotorExtension,
-            false,
-            (SparkMax sparkmotor) -> {
-                SparkMaxConfig config = new SparkMaxConfig();
-                config.encoder.positionConversionFactor(1.0);
-                config.encoder.velocityConversionFactor(1.0);
-                config.smartCurrentLimit(40);
-                config.idleMode(IdleMode.kCoast);
-                sparkmotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-            },
-            (FeedforwardSim sim) -> {},
-            0,
-            FeedbackController.fromPID(0, 0, 0, (PIDController pid) -> {
-                pid.setTolerance(0.5);
-            }),
-            FeedforwardController.forConstantGravity(0, 0, 0, 0),
-            TargetType.Velocity);
-            hopperMotorDish.getSysIDCommands("hopper dish neo", 0, 0, 0);*/
+            
         
 
     }
 
-    /*public Command extendHopper(){
-        return Commands.runOnce(() -> {
-            hopperMotorExtension.setTarget(20);
-        }, this).andThen(Commands.waitUntil(() -> {
-            return hopperMotorExtension.atTarget();
-        }));
-    }
-
-    public Command retractHopper(){
-        return Commands.runOnce(() -> {
-            hopperMotorExtension.setTarget(0);
-        }, this).andThen(Commands.waitUntil(() -> {
-            return hopperMotorExtension.atTarget();
-        }));
-    }*/
+    
 
     public Command beltDriveShoot(){
         return Commands.runOnce(() -> {
@@ -129,31 +78,7 @@ public class Hopper extends SubsystemBase implements Loggable {
         });
     }
 
-    /*public Command runDish(){
-        return Commands.runOnce(() -> {
-            
-            if(pulse){
-                hopperMotorDish.setTarget(dishspeed);
-                pulse=false;
-            }
-            else{
-                hopperMotorDish.setTarget(0);
-                pulse = true;
-            }
-            
-        }, this).andThen(Commands.waitUntil(() -> {
-            Commands.waitSeconds(5).execute();
-            return hopperMotorDish.atTarget();
-        }));
-    }
-
-    public Command stopDish(){
-        return Commands.runOnce(() -> {
-            hopperMotorDish.setTarget(0);
-        }, this).andThen(Commands.waitUntil(() -> {
-            return hopperMotorDish.atTarget();
-        }));
-    }*/
+    
 
 
 

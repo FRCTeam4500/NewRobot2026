@@ -38,7 +38,7 @@ public class SwerveConstants {
   public static final double SLOWEST_COEFFICIENT = 0.14546;
 
   /** The absolute max acheivable module speed */
-  public static final double MAX_MODULE_SPEED = 5.4;
+  public static final double MAX_MODULE_SPEED = 5;
 
   /** A coefficient used to correct from translation while rotating */
   public static final double SKEW_COEFFICIENT = -0.129;
@@ -103,7 +103,7 @@ public class SwerveConstants {
           false,
           17.42686187822895,
           new FeedbackConstants(0.1, 0, 0), // drive PID
-          FeedforwardController.forConstantGravity(0, 0.17309, 2.06, 0.13398), // drive sysID
+          FeedforwardController.forConstantGravity(0, 0.18288, 2.0649, 0.22168), // drive sysID
           20,
           25,
           0.080,
@@ -121,7 +121,7 @@ public class SwerveConstants {
           false,
           16.556096725790365,
           new FeedbackConstants(0.1, 0, 0),
-          FeedforwardController.forConstantGravity(0, 0.1771, 1.9508, 0.11709),
+          FeedforwardController.forConstantGravity(0, 0.16939, 1.8281, 0.15914),
           20,
           25,
           0.168,
@@ -138,7 +138,7 @@ public class SwerveConstants {
           false,
           17.230378621893653,
           new FeedbackConstants(0.1, 0, 0),
-          FeedforwardController.forConstantGravity(0, 0.19145, 2.0587, 0.12669),
+          FeedforwardController.forConstantGravity(0, 0.15281, 1.9664, 0.30143),
           20,
           25,
           0.342,
@@ -155,7 +155,7 @@ public class SwerveConstants {
           false,
           18.66946534299422,
           new FeedbackConstants(0.1, 0, 0), // drive PID
-          FeedforwardController.forConstantGravity(0, 0.10547, 1.9609, 0.49201), // drive sysID
+          FeedforwardController.forConstantGravity(0, 0.16368, 2.2748, 0.22923), // drive sysID
           20,
           25,
           0.837,

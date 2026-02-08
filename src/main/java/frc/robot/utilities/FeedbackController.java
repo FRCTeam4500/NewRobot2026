@@ -179,12 +179,11 @@ public interface FeedbackController {
     };
   }
 
-  public static FeedbackController fromTunablePID(PIDController pid, DoubleSubscriber p, DoubleSubscriber i, DoubleSubscriber d) {
+  public static FeedbackController fromTunablePID(PIDController pid, DoubleSubscriber p) {
     class TunablePID extends SubsystemBase implements FeedbackController {
       public void periodic() {
         pid.setP(p.get());
-        pid.setI(i.get());
-        pid.setD(d.get());
+       
       }
       
       @Override
