@@ -9,13 +9,13 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-
-
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -65,7 +65,7 @@ public class Swerve extends SubsystemBase implements Loggable {
     //previousSpeeds.vxMetersPerSecond=0;
     //previousSpeeds.vyMetersPerSecond=0;
     tagCameras = new Limelight[] {
-      new Limelight("limelight"),
+      new Limelight("limelight-right"),
       new Limelight("limelight-left")
     };
     
@@ -525,6 +525,29 @@ public class Swerve extends SubsystemBase implements Loggable {
       states[i] = modules[i].getCurrentPosition();
     }
     return states;
+  }
+  
+   private Command cameraAlign(Limelight camera, Translation2d offset) {
+    return Commands.run(
+            () -> {
+              Pair<Transform2d, Integer> output = camera.getTargetPoseRobotSpace();
+              
+              ChassisSpeeds speeds =
+                  poseFeedback.calculate(
+                      new Pose2d(
+                          output.getFirst().getTranslation(),
+                          estimator.getEstimatedPosition().getRotation()),
+                      new Pose2d(offset, Rotation2d.fromDegrees(0)));
+              
+                drive(
+                    new ChassisSpeeds(
+                        -speeds.vxMetersPerSecond,
+                        speeds.vyMetersPerSecond,
+                        speeds.omegaRadiansPerSecond));
+               
+            },
+            this)
+        .until(poseFeedback::atTarget); 
   }
 
   @Override
