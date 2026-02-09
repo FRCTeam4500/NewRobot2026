@@ -5,7 +5,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 public interface FeedforwardController {
   public double calculateVoltage(double position, double velocity, double acceleration);
 
-  public double calcuateVoltage(double position, double direction);
+  public double calculateVoltage(double position, double direction);
 
   public double calculateAccel(double position, double velocity, double voltage);
 
@@ -19,7 +19,7 @@ public interface FeedforwardController {
       }
 
       @Override
-      public double calcuateVoltage(double position, double direction) {
+      public double calculateVoltage(double position, double direction) {
         return 0;
       }
 
@@ -44,7 +44,7 @@ public interface FeedforwardController {
       }
 
       @Override
-      public double calcuateVoltage(double position, double direction) {
+      public double calculateVoltage(double position, double direction) {
         return kG + kS * Math.signum(direction);
       }
 
@@ -71,7 +71,7 @@ public interface FeedforwardController {
       }
 
       @Override
-      public double calcuateVoltage(double position, double direction) {
+      public double calculateVoltage(double position, double direction) {
         return kG * Math.cos(Math.toRadians(position)) + kS * Math.signum(direction);
       }
 
@@ -103,7 +103,7 @@ public interface FeedforwardController {
       }
 
       @Override
-      public double calcuateVoltage(double position, double direction) {
+      public double calculateVoltage(double position, double direction) {
         return gravityVolts.get(position) + kS * Math.signum(direction);
       }
 
@@ -119,4 +119,6 @@ public interface FeedforwardController {
       }
     };
   }
+
+
 }

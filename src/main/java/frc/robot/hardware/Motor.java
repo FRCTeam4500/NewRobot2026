@@ -258,7 +258,7 @@ public class Motor extends SubsystemBase implements Loggable {
       case Position:
         double position = getPosition();
         fbVolts = fb.calculate(position, target);
-        ffVolts = ff.calcuateVoltage(position, fbVolts);
+        ffVolts = ff.calculateVoltage(position, fbVolts);
         break;
       case Velocity:
         double velocity = getVelocity();
@@ -321,17 +321,17 @@ public class Motor extends SubsystemBase implements Loggable {
     Mechanism mech =
         new Mechanism(
             voltage -> {
-              setVoltage(voltage.in(Volts) + ff.calcuateVoltage(getPosition(), 0));
+              setVoltage(voltage.in(Volts) + ff.calculateVoltage(getPosition(), 0));
               for (Motor motor : otherMotors) {
                 motor.setVoltage(
-                    voltage.in(Volts) + motor.ff.calcuateVoltage(motor.getPosition(), 0));
+                    voltage.in(Volts) + motor.ff.calculateVoltage(motor.getPosition(), 0));
               }
             },
             log -> {
               log.motor("Motor0")
                   .value("Position", getPosition(), "IDK")
                   .value("Velocity", getVelocity(), "IDK")
-                  .value("Voltage", target - ff.calcuateVoltage(getPosition(), 0), "Volts");
+                  .value("Voltage", target - ff.calculateVoltage(getPosition(), 0), "Volts");
               for (int i = 0; i < otherMotors.length; i++) {
                 Motor motor = otherMotors[i];
                 log.motor("Motor" + (i + 1))
