@@ -24,7 +24,7 @@ public class Hopper extends SubsystemBase implements Loggable {
 
     private Motor hopperMotorBeltdrive;
 
-    public static int beltdrivespeed = 600; //placeholder
+    public static int beltdrivespeed = 96; 
 
 
     public Hopper(){
@@ -45,7 +45,7 @@ public class Hopper extends SubsystemBase implements Loggable {
                 null, 
                 0, 
                 FeedbackController.fromPID(0.1, 0, 0, (PIDController pid) -> { 
-                    pid.setTolerance(0.5);
+                    pid.setTolerance(1);
                 }), 
                 FeedforwardController.forConstantGravity(0, 0, 0, 0), 
                 TargetType.Velocity);
