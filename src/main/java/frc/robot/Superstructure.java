@@ -105,7 +105,7 @@ public class Superstructure implements Loggable {
     return intake.retractIntake();
   }
 
-  public Command Intake() {
+  public Command StartIntake() {
     return intake.startIntake();
   }
 
