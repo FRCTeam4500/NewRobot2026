@@ -34,7 +34,6 @@ public class Shooter extends SubsystemBase implements Loggable {
   private Motor flywheel1;
   private Motor flywheel2;
   private Motor hood;
-  private int speed = 0;
   private double flywheelSpeedlog;
   private double hoodAngleLog;
   private double distance;
@@ -174,7 +173,7 @@ public class Shooter extends SubsystemBase implements Loggable {
   public Command test(Swerve swerve, Supplier<Translation2d> target) {
     return Commands.run(
         () -> {
-          int speed = 425;
+          
           flywheel1.setTarget(flywheelSubscriber.get()); // flywheelSubscriber.get()
           flywheel2.setTarget(flywheelSubscriber.get());
 

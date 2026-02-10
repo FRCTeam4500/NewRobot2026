@@ -23,6 +23,7 @@ public class Intake extends SubsystemBase implements Loggable {
   private Motor intakeMotorDrive;
   private Motor intakeMotorExtension;
   private final int intakeSpeed = 100;
+  private final int maxExtention = 1;
 
   public Intake() {
     intakeMotorDrive =
@@ -111,7 +112,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command extendIntake() {
     return Commands.runOnce(
             () -> {
-              intakeMotorExtension.setTarget(20);
+              intakeMotorExtension.setTarget(maxExtention);
             },
             this)
         .andThen(
@@ -138,6 +139,8 @@ public class Intake extends SubsystemBase implements Loggable {
   public void log(String path) {
 
     HoundLog.log(path, "intakeMotorDrive", intakeMotorDrive.atTarget());
+    HoundLog.log(path, "intakeDriveSpeed", intakeMotorDrive.getVelocity());
+    HoundLog.log(path, "IntakeExtentionAtTarget", intakeMotorExtension.atTarget());
     HoundLog.log(path, "intakeMotorExtension", intakeMotorExtension.getPosition());
   }
 }

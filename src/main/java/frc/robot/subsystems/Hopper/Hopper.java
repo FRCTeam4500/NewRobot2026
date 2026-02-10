@@ -82,7 +82,8 @@ public class Hopper extends SubsystemBase implements Loggable {
 
   @Override
   public void log(String path) {
-
+    HoundLog.log(path, "BeltDriveSpeed", hopperMotorBeltdrive.getVelocity());
     HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive.atTarget());
+    
   }
 }

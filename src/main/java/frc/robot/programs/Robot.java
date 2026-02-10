@@ -48,15 +48,36 @@ public class Robot extends LoggedRobot {
   }
 
   private void setupOperatorController() {
-    Trigger revShooter = xbox2.rightTrigger();
-    revShooter.whileTrue(Commands.none());
+    
 
     // rev shooter
+    Trigger revShooter = xbox2.rightTrigger();
+    revShooter.whileTrue(structure.StartShooterTest());
+
     // intake
+    Trigger ActivateIntake = xbox2.leftTrigger();
+    ActivateIntake.whileTrue(structure.Intake());
+    ActivateIntake.onFalse(structure.StopIntake());
+
+    //extend intake
+    Trigger ExtendIntake = xbox2.y();
+    ExtendIntake.onTrue(structure.ExtendIntake());
+
+    //retract intake
+    Trigger RetractIntake = xbox2.a();
+    RetractIntake.onTrue(structure.RetractIntake());
+    
+    //climb lock
+    //prep climb
     // climb
     // declimb
     // intake flexing
+    Trigger FlexIntake = xbox.rightBumper();
+    FlexIntake.whileTrue(structure.PulseIntake());
+    FlexIntake.onFalse(structure.ExtendIntake());
     // stow shooter
+    Trigger StowShooter = xbox2.b();
+    StowShooter.onTrue(structure.stow());
 
   }
 
@@ -83,12 +104,16 @@ public class Robot extends LoggedRobot {
     // auto align: dpad
     // to climb
     Trigger AlignClimb = xbox.povDown().debounce(0.2);
+    AlignClimb.whileTrue(structure.AlignClimb());
     // center
     Trigger AlignCenter = xbox.povDown().debounce(0.2);
+    AlignCenter.whileTrue(structure.AlignCenter());
     // left trench
     Trigger AlignLeftTrench = xbox.povLeft().debounce(0.2);
+    AlignLeftTrench.whileTrue(structure.AlignLeft());
     // right trench
     Trigger AlignRightTrench = xbox.povRight().debounce(0.2);
+    AlignRightTrench.whileTrue(structure.AlignRight());
     // angle centric lb
     Trigger SetAngleCentric = xbox.leftBumper();
     SetAngleCentric.onTrue(swerve.angleCentric(xbox.getHID()));
@@ -100,7 +125,7 @@ public class Robot extends LoggedRobot {
     // shoot rt
     Trigger shoot = xbox.rightTrigger();
     shoot.onTrue(structure.shoot());
-    shoot.onFalse(structure.stopShoot());
+    shoot.onFalse(structure.StopShooter());
   }
 
   private void setupAuto() {
