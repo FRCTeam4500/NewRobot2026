@@ -9,7 +9,6 @@ public class WiringConstants {
    * A class containing the wiring details for the swerve subsystem. Holds the 8 CAN IDs, as well as
    * DIO ports for the absolute encoders
    */
-  
   public static class SwerveWiring {
     public static final int FRONT_LEFT_DRIVE_ID = 6;
     public static final int FRONT_LEFT_ANGLE_ID = 2;
@@ -26,31 +25,31 @@ public class WiringConstants {
     public static final int FRONT_RIGHT_ENCODER_ID = 0;
     public static final int BACK_LEFT_ENCODER_ID = 3;
     public static final int BACK_RIGHT_ENCODER_ID = 1;
-  
   }
+
   public static class ShooterMotors {
 
     public static final int flywheelMotor1 = 19;
-    public static final int flywheelMotor2 =20;
+    public static final int flywheelMotor2 = 20;
     public static final int turretheadMotor = 27;
-    //public static final int turretturnMotor = 67;
+    // public static final int turretturnMotor = 67;
 
-    //sparkmax 20 id
+    // sparkmax 20 id
   }
 
   public static class ClimberMotors {
     public static final int ClimberMotor1 = 30;
     public static final int ClimberMotor2 = 31;
-  } 
+  }
 
   public static class IntakeMotors {
     public static final int IntakeMotor = 25;
     public static final int IntakeMotorExtension = 26;
   }
 
-    public static class HopperMotors {
-    //public static final int hopperMotorExtension = 32;
+  public static class HopperMotors {
+    // public static final int hopperMotorExtension = 32;
     public static final int hopperMotorBeltdrive = 33;
-    //public static final int hopperMotorDish = 34;
+    // public static final int hopperMotorDish = 34;
   }
 }

@@ -6,7 +6,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import java.util.function.Consumer;
 
 /** Generalization of {@link ProfiledPIDController} */
@@ -183,9 +182,8 @@ public interface FeedbackController {
     class TunablePID extends SubsystemBase implements FeedbackController {
       public void periodic() {
         pid.setP(p.get());
-       
       }
-      
+
       @Override
       public double calculate(double measurement, double goal) {
         return pid.calculate(measurement, goal);

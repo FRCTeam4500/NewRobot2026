@@ -6,7 +6,6 @@
 package frc.robot.programs;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -29,13 +28,15 @@ public class Robot extends LoggedRobot {
   private CommandXboxController xbox;
   private CommandXboxController xbox2;
 
-
   /** make a robot */
   public Robot() {
     swerve = new Swerve();
-      structure = new Superstructure(()->{
-        return swerve.getPose();
-    }, swerve);
+    structure =
+        new Superstructure(
+            () -> {
+              return swerve.getPose();
+            },
+            swerve);
     DriverStation.silenceJoystickConnectionWarning(true);
     xbox = new CommandXboxController(2);
     xbox2 = new CommandXboxController(1);
@@ -47,9 +48,8 @@ public class Robot extends LoggedRobot {
   }
 
   private void setupOperatorController() {
-      Trigger revShooter = xbox2.rightTrigger();
-      revShooter.whileTrue(Commands.none());
-
+    Trigger revShooter = xbox2.rightTrigger();
+    revShooter.whileTrue(Commands.none());
   }
 
   private void setupDriveController() {
@@ -70,12 +70,11 @@ public class Robot extends LoggedRobot {
     faceBackwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceBackwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
     stow.onTrue(structure.stow());
-    
+
     revShooter.whileTrue(structure.StartShooterTest());
     revShooter.onFalse(structure.StopShooter());
     shoot.onTrue(structure.shoot());
     shoot.onFalse(structure.stopShoot());
-    
   }
 
   private void setupAuto() {
@@ -88,7 +87,7 @@ public class Robot extends LoggedRobot {
     chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
     chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
     chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
-    
+
     RobotModeTriggers.autonomous().whileTrue(Commands.deferredProxy(chooser::getSelected));
   }
 
