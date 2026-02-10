@@ -48,31 +48,60 @@ public class Robot extends LoggedRobot {
   }
 
   private void setupOperatorController() {
-    Trigger revShooter = xbox2.rightTrigger();
-    revShooter.whileTrue(Commands.none());
+      Trigger revShooter = xbox2.rightTrigger();
+      revShooter.whileTrue(Commands.none());
+
+
+      //rev shooter
+      //intake
+      //climb
+      //declimb
+      //intake flexing
+      //stow shooter
+
+
+
   }
 
   private void setupDriveController() {
     Trigger onBlue =
         new Trigger(() -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue);
     Trigger onRed = onBlue.negate();
+    
+   // face forward
     Trigger faceForwards = new Trigger(() -> xbox.getRightY() < -0.5);
-    Trigger faceBackwards = new Trigger(() -> xbox.getRightY() > 0.5);
-    Trigger resetHeading = xbox.a();
-    Trigger stow = xbox.y();
-    Trigger revShooter = xbox.rightTrigger();
-    Trigger shoot = xbox.leftTrigger();
-
-    resetHeading.and(onBlue).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(0)));
-    resetHeading.and(onRed).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(180)));
     faceForwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceForwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
+
+    //face backwards
+    Trigger faceBackwards = new Trigger(() -> xbox.getRightY() > 0.5);
     faceBackwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceBackwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
-    stow.onTrue(structure.stow());
+    
+    //reset angle
+    Trigger resetHeading = xbox.a();
+     resetHeading.and(onBlue).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(0)));
+    resetHeading.and(onRed).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(180)));
 
-    revShooter.whileTrue(structure.StartShooterTest());
-    revShooter.onFalse(structure.StopShooter());
+    //auto align: dpad
+    //to climb
+    Trigger AlignClimb = xbox.povDown().debounce(0.2);
+    //center
+    Trigger AlignCenter = xbox.povDown().debounce(0.2);
+    //left trench
+    Trigger AlignLeftTrench = xbox.povLeft().debounce(0.2);
+    //right trench
+    Trigger AlignRightTrench = xbox.povRight().debounce(0.2);
+    //angle centric lb
+    Trigger SetAngleCentric = xbox.leftBumper();
+    SetAngleCentric.onTrue(swerve.angleCentric(xbox.getHID()));
+    //hub centric rb
+    Trigger SetHubCentric =xbox.rightBumper();
+    //slowmode lt
+    Trigger SetSlowMode = xbox.leftTrigger();
+    
+    //shoot rt
+    Trigger shoot = xbox.rightTrigger();
     shoot.onTrue(structure.shoot());
     shoot.onFalse(structure.stopShoot());
   }
