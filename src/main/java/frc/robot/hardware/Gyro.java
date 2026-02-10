@@ -1,15 +1,10 @@
 package frc.robot.hardware;
 
-
 import com.studica.frc.Navx;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.Units;
-import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
 import java.util.function.Consumer;
@@ -53,21 +48,20 @@ public interface Gyro extends Loggable {
       return fromSim(radiansPerSecond);
     }
     Navx navx = new Navx(canID);
-    
-    
+
     config.accept(navx);
-    //Trigger connected = new Trigger(navx);
+    // Trigger connected = new Trigger(navx);
     /*connected.onFalse(
         Commands.runOnce(() -> HoundLog.logFault("Gyro Disconnected...", AlertType.kError))
             .ignoringDisable(true));
     connected.onTrue(
         Commands.runOnce(() -> HoundLog.clearFault("Gyro Disconnected...")).ignoringDisable(true));*/
     return new Gyro() {
-      double lastAngle = navx.getRotation2d().getRadians(); 
+      double lastAngle = navx.getRotation2d().getRadians();
 
       @Override
       public void log(String path) {
-        //HoundLog.log(path, "Connected", navx.isConnected());
+        // HoundLog.log(path, "Connected", navx.isConnected());
         HoundLog.log(path, "Pitch", navx.getPitch().in(Units.Degree));
         HoundLog.log(path, "Roll", navx.getRoll().in(Units.Degree));
         HoundLog.log(path, "Angle", navx.getYaw().in(Units.Degree));

@@ -1,8 +1,5 @@
 package frc.robot;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -12,12 +9,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Hopper.Hopper;
 import frc.robot.subsystems.orchestra.Orc;
-
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * A class that holds together the top half of our robot. Basically everything except the
@@ -26,7 +24,6 @@ import frc.robot.utilities.logging.Loggable;
 public class Superstructure implements Loggable {
   // Create objects for all non-drivebase subsystems
 
-  
   private Shooter shooter;
   private Hopper hopper;
   private Supplier<Pose2d> robotPose;
@@ -36,7 +33,7 @@ public class Superstructure implements Loggable {
     shooter = new Shooter();
     hopper = new Hopper();
     this.robotPose = robotPose;
-    this.swerve =swerve;
+    this.swerve = swerve;
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
   }
 
@@ -45,7 +42,6 @@ public class Superstructure implements Loggable {
     StopTilting.updateCenterOfMass(new Transform3d[] {});
     HoundLog.log(path, "shooter", shooter);
   }
-
 
   public Command sing() {
     return Orc.startSinging();
@@ -59,36 +55,41 @@ public class Superstructure implements Loggable {
     return Commands.none();
   }
 
-  public Command StartShooter(){
+  public Command StartShooter() {
     // return shooterFly.speedup();
-    return shooter.readyShoot(this.robotPose, () -> {
-      if(DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
-        return new Translation2d(4.625594,4.034536); // red hub
-      } else {
-        return new Translation2d(4.625594,4.034536); // blue hub
-      }
-    },this.swerve);
+    return shooter.readyShoot(
+        this.robotPose,
+        () -> {
+          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+            return new Translation2d(4.625594, 4.034536); // red hub
+          } else {
+            return new Translation2d(4.625594, 4.034536); // blue hub
+          }
+        },
+        this.swerve);
   }
 
-  public Command StartShooterTest(){
-    return shooter.test(this.swerve,
-    () -> {
-      if(DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
-        return new Translation2d(4.625594,4.034536); // red hub
-      } else {
-        return new Translation2d(4.625594,4.034536); // blue hub
-      }});
+  public Command StartShooterTest() {
+    return shooter.test(
+        this.swerve,
+        () -> {
+          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+            return new Translation2d(4.625594, 4.034536); // red hub
+          } else {
+            return new Translation2d(4.625594, 4.034536); // blue hub
+          }
+        });
   }
 
-  public Command StopShooter(){
+  public Command StopShooter() {
     return shooter.idle();
   }
 
-
-  public Command shoot(){
+  public Command shoot() {
     return hopper.beltDriveShoot();
   }
-  public Command stopShoot(){
+
+  public Command stopShoot() {
     return hopper.beltDriveStop();
   }
 }
