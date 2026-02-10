@@ -173,7 +173,6 @@ public class Shooter extends SubsystemBase implements Loggable {
   public Command test(Swerve swerve, Supplier<Translation2d> target) {
     return Commands.run(
         () -> {
-          
           flywheel1.setTarget(flywheelSubscriber.get()); // flywheelSubscriber.get()
           flywheel2.setTarget(flywheelSubscriber.get());
 

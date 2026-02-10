@@ -60,7 +60,6 @@ public class Superstructure implements Loggable {
     return shooter.idle().andThen(hopper.beltDriveStop());
   }
 
-
   // ------------------SHOOTER+HOPPER-------------------------------------------
   public Command StartShooter() {
     // return shooterFly.speedup();
@@ -90,49 +89,49 @@ public class Superstructure implements Loggable {
 
   public Command StopShooter() {
     return shooter.idle().andThen(hopper.beltDriveStop());
-    
   }
+
   public Command shoot() {
     return hopper.beltDriveShoot();
   }
 
-  //--------------------------------------intake----------------------------------------------
+  // --------------------------------------intake----------------------------------------------
 
-  public Command ExtendIntake(){
+  public Command ExtendIntake() {
     return intake.extendIntake();
   }
 
-  public Command RetractIntake(){
+  public Command RetractIntake() {
     return intake.retractIntake();
   }
 
-  public Command Intake(){
+  public Command Intake() {
     return intake.startIntake();
   }
 
-  public Command StopIntake(){
+  public Command StopIntake() {
     return intake.stopIntake();
   }
 
-  public Command PulseIntake(){
+  public Command PulseIntake() {
     return Commands.none();
   }
 
-  //---------------------------------------TagAlign-----------------------------------------
+  // ---------------------------------------TagAlign-----------------------------------------
 
-  public Command AlignLeft(){
-    return Commands.none();
-  }
-  
-  public Command AlignCenter(){
+  public Command AlignLeft() {
     return Commands.none();
   }
 
-  public Command AlignClimb(){
+  public Command AlignCenter() {
     return Commands.none();
   }
 
-  public Command AlignRight(){
+  public Command AlignClimb() {
+    return Commands.none();
+  }
+
+  public Command AlignRight() {
     return Commands.none();
   }
 }

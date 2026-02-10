@@ -48,7 +48,6 @@ public class Robot extends LoggedRobot {
   }
 
   private void setupOperatorController() {
-    
 
     // rev shooter
     Trigger revShooter = xbox2.rightTrigger();
@@ -59,16 +58,16 @@ public class Robot extends LoggedRobot {
     ActivateIntake.whileTrue(structure.Intake());
     ActivateIntake.onFalse(structure.StopIntake());
 
-    //extend intake
+    // extend intake
     Trigger ExtendIntake = xbox2.y();
     ExtendIntake.onTrue(structure.ExtendIntake());
 
-    //retract intake
+    // retract intake
     Trigger RetractIntake = xbox2.a();
     RetractIntake.onTrue(structure.RetractIntake());
-    
-    //climb lock
-    //prep climb
+
+    // climb lock
+    // prep climb
     // climb
     // declimb
     // intake flexing
@@ -78,7 +77,6 @@ public class Robot extends LoggedRobot {
     // stow shooter
     Trigger StowShooter = xbox2.b();
     StowShooter.onTrue(structure.stow());
-
   }
 
   private void setupDriveController() {
