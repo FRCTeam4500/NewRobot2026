@@ -191,8 +191,8 @@ public class ExtendedMath {
      * Start at around 0.1 seconds, should't need to tune it super accurately.
      * @param distanceToTime A mapping from distance from target to time in air. This should probably be measured irl
      * @return The target you should actually aim at to make your shots
-     * @see https://www.chiefdelphi.com/t/shoot-while-move-code-1706/410494/10
-     * @see https://github.com/rr1706/2022-Main/blob/9f72c3ec5e64c61344845051c57035b0f7320a54/src/main/java/frc/robot/commands/TurretedShooter/SmartShooter.java#L103
+     * see https://www.chiefdelphi.com/t/shoot-while-move-code-1706/410494/10
+     * see https://github.com/rr1706/2022-Main/blob/9f72c3ec5e64c61344845051c57035b0f7320a54/src/main/java/frc/robot/commands/TurretedShooter/SmartShooter.java#L103
      */
     public static Translation2d calculateTargetOnMove(Translation2d target, Translation2d robotPose, ChassisSpeeds robotSpeed, Translation2d robotAccel, double latencySeconds, InterpolatingDoubleTreeMap distanceToTime) {
         // calculate air time if we shot at our current position
