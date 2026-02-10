@@ -232,7 +232,4 @@ public class ExtendedMath {
         // return our calculated virtual target that we should shoot at
         return virtualTarget;
     }
-    // return our calculated virtual target that we should shoot at
-    return virtualTarget;
-  }
 }
