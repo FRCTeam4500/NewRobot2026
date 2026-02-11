@@ -269,10 +269,10 @@ public class Swerve extends SubsystemBase implements Loggable {
         .withName("Pose Centric");
   }
 
-public Command hubCentricDrive(CommandXboxController xbox) {
+public Command hubCentricDrive(XboxController xbox) {
         return Commands.run(() -> {
 
-                angleCentric(xbox.getHID(), ExtendedMath.getHubAngle(getEstimatedPose().getTranslation()));
+                angleCentric(xbox, ExtendedMath.getHubAngle(getEstimatedPose().getTranslation()));
             }, this
         );
     }
