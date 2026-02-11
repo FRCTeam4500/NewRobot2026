@@ -93,7 +93,7 @@ public class Swerve extends SubsystemBase implements Loggable {
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, 0.1),
             VecBuilder.fill(5, 5, 5));
-    
+
     StopTilting.setupKinematics(kinematics);
     StopTilting.setupBase(
         estimator::getEstimatedPosition, new Transform3d(0, 0, 0.1, Rotation3d.kZero), 39.3468644);
@@ -200,7 +200,6 @@ public class Swerve extends SubsystemBase implements Loggable {
    *           turn to.
    *     </ul>
    */
-  
   public Command angleCentric(XboxController xbox) {
     return Commands.run(
             () -> {
@@ -210,7 +209,7 @@ public class Swerve extends SubsystemBase implements Loggable {
         .beforeStarting(() -> targetHeading = estimator.getEstimatedPosition().getRotation())
         .withName("Angle Centric");
   }
-  
+
   public Command angleCentric(XboxController xbox, Rotation2d rotation) {
     return Commands.run(
             () -> {
@@ -276,14 +275,9 @@ public Command hubCentricDrive(XboxController xbox) {
             }, this
         );
     }
-
-public Pose2d getEstimatedPose() {
-		return estimator.getEstimatedPosition();
-	}
-
-
-
-
+  public Pose2d getEstimatedPose() {
+    return estimator.getEstimatedPosition();
+  }
 
   /**
    * Updates the heading of the robot
@@ -580,8 +574,6 @@ public Pose2d getEstimatedPose() {
             (speeds.vxMetersPerSecond - previousSpeeds.vxMetersPerSecond) / 0.02,
             (speeds.vyMetersPerSecond - previousSpeeds.vyMetersPerSecond) / 0.02);
   }
-
-
 
   @Override
   public void log(String path) {
