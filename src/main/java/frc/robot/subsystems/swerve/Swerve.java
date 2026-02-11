@@ -464,8 +464,6 @@ public class Swerve extends SubsystemBase implements Loggable {
     return ChassisSpeeds.fromFieldRelativeSpeeds(fieldRel, currentHeading);
   }
 
- 
-
   private ChassisSpeeds applySkewCorrection(ChassisSpeeds speeds) {
     speeds = ChassisSpeeds.discretize(speeds, 0.02);
     double angle = SKEW_COEFFICIENT * speeds.omegaRadiansPerSecond;
