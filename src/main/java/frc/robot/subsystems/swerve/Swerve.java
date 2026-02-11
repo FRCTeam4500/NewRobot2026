@@ -30,7 +30,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.WiringConstants;
 import frc.robot.hardware.Gyro;
@@ -268,13 +267,14 @@ public class Swerve extends SubsystemBase implements Loggable {
         .withName("Pose Centric");
   }
 
-public Command hubCentricDrive(XboxController xbox) {
-        return Commands.run(() -> {
+  public Command hubCentricDrive(XboxController xbox) {
+    return Commands.run(
+        () -> {
+          angleCentric(xbox, ExtendedMath.getHubAngle(getEstimatedPose().getTranslation()));
+        },
+        this);
+  }
 
-                angleCentric(xbox, ExtendedMath.getHubAngle(getEstimatedPose().getTranslation()));
-            }, this
-        );
-    }
   public Pose2d getEstimatedPose() {
     return estimator.getEstimatedPosition();
   }
