@@ -215,7 +215,7 @@ public class Swerve extends SubsystemBase implements Loggable {
               drive(calculateVelRobotRel(xbox));
             },
             this)
-        .beforeStarting(() -> targetHeading = estimator.getEstimatedPosition().getRotation())
+        .beforeStarting(() -> targetHeading = rotation)
         .withName("Angle Centric");
   }
 
@@ -463,6 +463,8 @@ public class Swerve extends SubsystemBase implements Loggable {
     ChassisSpeeds fieldRel = new ChassisSpeeds(forward, sideways, rotational);
     return ChassisSpeeds.fromFieldRelativeSpeeds(fieldRel, currentHeading);
   }
+
+ 
 
   private ChassisSpeeds applySkewCorrection(ChassisSpeeds speeds) {
     speeds = ChassisSpeeds.discretize(speeds, 0.02);
