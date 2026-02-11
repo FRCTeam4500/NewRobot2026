@@ -42,7 +42,7 @@ public class Intake extends SubsystemBase implements Loggable {
             (FeedforwardSim sim) -> {},
             0,
             FeedbackController.fromPID(
-                0,
+                1,
                 0,
                 0,
                 (PIDController pid) -> {
@@ -70,13 +70,13 @@ public class Intake extends SubsystemBase implements Loggable {
             },
             0,
             FeedbackController.fromPID(
-                0,
+                1,
                 0,
                 0,
                 (PIDController pid) -> {
                   pid.setTolerance(0.5);
                 }),
-            FeedforwardController.forConstantGravity(0, 0, 0, 0),
+            FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Velocity);
     intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0);
   }
