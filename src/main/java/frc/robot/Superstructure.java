@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -120,18 +122,46 @@ public class Superstructure implements Loggable {
   // ---------------------------------------TagAlign-----------------------------------------
 
   public Command AlignLeft() {
-    return Commands.none();
+    return Commands.deferredProxy(
+        () -> {
+          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+            return AutoBuilder.pathfindToPose(new Pose2d(), new PathConstraints(5, 7, 3, 4));
+          } else {
+            return AutoBuilder.pathfindToPose(new Pose2d(), new PathConstraints(5, 7, 3, 4));
+          }
+        });
   }
 
   public Command AlignCenter() {
-    return Commands.none();
+    return Commands.deferredProxy(
+        () -> {
+          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+            return AutoBuilder.pathfindToPose(new Pose2d(), new PathConstraints(5, 7, 3, 4));
+          } else {
+            return AutoBuilder.pathfindToPose(new Pose2d(), new PathConstraints(5, 7, 3, 4));
+          }
+        });
   }
 
   public Command AlignClimb() {
-    return Commands.none();
+    return Commands.deferredProxy(
+        () -> {
+          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+            return AutoBuilder.pathfindToPose(new Pose2d(), new PathConstraints(5, 7, 3, 4));
+          } else {
+            return AutoBuilder.pathfindToPose(new Pose2d(), new PathConstraints(5, 7, 3, 4));
+          }
+        });
   }
 
   public Command AlignRight() {
-    return Commands.none();
+    return Commands.deferredProxy(
+        () -> {
+          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+            return AutoBuilder.pathfindToPose(new Pose2d(), new PathConstraints(5, 7, 3, 4));
+          } else {
+            return AutoBuilder.pathfindToPose(new Pose2d(), new PathConstraints(5, 7, 3, 4));
+          }
+        });
   }
 }
