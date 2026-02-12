@@ -3,8 +3,6 @@ package frc.robot.subsystems.swerve;
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 import static frc.robot.utilities.ExtendedMath.withHardDeadzone;
 
-import java.util.function.Supplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
@@ -43,6 +41,7 @@ import frc.robot.utilities.PoseFeedbackController;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
+import java.util.function.Supplier;
 
 /** The subsystem that controls our drivetrain, which is known as a swerve drive. */
 public class Swerve extends SubsystemBase implements Loggable {
