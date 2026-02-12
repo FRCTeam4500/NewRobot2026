@@ -30,7 +30,6 @@ public class Superstructure implements Loggable {
   private Hopper hopper;
   private Intake intake;
   private Supplier<Pose2d> robotPose;
-  
 
   public Superstructure(Supplier<Pose2d> robotPose) {
     shooter = new Shooter();
@@ -71,8 +70,7 @@ public class Superstructure implements Loggable {
           } else {
             return new Translation2d(4.625594, 4.034536); // blue hub
           }
-        }
-        );
+        });
   }
 
   public Command StartShooterTest() {

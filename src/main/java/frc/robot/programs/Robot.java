@@ -35,8 +35,7 @@ public class Robot extends LoggedRobot {
         new Superstructure(
             () -> {
               return swerve.getPose();
-            }
-            );
+            });
     DriverStation.silenceJoystickConnectionWarning(true);
     xbox = new CommandXboxController(2);
     xbox2 = new CommandXboxController(1);

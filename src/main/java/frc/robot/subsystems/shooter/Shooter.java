@@ -140,8 +140,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             TargetType.Position);
   }
 
-  public Command readyShoot(
-      Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
+  public Command readyShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
     // spin up the wheels
     // make the hood at the right angle
     // Rotation2d turretAngle = targetAngle.plus(robotPose.get().getRotation()); // might be minus
@@ -154,7 +153,6 @@ public class Shooter extends SubsystemBase implements Loggable {
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
           flywheel2.setTarget(flywheelSpeed.get(distance));
-         
 
           hood.setTarget(hoodAngle.get(distance));
         },
@@ -168,7 +166,7 @@ public class Shooter extends SubsystemBase implements Loggable {
           flywheel2.setTarget(flywheelSubscriber.get());
 
           hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
-          
+
           double distance = robotPose.get().getTranslation().getDistance(target.get());
           this.distance = distance;
         },
