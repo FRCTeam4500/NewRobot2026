@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.WiringConstants;
 import frc.robot.hardware.Motor;
 import frc.robot.hardware.Motor.TargetType;
-import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.FeedbackController;
 import frc.robot.utilities.FeedforwardController;
 import frc.robot.utilities.FeedforwardSim;
@@ -142,8 +141,7 @@ public class Shooter extends SubsystemBase implements Loggable {
   }
 
   public Command readyShoot(
-      Supplier<Pose2d> robotPose, Supplier<Translation2d> target, Swerve swerve) {
-    // face the turret at the target
+      Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
     // spin up the wheels
     // make the hood at the right angle
     // Rotation2d turretAngle = targetAngle.plus(robotPose.get().getRotation()); // might be minus
@@ -151,34 +149,27 @@ public class Shooter extends SubsystemBase implements Loggable {
     return Commands.run(
         () -> {
           // a lot of math
-          Rotation2d targetAngle =
-              robotPose
-                  .get()
-                  .plus(shooterTransform)
-                  .getTranslation()
-                  .minus(target.get())
-                  .getAngle();
           double distance = robotPose.get().getTranslation().getDistance(target.get());
           flywheelSpeedlog = flywheelSpeed.get(distance);
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
           flywheel2.setTarget(flywheelSpeed.get(distance));
-          swerve.setTargetHeading(targetAngle);
+         
 
           hood.setTarget(hoodAngle.get(distance));
         },
         this);
   }
 
-  public Command test(Swerve swerve, Supplier<Translation2d> target) {
+  public Command test(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
     return Commands.run(
         () -> {
           flywheel1.setTarget(flywheelSubscriber.get()); // flywheelSubscriber.get()
           flywheel2.setTarget(flywheelSubscriber.get());
 
           hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
-          // swerve.setTargetHeading(Rotation2d.fromDegrees(andgleSuscriber.get()));
-          double distance = swerve.getPose().getTranslation().getDistance(target.get());
+          
+          double distance = robotPose.get().getTranslation().getDistance(target.get());
           this.distance = distance;
         },
         this);

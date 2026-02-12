@@ -13,7 +13,6 @@ import frc.robot.subsystems.Hopper.Hopper;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.orchestra.Orc;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
@@ -31,14 +30,13 @@ public class Superstructure implements Loggable {
   private Hopper hopper;
   private Intake intake;
   private Supplier<Pose2d> robotPose;
-  private Swerve swerve;
+  
 
-  public Superstructure(Supplier<Pose2d> robotPose, Swerve swerve) {
+  public Superstructure(Supplier<Pose2d> robotPose) {
     shooter = new Shooter();
     hopper = new Hopper();
     intake = new Intake();
     this.robotPose = robotPose;
-    this.swerve = swerve;
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
   }
 
@@ -73,13 +71,13 @@ public class Superstructure implements Loggable {
           } else {
             return new Translation2d(4.625594, 4.034536); // blue hub
           }
-        },
-        this.swerve);
+        }
+        );
   }
 
   public Command StartShooterTest() {
     return shooter.test(
-        this.swerve,
+        this.robotPose,
         () -> {
           if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
             return new Translation2d(4.625594, 4.034536); // red hub
