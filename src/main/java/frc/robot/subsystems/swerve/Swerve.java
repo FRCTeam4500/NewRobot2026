@@ -3,6 +3,8 @@ package frc.robot.subsystems.swerve;
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 import static frc.robot.utilities.ExtendedMath.withHardDeadzone;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
@@ -209,13 +211,14 @@ public class Swerve extends SubsystemBase implements Loggable {
         .withName("Angle Centric");
   }
 
-  public Command angleCentric(XboxController xbox, Rotation2d rotation) {
+  public Command angleCentric(XboxController xbox, Supplier<Rotation2d> rotation) {
     return Commands.run(
             () -> {
+              targetHeading = rotation.get();
               drive(calculateVelRobotRel(xbox));
             },
             this)
-        .beforeStarting(() -> targetHeading = rotation)
+        .beforeStarting(() -> targetHeading = rotation.get())
         .withName("Angle Centric");
   }
 
@@ -270,7 +273,7 @@ public class Swerve extends SubsystemBase implements Loggable {
   public Command hubCentricDrive(XboxController xbox) {
     return Commands.run(
         () -> {
-          angleCentric(xbox, ExtendedMath.getHubAngle(getEstimatedPose().getTranslation()));
+          angleCentric(xbox, () -> ExtendedMath.getHubAngle(getEstimatedPose().getTranslation()));
         },
         this);
   }
