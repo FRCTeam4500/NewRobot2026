@@ -13,6 +13,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /** This is a simple container for math methods which are useful */
 public class ExtendedMath {
@@ -246,5 +248,16 @@ public class ExtendedMath {
     }
     // return our calculated virtual target that we should shoot at
     return virtualTarget;
+  }
+
+  public static Rotation2d getHubAngle(Translation2d current, Alliance currentAlliance) {
+    return new Translation2d(currentAlliance == Alliance.Blue ? 4.625584 : 11.901424, 4.034536)
+        .minus(current)
+        .getAngle()
+        .plus(Rotation2d.fromDegrees(180));
+  }
+
+  public static Rotation2d getHubAngle(Translation2d current) {
+    return getHubAngle(current, DriverStation.getAlliance().orElse(Alliance.Blue));
   }
 }

@@ -117,6 +117,7 @@ public class Robot extends LoggedRobot {
     SetAngleCentric.onTrue(swerve.angleCentric(xbox.getHID()));
     // hub centric rb
     Trigger SetHubCentric = xbox.rightBumper();
+    SetHubCentric.onTrue(swerve.hubCentricDrive(xbox.getHID()));
     // slowmode lt
     Trigger SetSlowMode = xbox.leftTrigger();
 
