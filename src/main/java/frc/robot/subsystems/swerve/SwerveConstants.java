@@ -101,9 +101,9 @@ public class SwerveConstants {
           true,
           0,
           false,
-          17.42686187822895,
+          24.299446811752158,
           new FeedbackConstants(0.1, 0, 0), // drive PID
-          FeedforwardController.forConstantGravity(0, 0.18288, 2.0649, 0.22168), // drive sysID
+          FeedforwardController.forConstantGravity(0, 0.17731, 2.9428, 0.2812), // drive sysID
           20,
           25,
           0.080,
@@ -119,9 +119,9 @@ public class SwerveConstants {
           true,
           0,
           false,
-          16.556096725790365,
+          22.73417928505439,
           new FeedbackConstants(0.1, 0, 0),
-          FeedforwardController.forConstantGravity(0, 0.16939, 1.8281, 0.15914),
+          FeedforwardController.forConstantGravity(0, 0.19011, 2.7056, 0.29491),
           20,
           25,
           0.168,
@@ -136,9 +136,9 @@ public class SwerveConstants {
           true,
           0,
           false,
-          17.230378621893653,
+          23.809650066986287,
           new FeedbackConstants(0.1, 0, 0),
-          FeedforwardController.forConstantGravity(0, 0.15281, 1.9664, 0.30143),
+          FeedforwardController.forConstantGravity(0, 0.20376, 2.7023, 0.41768),
           20,
           25,
           0.342,
@@ -153,9 +153,9 @@ public class SwerveConstants {
           true,
           0,
           false,
-          18.66946534299422,
+          28.78192557724564,
           new FeedbackConstants(0.1, 0, 0), // drive PID
-          FeedforwardController.forConstantGravity(0, 0.16368, 2.2748, 0.22923), // drive sysID
+          FeedforwardController.forConstantGravity(0, 0.20799, 3.3615, 0.43381), // drive sysID
           20,
           25,
           0.837,

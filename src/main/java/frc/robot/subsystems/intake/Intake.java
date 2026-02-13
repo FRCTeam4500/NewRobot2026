@@ -63,7 +63,7 @@ public class Intake extends SubsystemBase implements Loggable {
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
               config.smartCurrentLimit(60);
-              config.idleMode(IdleMode.kCoast);
+              config.idleMode(IdleMode.kBrake);
               sparkmotor.configure(
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
@@ -81,6 +81,8 @@ public class Intake extends SubsystemBase implements Loggable {
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
     intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0);
+
+    intakeMotorExtension.setTarget(0);
   }
 
   public Command startIntake() {
