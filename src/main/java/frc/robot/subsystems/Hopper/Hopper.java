@@ -29,7 +29,7 @@ public class Hopper extends SubsystemBase implements Loggable {
             WiringConstants.HopperMotors.hopperMotorBeltdrive,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 60;
+              config.CurrentLimits.SupplyCurrentLimit = 100;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -39,7 +39,7 @@ public class Hopper extends SubsystemBase implements Loggable {
             null,
             0,
             FeedbackController.fromPID(
-                0.1,
+                1,
                 0,
                 0,
                 (PIDController pid) -> {
@@ -68,7 +68,7 @@ public class Hopper extends SubsystemBase implements Loggable {
   public Command beltDriveStop() {
     return Commands.runOnce(
             () -> {
-              hopperMotorBeltdrive.setTarget(0);
+              hopperMotorBeltdrive.setVoltage(0);
             },
             this)
         .andThen(

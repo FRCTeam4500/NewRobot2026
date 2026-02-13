@@ -70,7 +70,7 @@ public class Robot extends LoggedRobot {
     // climb
     // declimb
     // intake flexing
-    Trigger FlexIntake = xbox.rightBumper();
+    Trigger FlexIntake = xbox.x();
     FlexIntake.whileTrue(structure.PulseIntake());
     FlexIntake.onFalse(structure.ExtendIntake());
     // stow shooter

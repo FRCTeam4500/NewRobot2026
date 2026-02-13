@@ -52,14 +52,12 @@ public class Shooter extends SubsystemBase implements Loggable {
     PIDP = HoundLog.tunable("PID P value", 0.85);
 
     // find flywheel speed
-    flywheelSpeed.put(1.0, 500.0); // meters , motor speed units
-    flywheelSpeed.put(2.0, 1000.0);
-    flywheelSpeed.put(2.0, 1000.0);
-    flywheelSpeed.put(2.0, 1000.0);
-    flywheelSpeed.put(2.0, 1000.0);
+    flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
+    flywheelSpeed.put(4.417, 1000.0);
+    
 
     // find hood angle
-    hoodAngle.put(1.0, 60.0); // meters , angle degrees
+    hoodAngle.put(2.12, 0.0); // meters , angle degrees
     hoodAngle.put(1.0, 60.0);
     hoodAngle.put(1.0, 60.0);
     hoodAngle.put(1.0, 60.0);
@@ -74,9 +72,9 @@ public class Shooter extends SubsystemBase implements Loggable {
             WiringConstants.ShooterMotors.flywheelMotor1,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 60;
+              config.CurrentLimits.SupplyCurrentLimit = 100;
               config.CurrentLimits.StatorCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimitEnable = true;
+              config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -93,9 +91,9 @@ public class Shooter extends SubsystemBase implements Loggable {
             WiringConstants.ShooterMotors.flywheelMotor2,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 60;
+              config.CurrentLimits.SupplyCurrentLimit = 100;
               config.CurrentLimits.StatorCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimitEnable = true;
+              config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
