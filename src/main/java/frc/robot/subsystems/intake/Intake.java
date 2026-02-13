@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase implements Loggable {
   private Motor intakeMotorExtension;
   private final int intakeSpeed = 100;
   private final double maxExtention = 6.6;
-  private final double relativeMaxExtention =0.8;
+  private final double relativeMaxExtention = 0.8;
 
   public Intake() {
     intakeMotorDrive =
@@ -87,7 +87,6 @@ public class Intake extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               intakeMotorDrive.setTarget(intakeSpeed);
-              
             },
             this)
         .andThen(
@@ -124,6 +123,7 @@ public class Intake extends SubsystemBase implements Loggable {
                   return intakeMotorExtension.atTarget();
                 }));
   }
+
   public Command flexIntake() {
     return Commands.runOnce(
             () -> {
@@ -136,6 +136,7 @@ public class Intake extends SubsystemBase implements Loggable {
                   return intakeMotorExtension.atTarget();
                 }));
   }
+
   public Command extendIntakeWithGravity() {
     return Commands.runOnce(
             () -> {
@@ -144,9 +145,15 @@ public class Intake extends SubsystemBase implements Loggable {
             this)
         .andThen(
             Commands.waitUntil(
-                () -> {
-                  return intakeMotorExtension.atTarget();
-                }).andThen( Commands.runOnce(()->{intakeMotorExtension.setVoltage(0); }, this)));
+                    () -> {
+                      return intakeMotorExtension.atTarget();
+                    })
+                .andThen(
+                    Commands.runOnce(
+                        () -> {
+                          intakeMotorExtension.setVoltage(0);
+                        },
+                        this)));
   }
 
   public Command retractIntake() {
