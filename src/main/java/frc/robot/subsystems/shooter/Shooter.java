@@ -126,7 +126,7 @@ public class Shooter extends SubsystemBase implements Loggable {
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
             (FeedforwardSim sim) -> {
-              sim.withHardstops(0, 5);
+              sim.withHardstops(0, 4);
             },
             0,
             FeedbackController.fromPID(

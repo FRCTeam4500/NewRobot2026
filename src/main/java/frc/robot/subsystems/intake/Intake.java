@@ -23,7 +23,8 @@ public class Intake extends SubsystemBase implements Loggable {
   private Motor intakeMotorDrive;
   private Motor intakeMotorExtension;
   private final int intakeSpeed = 100;
-  private final int maxExtention = 1;
+  private final double maxExtention = 6.6;
+  private final double relativeMaxExtention =0.8;
 
   public Intake() {
     intakeMotorDrive =
@@ -36,6 +37,7 @@ public class Intake extends SubsystemBase implements Loggable {
               config.encoder.velocityConversionFactor(1.0);
               config.smartCurrentLimit(60);
               config.idleMode(IdleMode.kCoast);
+              config.inverted(true);
               sparkmotor.configure(
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
@@ -66,18 +68,18 @@ public class Intake extends SubsystemBase implements Loggable {
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
             (FeedforwardSim sim) -> {
-              sim.withHardstops(0, 20);
+              sim.withHardstops(0, 6.6);
             },
             0,
             FeedbackController.fromPID(
-                1,
+                0.5,
                 0,
                 0,
                 (PIDController pid) -> {
                   pid.setTolerance(0.5);
                 }),
             FeedforwardController.forArmGravity(0, 0, 0, 0),
-            TargetType.Velocity);
+            TargetType.Position);
     intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0);
   }
 
@@ -85,6 +87,7 @@ public class Intake extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               intakeMotorDrive.setTarget(intakeSpeed);
+              
             },
             this)
         .andThen(
@@ -97,7 +100,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command stopIntake() {
     return Commands.runOnce(
             () -> {
-              intakeMotorDrive.setTarget(0);
+              intakeMotorDrive.setVoltage(0);
             },
             this)
         .andThen(
@@ -112,7 +115,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command extendIntake() {
     return Commands.runOnce(
             () -> {
-              intakeMotorExtension.setTarget(maxExtention);
+              intakeMotorExtension.setTarget(6.5);
             },
             this)
         .andThen(
@@ -120,6 +123,30 @@ public class Intake extends SubsystemBase implements Loggable {
                 () -> {
                   return intakeMotorExtension.atTarget();
                 }));
+  }
+  public Command flexIntake() {
+    return Commands.runOnce(
+            () -> {
+              intakeMotorExtension.setTarget(3);
+            },
+            this)
+        .andThen(
+            Commands.waitUntil(
+                () -> {
+                  return intakeMotorExtension.atTarget();
+                }));
+  }
+  public Command extendIntakeWithGravity() {
+    return Commands.runOnce(
+            () -> {
+              intakeMotorExtension.setTarget(relativeMaxExtention);
+            },
+            this)
+        .andThen(
+            Commands.waitUntil(
+                () -> {
+                  return intakeMotorExtension.atTarget();
+                }).andThen( Commands.runOnce(()->{intakeMotorExtension.setVoltage(0); }, this)));
   }
 
   public Command retractIntake() {
@@ -138,7 +165,7 @@ public class Intake extends SubsystemBase implements Loggable {
   @Override
   public void log(String path) {
 
-    HoundLog.log(path, "intakeMotorDrive", intakeMotorDrive.atTarget());
+    HoundLog.log(path, "intakeMotorDriveAtTarget", intakeMotorDrive.atTarget());
     HoundLog.log(path, "intakeDriveSpeed", intakeMotorDrive.getVelocity());
     HoundLog.log(path, "IntakeExtentionAtTarget", intakeMotorExtension.atTarget());
     HoundLog.log(path, "intakeMotorExtension", intakeMotorExtension.getPosition());

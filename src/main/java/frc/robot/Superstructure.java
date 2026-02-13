@@ -112,7 +112,7 @@ public class Superstructure implements Loggable {
   }
 
   public Command PulseIntake() {
-    return Commands.none();
+    return intake.flexIntake();
   }
 
   // ---------------------------------------TagAlign-----------------------------------------
