@@ -54,7 +54,6 @@ public class Shooter extends SubsystemBase implements Loggable {
     // find flywheel speed
     flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
     flywheelSpeed.put(4.417, 1000.0);
-    
 
     // find hood angle
     hoodAngle.put(2.12, 0.0); // meters , angle degrees

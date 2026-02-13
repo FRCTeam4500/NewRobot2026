@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.programs.Robot;
 import frc.robot.programs.swerve.SwerveSysID;
 
 public final class Main {
