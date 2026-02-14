@@ -27,6 +27,10 @@ import frc.robot.utilities.logging.Loggable;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+
 
 /** A class representing a motor */
 public class Motor extends SubsystemBase implements Loggable {
@@ -184,6 +188,8 @@ public class Motor extends SubsystemBase implements Loggable {
       case Velocity:
         fb.calculate(getVelocity(), target);
         break;
+      case Follower:
+        break;
     }
     return fb.atGoal();
   }
@@ -244,6 +250,9 @@ public class Motor extends SubsystemBase implements Loggable {
    */
   @Override
   public void periodic() {
+    if (type == TargetType.Follower) {
+    return; // Hardware-controlled
+  }
     if (DriverStation.isDisabled()) {
       voltageSetter.accept(0);
       return;
@@ -265,6 +274,9 @@ public class Motor extends SubsystemBase implements Loggable {
         fbVolts = fb.calculate(velocity, target);
         ffVolts = ff.calculateVoltage(getPosition(), target, 0);
         break;
+      case Follower:
+       break;
+      
     }
     voltageSetter.accept(MathUtil.clamp(fbVolts + ffVolts, negativeMaxVolts, maxVolts));
   }
@@ -361,7 +373,9 @@ public class Motor extends SubsystemBase implements Loggable {
     /** Targets a position */
     Position,
     /** Targets a velocity */
-    Velocity;
+    Velocity,
+    /**Follows a leader */
+    Follower;
   }
 
   /**
@@ -413,7 +427,8 @@ public class Motor extends SubsystemBase implements Loggable {
    *     <p>In Simulation, either {@link #fromIdealSim} or {@link #fromRealisticSim} is returned,
    *     depending on whether ff is null
    */
-  public static Motor fromTalonFX(
+  
+   public static Motor fromTalonFX(
       int canID,
       Consumer<TalonFX> config,
       Consumer<FeedforwardSim> simConfig,
@@ -449,6 +464,103 @@ public class Motor extends SubsystemBase implements Loggable {
           HoundLog.log(path, "Motor Status", motor.getMotorOutputStatus().getValue());
         });
   }
+
+  /**
+   *
+   *
+   * <pre>
+   * // Example
+   * Motor motor = Motor.fromTalonFXFollower( // Make a Follower TalonFX motor
+   *   7, // The motor's CAN id  is 7
+   *   fx -> {
+   *     TalonFXConfiguration config = new TalonFXConfiguration(); // Make a new TalonFX config
+   *     config.CurrentLimits =
+   *       new CurrentLimitsConfigs()
+   *         .withSupplyCurrentLimit(40) // This motor has a supply current limit of 40 amps
+   *         .withSupplyCurrentLimitEnable(true); // Enable the limit
+   *     config.MotorOutput =
+   *       new MotorOutputConfigs()
+   *         .withNeutralMode(NeutralModeValue.Brake) // If zero voltage, the motor will brake
+   *         .withInterted(InvertedValue.CounterClockwise_Positive); // The positive direction is CCW
+   *     config.Feedback = null
+   *      
+   *     motor.getConfigurator().apply(config); // Apply the config
+   *   },
+   *   sim -> {
+   *     sim.withHardstops(0, 30); // The mechanism has hardstops at 0 and 30 units
+   *   },
+   *   0, // The starting position of the motor is 0 units
+   *   FeedbackController.fromPID( // Using PID for our feedback
+   *     new PIDController(5, 0, 0), // Our PID values
+   *     pid -> { // Configuring the pid controller
+   *       pid.setTolerance(1); // Within one unit to our goal is good enough
+   *     }
+   *   ),
+   *   new FeedforwardConstants(0, 0.10624, 1.407, 0.16994), // Our feedforward values
+   *   TargetType.Position // This motor goes to a position
+   * );
+   * </pre>
+   *
+   * @param canID The canID of the controller
+   * @param config A function that takes in a {@link TalonFX} and configures it
+   * @param simConfig A function that takes in a {@link FeedforwardSim} and configures it
+   * @param initialPosition The starting position of the mechanism. This is set after the config has
+   *     been applied, so any gear ratios applied in the config are used
+   * @param fb The feedback controller used
+   * @param ff The feedforward controller used. This can be null!!
+   * @param type The type of target the motor is trying to reach
+   * @return A TalonFX Motor Controller wrapped in a {@link Motor}.
+   *     <p>In Simulation, either {@link #fromIdealSim} or {@link #fromRealisticSim} is returned,
+   *     depending on whether ff is null
+   */
+
+  public static Motor fromTalonFXFollower(
+    TalonFX leader,
+    int followerCanID,
+    MotorAlignmentValue invertFollower,
+    Consumer<TalonFX> config) {
+
+  TalonFX follower = new TalonFX(followerCanID);
+    config.accept(follower);
+  
+    // Hardware follow
+  follower.setControl(
+      new Follower(
+          leader.getDeviceID(),
+          invertFollower //this will be null, Inversion done in configs
+      )
+  );
+
+  return new Motor(
+      TargetType.Follower,
+
+      // Position setter – no-op
+      position -> {},
+
+      // Voltage setter – no-op
+      voltage -> {},
+
+      // Position getter mirrors leader (useful for logging)
+      () -> leader.getPosition().getValueAsDouble(),
+
+      // Velocity getter mirrors leader
+      () -> leader.getVelocity().getValueAsDouble(),
+
+      // Dummy controllers (never used)
+      null, //FeedbackController.forNone(),
+      null, //FeedforwardController.forNone(),
+
+      // Logging
+      path -> {
+        HoundLog.log(path, "Mode", "Follower");
+        HoundLog.log(path, "Leader ID", leader.getDeviceID());
+        HoundLog.log(path, "Temperature", follower.getDeviceTemp().getValueAsDouble());
+        HoundLog.log(path, "Stator Current", follower.getStatorCurrent().getValueAsDouble());
+        HoundLog.log(path, "Supply Current", follower.getSupplyCurrent().getValueAsDouble());
+        HoundLog.log(path, "Applied Voltage", follower.getMotorVoltage().getValueAsDouble());
+      }
+  );
+}
 
   /**
    *
@@ -725,4 +837,6 @@ public class Motor extends SubsystemBase implements Loggable {
         FeedforwardController.forNone(),
         path -> HoundLog.log(path, "Acceleration", stateHolder[2]));
   }
+
+
 }

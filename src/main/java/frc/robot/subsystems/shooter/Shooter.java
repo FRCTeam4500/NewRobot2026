@@ -99,9 +99,9 @@ public class Shooter extends SubsystemBase implements Loggable {
                 FeedbackController.fromTunablePID(FlywheelPID,PIDP), 
                 FeedforwardController.forConstantGravity(0, 0.1111, 0.11642, 0.018187), 
                 TargetType.Velocity);
-        flywheel2 = Motor.fromTalonFX(
-                WiringConstants.ShooterMotors.flywheelMotor2, 
-                (TalonFX MotorFx) -> {
+        flywheel2 = Motor.fromTalonFXFollower(new TalonFX(WiringConstants.ShooterMotors.flywheelMotor1), WiringConstants.ShooterMotors.flywheelMotor2,null,
+                
+        (TalonFX MotorFx) -> {
                     TalonFXConfiguration config = new TalonFXConfiguration();
                     config.CurrentLimits.SupplyCurrentLimit = 60;
                     config.CurrentLimits.StatorCurrentLimit = 80;
@@ -111,12 +111,12 @@ public class Shooter extends SubsystemBase implements Loggable {
                     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
                     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
                     MotorFx.getConfigurator().apply(config); 
-                }, 
-                (FeedforwardSim sim) ->{}, 
-                0, 
-                FeedbackController.fromTunablePID(FlywheelPID,PIDP), 
-                FeedforwardController.forConstantGravity(0, 0.11108, 0.11641, 0.018121), 
-                TargetType.Velocity);
+        });
+                //(FeedforwardSim sim) ->{}, 
+        
+                //FeedbackController.fromTunablePID(FlywheelPID,PIDP), 
+                //FeedforwardController.forConstantGravity(0, 0.11108, 0.11641, 0.018121), 
+                //TargetType.Velocity);
                 flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2).putOnDashboard("flywheel", this);
         
         hood = Motor.fromSparkMax(
