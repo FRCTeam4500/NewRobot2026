@@ -51,7 +51,6 @@ public class Hopper extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
-    
 
     hopperMotorBeltdrive2 =
         Motor.fromTalonFX(
@@ -76,7 +75,9 @@ public class Hopper extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
-     angleSysId =hopperMotorBeltdrive.getSysIDCommands("hopper belt drive neo", 1, 10, 10, hopperMotorBeltdrive2);
+    angleSysId =
+        hopperMotorBeltdrive.getSysIDCommands(
+            "hopper belt drive neo", 1, 10, 10, hopperMotorBeltdrive2);
   }
 
   public Command beltDriveShoot() {
@@ -91,7 +92,6 @@ public class Hopper extends SubsystemBase implements Loggable {
               Commands.waitUntil(
                   () -> {
                     return hopperMotorBeltdrive.atTarget();
-            
                   });
             });
   }
@@ -120,6 +120,5 @@ public class Hopper extends SubsystemBase implements Loggable {
     SmartDashboard.putData("Angle Dynamic Reverse", angleSysId.dynamicReverse());
     SmartDashboard.putData("Angle Quasistatic Forward", angleSysId.quasistaticForward());
     SmartDashboard.putData("Angle Quasistatic Reverse", angleSysId.quasistaticReverse());
- 
   }
 }
