@@ -8,9 +8,6 @@ import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
-
-
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -38,12 +35,13 @@ import frc.robot.WiringConstants;
 import frc.robot.hardware.Gyro;
 import frc.robot.hardware.Limelight;
 import frc.robot.hardware.Limelight.PoseEstimate;
+import frc.robot.utilities.ExtendedMath;
 import frc.robot.utilities.FeedbackController;
 import frc.robot.utilities.PoseFeedbackController;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
-
+import java.util.function.Supplier;
 
 /** The subsystem that controls our drivetrain, which is known as a swerve drive. */
 public class Swerve extends SubsystemBase implements Loggable {
@@ -58,19 +56,21 @@ public class Swerve extends SubsystemBase implements Loggable {
   private PoseFeedbackController poseFeedback;
   private Translation2d robotAcceleration;
   private ChassisSpeeds previousSpeeds;
+  public static final double MAX_FORWARD_SENSITIVITY = 6;
+  public static final double MAX_SIDEWAYS_SENSITIVITY = 6;
 
   /** Creates a new {@link Swerve} using the constants defined in {@link SwerveConstants} */
   public Swerve() {
-     previousSpeeds=new ChassisSpeeds(0.0, 0.0, 0.0);
-    //previousSpeeds.vxMetersPerSecond=0;
-    //previousSpeeds.vyMetersPerSecond=0;
-    tagCameras = new Limelight[] {
-      new Limelight("limelight"),
-      new Limelight("limelight-left")
-    };
-    
+    previousSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+    // previousSpeeds.vxMetersPerSecond=0;
+    // previousSpeeds.vyMetersPerSecond=0;
+    tagCameras = new Limelight[] {new Limelight("limelight-front")};
 
-    gyro = Gyro.fromNavX(() -> getSpeeds().omegaRadiansPerSecond, navx -> {}, WiringConstants.SwerveWiring.gyro_ID);
+    gyro =
+        Gyro.fromNavX(
+            () -> getSpeeds().omegaRadiansPerSecond,
+            navx -> {},
+            WiringConstants.SwerveWiring.gyro_ID);
 
     modules =
         new SwerveModule[] {
@@ -93,6 +93,7 @@ public class Swerve extends SubsystemBase implements Loggable {
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, 0.1),
             VecBuilder.fill(5, 5, 5));
+
     StopTilting.setupKinematics(kinematics);
     StopTilting.setupBase(
         estimator::getEstimatedPosition, new Transform3d(0, 0, 0.1, Rotation3d.kZero), 39.3468644);
@@ -209,6 +210,17 @@ public class Swerve extends SubsystemBase implements Loggable {
         .withName("Angle Centric");
   }
 
+  public Command angleCentric(XboxController xbox, Supplier<Rotation2d> rotation) {
+    return Commands.run(
+            () -> {
+              targetHeading = rotation.get();
+              drive(calculateVelRobotRel(xbox));
+            },
+            this)
+        .beforeStarting(() -> targetHeading = rotation.get())
+        .withName("Angle Centric");
+  }
+
   /**
    * @param xbox The {@link XboxController} that will control the driving
    * @return a {@link Command} that drives the robot using a {@link XboxController}.
@@ -255,6 +267,14 @@ public class Swerve extends SubsystemBase implements Loggable {
             })
         .until(() -> poseFeedback.atTarget())
         .withName("Pose Centric");
+  }
+
+  public Command hubCentricDrive(XboxController xbox) {
+    return angleCentric(xbox, () -> ExtendedMath.getHubAngle(getEstimatedPose().getTranslation()));
+  }
+
+  public Pose2d getEstimatedPose() {
+    return estimator.getEstimatedPosition();
   }
 
   /**
@@ -547,10 +567,10 @@ public class Swerve extends SubsystemBase implements Loggable {
       module.periodic();
     }
     ChassisSpeeds speeds = getSpeeds();
-    robotAcceleration = new Translation2d(
-      (speeds.vxMetersPerSecond - previousSpeeds.vxMetersPerSecond) / 0.02,
-      (speeds.vyMetersPerSecond - previousSpeeds.vyMetersPerSecond) / 0.02
-    );
+    robotAcceleration =
+        new Translation2d(
+            (speeds.vxMetersPerSecond - previousSpeeds.vxMetersPerSecond) / 0.02,
+            (speeds.vyMetersPerSecond - previousSpeeds.vyMetersPerSecond) / 0.02);
   }
 
   @Override

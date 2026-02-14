@@ -13,6 +13,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /** This is a simple container for math methods which are useful */
 public class ExtendedMath {
@@ -182,54 +184,79 @@ public class ExtendedMath {
   }
 
   /**
-     * This method is used to calculate the target you should actually aim at when trying to shoot while moving. 
-     * @param target The actual target you want to shoot at (field relative)
-     * @param robotPose The robot's current translation (field relative)
-     * @param robotSpeed The robot's current speeds (field relative)
-     * @param robotAccel The robot's current accelerations (field relative)
-     * @param latencySeconds The latency between the the time when the projectile leaves the shooter and the time at which the data was collected to decide the setpoints at that time. 
-     * Start at around 0.1 seconds, should't need to tune it super accurately.
-     * @param distanceToTime A mapping from distance from target to time in air. This should probably be measured irl
-     * @return The target you should actually aim at to make your shots
-     * @see https://www.chiefdelphi.com/t/shoot-while-move-code-1706/410494/10
-     * @see https://github.com/rr1706/2022-Main/blob/9f72c3ec5e64c61344845051c57035b0f7320a54/src/main/java/frc/robot/commands/TurretedShooter/SmartShooter.java#L103
-     */
-    public static Translation2d calculateTargetOnMove(Translation2d target, Translation2d robotPose, ChassisSpeeds robotSpeed, Translation2d robotAccel, double latencySeconds, InterpolatingDoubleTreeMap distanceToTime) {
-        // calculate air time if we shot at our current position
-        double shotTime = distanceToTime.get(target.getDistance(robotPose)); 
-        // define a virtual target which is where we actually should shoot
-        Translation2d virtualTarget = target; 
-        // we need to loop this part to try and drive the time delta between shotTime and newShotTime as low as possible. 
-        // to be honest 5 interations might be too low, I'm mostly copying 1706 in 2022: 
-        // https://github.com/rr1706/2022-Main/blob/9f72c3ec5e64c61344845051c57035b0f7320a54/src/main/java/frc/robot/commands/TurretedShooter/SmartShooter.java#L103
-        for (int i = 0; i < 5; i++) { 
-            // calculate where how far off target the projectile will be when it should land in the goal
-            // we do this by assuming that there are no forces on the projectile in the air, so its 
-            // change in horizontal velocity only depends on how fast the robot was going
-            // the robot accel part is to accounnt for the fact that we don't know the robot's current velocity,
-            // just its velocity some time ago decided by our latency. So instead of assuming a constant velocity
-            // over that time period, we assume a constant acceleration, and use that to calculate our
-            // current velocity.
-            Translation2d offset = new Translation2d( 
-                (robotSpeed.vxMetersPerSecond + robotAccel.getX() * latencySeconds) * shotTime, 
-                (robotSpeed.vyMetersPerSecond + robotAccel.getY() * latencySeconds) * shotTime);
-            // update our virtual target using the original target translation and the previously calculated offset
-            // this is our estimate for where we should actually aim to score in our true target
-            virtualTarget = target.minus(offset);
-            // lookup our shot time for this new shot
-            double newShotTime = distanceToTime.get(virtualTarget.getDistance(robotPose));
-            // if the times are very different (0.01 might be too low a number here)
-            // we should do another loop, because that means that our offset is using the wrong
-            // shotTime in its calculation
-            if (Math.abs(newShotTime - shotTime) > 0.01) {
-                // if they are quite different, iterate and do another loop
-                shotTime = newShotTime;
-            } else {
-                // if they are very similar, we have a good target, so we can return now
-                break;
-            }
-        }
-        // return our calculated virtual target that we should shoot at
-        return virtualTarget;
+   * This method is used to calculate the target you should actually aim at when trying to shoot
+   * while moving.
+   *
+   * @param target The actual target you want to shoot at (field relative)
+   * @param robotPose The robot's current translation (field relative)
+   * @param robotSpeed The robot's current speeds (field relative)
+   * @param robotAccel The robot's current accelerations (field relative)
+   * @param latencySeconds The latency between the the time when the projectile leaves the shooter
+   *     and the time at which the data was collected to decide the setpoints at that time. Start at
+   *     around 0.1 seconds, should't need to tune it super accurately.
+   * @param distanceToTime A mapping from distance from target to time in air. This should probably
+   *     be measured irl
+   * @return The target you should actually aim at to make your shots see
+   *     https://www.chiefdelphi.com/t/shoot-while-move-code-1706/410494/10 see
+   *     https://github.com/rr1706/2022-Main/blob/9f72c3ec5e64c61344845051c57035b0f7320a54/src/main/java/frc/robot/commands/TurretedShooter/SmartShooter.java#L103
+   */
+  public static Translation2d calculateTargetOnMove(
+      Translation2d target,
+      Translation2d robotPose,
+      ChassisSpeeds robotSpeed,
+      Translation2d robotAccel,
+      double latencySeconds,
+      InterpolatingDoubleTreeMap distanceToTime) {
+    // calculate air time if we shot at our current position
+    double shotTime = distanceToTime.get(target.getDistance(robotPose));
+    // define a virtual target which is where we actually should shoot
+    Translation2d virtualTarget = target;
+    // we need to loop this part to try and drive the time delta between shotTime and newShotTime as
+    // low as possible.
+    // to be honest 5 interations might be too low, I'm mostly copying 1706 in 2022:
+    // https://github.com/rr1706/2022-Main/blob/9f72c3ec5e64c61344845051c57035b0f7320a54/src/main/java/frc/robot/commands/TurretedShooter/SmartShooter.java#L103
+    for (int i = 0; i < 5; i++) {
+      // calculate where how far off target the projectile will be when it should land in the goal
+      // we do this by assuming that there are no forces on the projectile in the air, so its
+      // change in horizontal velocity only depends on how fast the robot was going
+      // the robot accel part is to accounnt for the fact that we don't know the robot's current
+      // velocity,
+      // just its velocity some time ago decided by our latency. So instead of assuming a constant
+      // velocity
+      // over that time period, we assume a constant acceleration, and use that to calculate our
+      // current velocity.
+      Translation2d offset =
+          new Translation2d(
+              (robotSpeed.vxMetersPerSecond + robotAccel.getX() * latencySeconds) * shotTime,
+              (robotSpeed.vyMetersPerSecond + robotAccel.getY() * latencySeconds) * shotTime);
+      // update our virtual target using the original target translation and the previously
+      // calculated offset
+      // this is our estimate for where we should actually aim to score in our true target
+      virtualTarget = target.minus(offset);
+      // lookup our shot time for this new shot
+      double newShotTime = distanceToTime.get(virtualTarget.getDistance(robotPose));
+      // if the times are very different (0.01 might be too low a number here)
+      // we should do another loop, because that means that our offset is using the wrong
+      // shotTime in its calculation
+      if (Math.abs(newShotTime - shotTime) > 0.01) {
+        // if they are quite different, iterate and do another loop
+        shotTime = newShotTime;
+      } else {
+        // if they are very similar, we have a good target, so we can return now
+        break;
+      }
     }
+    // return our calculated virtual target that we should shoot at
+    return virtualTarget;
+  }
+
+  public static Rotation2d getHubAngle(Translation2d current, Alliance currentAlliance) {
+    return new Translation2d(currentAlliance == Alliance.Blue ? 4.625584 : 11.901424, 4.034536)
+        .minus(current)
+        .getAngle();
+  }
+
+  public static Rotation2d getHubAngle(Translation2d current) {
+    return getHubAngle(current, DriverStation.getAlliance().orElse(Alliance.Blue));
+  }
 }

@@ -7,8 +7,8 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.REVLibError;
 import com.revrobotics.PersistMode;
+import com.revrobotics.REVLibError;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -101,16 +101,16 @@ public class SwerveConstants {
           true,
           0,
           false,
-          17.42686187822895,
+          24.299446811752158,
           new FeedbackConstants(0.1, 0, 0), // drive PID
-          FeedforwardController.forConstantGravity(0, 0.18288, 2.0649, 0.22168), // drive sysID
+          FeedforwardController.forConstantGravity(0, 0.17731, 2.9428, 0.2812), // drive sysID
           20,
           25,
           0.080,
           new FeedbackConstants(0.1, 0, 0), // angle PID
           1,
           FeedforwardController.forConstantGravity(
-              0, 0.28001, 0.0086173, 0.00092082)); // angle SysID
+              0, 0.3102, 0.0086696, 0.00093404)); // angle SysID
 
   /** Configuration for FRONT_RIGHT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig FRONT_RIGHT_CONFIG =
@@ -119,15 +119,15 @@ public class SwerveConstants {
           true,
           0,
           false,
-          16.556096725790365,
+          22.73417928505439,
           new FeedbackConstants(0.1, 0, 0),
-          FeedforwardController.forConstantGravity(0, 0.16939, 1.8281, 0.15914),
+          FeedforwardController.forConstantGravity(0, 0.19011, 2.7056, 0.29491),
           20,
           25,
           0.168,
           new FeedbackConstants(0.1, 0, 0),
           1,
-          FeedforwardController.forConstantGravity(0, 0.2813, 0.0086098, 0.0010955));
+          FeedforwardController.forConstantGravity(0, 0.31394, 0.0087836, 0.00072592));
 
   /** Configuration for BACK_LEFT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig BACK_LEFT_CONFIG =
@@ -136,15 +136,15 @@ public class SwerveConstants {
           true,
           0,
           false,
-          17.230378621893653,
+          23.809650066986287,
           new FeedbackConstants(0.1, 0, 0),
-          FeedforwardController.forConstantGravity(0, 0.15281, 1.9664, 0.30143),
+          FeedforwardController.forConstantGravity(0, 0.20376, 2.7023, 0.41768),
           20,
           25,
           0.342,
           new FeedbackConstants(0.1, 0, 0),
           1,
-          FeedforwardController.forConstantGravity(0, 0.25886, 0.0084438, 0.00097364));
+          FeedforwardController.forConstantGravity(0, 0.2693, 0.0085669, 0.0009236));
 
   /** Configuration for BACK_RIGHT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig BACK_RIGHT_CONFIG =
@@ -153,16 +153,16 @@ public class SwerveConstants {
           true,
           0,
           false,
-          18.66946534299422,
+          28.78192557724564,
           new FeedbackConstants(0.1, 0, 0), // drive PID
-          FeedforwardController.forConstantGravity(0, 0.16368, 2.2748, 0.22923), // drive sysID
+          FeedforwardController.forConstantGravity(0, 0.20799, 3.3615, 0.43381), // drive sysID
           20,
           25,
           0.837,
           new FeedbackConstants(0.1, 0, 0), // angle PID
           1,
           FeedforwardController.forConstantGravity(
-              0, 0.32029, 0.0086148, 0.00084649)); // angle feedforward
+              0, 0.33543, 0.0086601, 0.0007558)); // angle feedforward
 
   public static final Motor FRONT_LEFT_DRIVE_MOTOR =
       Motor.fromTalonFX(

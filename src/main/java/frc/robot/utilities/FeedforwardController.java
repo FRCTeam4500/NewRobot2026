@@ -120,5 +120,32 @@ public interface FeedforwardController {
     };
   }
 
+  public static FeedforwardController forFlywheel(double kS, double kV, double kA) {
 
+    return new FeedforwardController() {
+
+      @Override
+      public double calculateVoltage(double position, double velocity, double acceleration) {
+
+        return kS * Math.signum(velocity) + kV * velocity + kA * acceleration;
+      }
+
+      @Override
+      public double calculateVoltage(double position, double motionSign) {
+
+        return kS * Math.signum(motionSign);
+      }
+
+      @Override
+      public double calculateAccel(double position, double velocity, double voltage) {
+
+        return (voltage - kS * Math.signum(velocity) - kV * velocity) / kA;
+      }
+
+      @Override
+      public boolean canSimulate() {
+        return Math.abs(kA) > 1e-6 && Math.abs(kV) > 1e-6;
+      }
+    };
+  }
 }

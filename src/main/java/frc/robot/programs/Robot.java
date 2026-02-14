@@ -5,8 +5,8 @@
 
 package frc.robot.programs;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -29,13 +29,14 @@ public class Robot extends LoggedRobot {
   private CommandXboxController xbox;
   private CommandXboxController xbox2;
 
-
   /** make a robot */
   public Robot() {
     swerve = new Swerve();
-      structure = new Superstructure(()->{
-        return swerve.getPose();
-    }, swerve);
+    structure =
+        new Superstructure(
+            () -> {
+              return swerve.getPose();
+            });
     DriverStation.silenceJoystickConnectionWarning(true);
     xbox = new CommandXboxController(2);
     xbox2 = new CommandXboxController(1);
@@ -47,48 +48,102 @@ public class Robot extends LoggedRobot {
   }
 
   private void setupOperatorController() {
-      Trigger revShooter = xbox2.rightTrigger();
-      revShooter.whileTrue(Commands.none());
 
+    // rev shooter
+    Trigger revShooter = xbox2.rightTrigger();
+    revShooter.whileTrue(structure.StartShooterTest());
+
+    // intake
+    Trigger ActivateIntake = xbox2.leftTrigger();
+    ActivateIntake.whileTrue(structure.StartIntake());
+    ActivateIntake.onFalse(structure.StopIntake());
+
+    // extend intake
+    Trigger ExtendIntake = xbox2.y();
+    ExtendIntake.onTrue(structure.ExtendIntake());
+
+    // retract intake
+    Trigger RetractIntake = xbox2.a();
+    RetractIntake.onTrue(structure.RetractIntake());
+
+    // climb lock
+    // prep climb
+    // climb
+    // declimb
+    // intake flexing
+    Trigger FlexIntake = xbox.x();
+    FlexIntake.whileTrue(structure.PulseIntake());
+    FlexIntake.onFalse(structure.ExtendIntake());
+    // stow shooter
+    Trigger StowShooter = xbox2.b();
+    StowShooter.onTrue(structure.stow());
   }
 
   private void setupDriveController() {
     Trigger onBlue =
         new Trigger(() -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue);
     Trigger onRed = onBlue.negate();
-    Trigger faceForwards = new Trigger(() -> xbox.getRightY() < -0.5);
-    Trigger faceBackwards = new Trigger(() -> xbox.getRightY() > 0.5);
-    Trigger resetHeading = xbox.a();
-    Trigger stow = xbox.y();
-    Trigger revShooter = xbox.rightTrigger();
-    Trigger shoot = xbox.leftTrigger();
 
-    resetHeading.and(onBlue).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(0)));
-    resetHeading.and(onRed).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(180)));
+    // face forward
+    Trigger faceForwards = new Trigger(() -> xbox.getRightY() < -0.5);
     faceForwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceForwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
+
+    // face backwards
+    Trigger faceBackwards = new Trigger(() -> xbox.getRightY() > 0.5);
     faceBackwards.and(onRed).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(0)));
     faceBackwards.and(onBlue).onTrue(swerve.setTargetHeading(Rotation2d.fromDegrees(180)));
-    stow.onTrue(structure.stow());
-    
-    revShooter.whileTrue(structure.StartShooterTest());
-    revShooter.onFalse(structure.StopShooter());
+
+    // reset angle
+    Trigger resetHeading = xbox.a();
+    resetHeading.and(onBlue).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(0)));
+    resetHeading.and(onRed).onTrue(swerve.resetHeading(Rotation2d.fromDegrees(180)));
+
+    // auto align: dpad
+    // to climb
+    Trigger AlignClimb = xbox.povDown().debounce(0.2);
+    AlignClimb.whileTrue(structure.AlignClimb());
+    // center
+    Trigger AlignCenter = xbox.povDown().debounce(0.2);
+    AlignCenter.whileTrue(structure.AlignCenter());
+    // left trench
+    Trigger AlignLeftTrench = xbox.povLeft().debounce(0.2);
+    AlignLeftTrench.whileTrue(structure.AlignLeft());
+    // right trench
+    Trigger AlignRightTrench = xbox.povRight().debounce(0.2);
+    AlignRightTrench.whileTrue(structure.AlignRight());
+    // angle centric lb
+    Trigger SetAngleCentric = xbox.leftBumper();
+    SetAngleCentric.onTrue(swerve.angleCentric(xbox.getHID()));
+    // hub centric rb
+    Trigger SetHubCentric = xbox.rightBumper();
+    SetHubCentric.onTrue(swerve.hubCentricDrive(xbox.getHID()));
+    // slowmode lt
+    Trigger SetSlowMode = xbox.leftTrigger();
+
+    // shoot rt
+    Trigger shoot = xbox.rightTrigger();
     shoot.onTrue(structure.shoot());
-    shoot.onFalse(structure.stopShoot());
-    
+    shoot.onFalse(structure.StopShooter());
   }
 
   private void setupAuto() {
 
     SendableChooser<Command> chooser = new SendableChooser<>();
     chooser.setDefaultOption("None", Commands.none());
+    NamedCommands.registerCommand("StartShooter", structure.StartShooter());
+    NamedCommands.registerCommand("shoot", structure.shoot());
+    NamedCommands.registerCommand("StopShooter", structure.StopShooter());
+
+    NamedCommands.registerCommand("StartIntake", structure.StartIntake());
+    NamedCommands.registerCommand("StopIntake", structure.StopIntake());
     SmartDashboard.putData("Auto Chooser", chooser);
     chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
     chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
     chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
     chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
     chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
-    
+
     RobotModeTriggers.autonomous().whileTrue(Commands.deferredProxy(chooser::getSelected));
   }
 
