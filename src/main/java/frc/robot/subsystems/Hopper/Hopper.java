@@ -19,6 +19,7 @@ import frc.robot.utilities.logging.Loggable;
 public class Hopper extends SubsystemBase implements Loggable {
 
   private Motor hopperMotorBeltdrive;
+  private Motor hopperMotorBeltdrive2;
 
   public static int beltdrivespeed = 96;
 
@@ -47,6 +48,31 @@ public class Hopper extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
+    hopperMotorBeltdrive.getSysIDCommands("hopper belt drive neo 2", 0, 0, 0);
+
+    hopperMotorBeltdrive2 =
+        Motor.fromTalonFX(
+            WiringConstants.HopperMotors.hopperMotorBeltdrive2,
+            (TalonFX MotorFx) -> {
+              TalonFXConfiguration config = new TalonFXConfiguration();
+              config.CurrentLimits.SupplyCurrentLimit = 100;
+              config.CurrentLimits.SupplyCurrentLimitEnable = true;
+              config.Feedback.SensorToMechanismRatio = 1;
+              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+              config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+              MotorFx.getConfigurator().apply(config);
+            },
+            null,
+            0,
+            FeedbackController.fromPID(
+                1,
+                0,
+                0,
+                (PIDController pid) -> {
+                  pid.setTolerance(1);
+                }),
+            FeedforwardController.forConstantGravity(0, 0, 0, 0),
+            TargetType.Velocity);
     hopperMotorBeltdrive.getSysIDCommands("hopper belt drive neo", 0, 0, 0);
   }
 
@@ -54,6 +80,7 @@ public class Hopper extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               hopperMotorBeltdrive.setTarget(beltdrivespeed);
+              hopperMotorBeltdrive2.setTarget(beltdrivespeed);
             },
             this)
         .andThen(
@@ -61,6 +88,7 @@ public class Hopper extends SubsystemBase implements Loggable {
               Commands.waitUntil(
                   () -> {
                     return hopperMotorBeltdrive.atTarget();
+            
                   });
             });
   }
@@ -69,6 +97,7 @@ public class Hopper extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               hopperMotorBeltdrive.setVoltage(0);
+              hopperMotorBeltdrive2.setVoltage(0);
             },
             this)
         .andThen(
