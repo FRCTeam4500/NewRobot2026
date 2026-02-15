@@ -132,11 +132,12 @@ public class Robot extends LoggedRobot {
     SendableChooser<Command> chooser = new SendableChooser<>();
     chooser.setDefaultOption("None", Commands.none());
     NamedCommands.registerCommand("StartShooter", structure.StartShooter());
-    NamedCommands.registerCommand("shoot", structure.shoot());
+    NamedCommands.registerCommand("Shoot", structure.shoot());
     NamedCommands.registerCommand("StopShooter", structure.StopShooter());
 
     NamedCommands.registerCommand("StartIntake", structure.StartIntake());
     NamedCommands.registerCommand("StopIntake", structure.StopIntake());
+    NamedCommands.registerCommand("ExtendIntake", structure.ExtendIntake());
     SmartDashboard.putData("Auto Chooser", chooser);
     chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
     chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
