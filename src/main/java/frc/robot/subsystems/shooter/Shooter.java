@@ -1,8 +1,10 @@
 package frc.robot.subsystems.shooter;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
@@ -31,7 +33,6 @@ import java.util.function.Supplier;
 
 public class Shooter extends SubsystemBase implements Loggable {
   private Motor flywheel1;
-  private Motor flywheel2;
   private Motor hood;
   private double flywheelSpeedlog;
   private double hoodAngleLog;
@@ -82,28 +83,20 @@ public class Shooter extends SubsystemBase implements Loggable {
             FeedbackController.fromTunablePID(FlywheelPID, PIDP),
             FeedforwardController.forConstantGravity(0, 0.1111, 0.11642, 0.018187),
             TargetType.Velocity);
-    flywheel2 =
-        Motor.fromTalonFX(
-            WiringConstants.ShooterMotors.flywheelMotor2,
-            (TalonFX MotorFx) -> {
-              TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 100;
-              config.CurrentLimits.StatorCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimitEnable = false;
-              config.CurrentLimits.SupplyCurrentLimitEnable = true;
-              config.Feedback.SensorToMechanismRatio = 1;
-              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-              config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-              MotorFx.getConfigurator().apply(config);
-            },
-            (FeedforwardSim sim) -> {},
-            0,
-            FeedbackController.fromTunablePID(FlywheelPID, PIDP),
-            FeedforwardController.forConstantGravity(0, 0.11108, 0.11641, 0.018121),
-            TargetType.Velocity);
-    flywheel1
-        .getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2)
-        .putOnDashboard("flywheel", this);
+
+    TalonFX follower = new TalonFX(WiringConstants.ShooterMotors.flywheelMotor2);
+    TalonFXConfiguration followerConfig = new TalonFXConfiguration();
+    followerConfig.CurrentLimits.SupplyCurrentLimit = 100;
+    followerConfig.CurrentLimits.StatorCurrentLimit = 80;
+    followerConfig.CurrentLimits.StatorCurrentLimitEnable = false;
+    followerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    followerConfig.Feedback.SensorToMechanismRatio = 1;
+    followerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    followerConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    follower.getConfigurator().apply(followerConfig);
+    follower.setControl(
+        new Follower(WiringConstants.ShooterMotors.flywheelMotor1, MotorAlignmentValue.Aligned));
+    flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10).putOnDashboard("flywheel", this);
 
     hood =
         Motor.fromSparkMax(
@@ -146,7 +139,6 @@ public class Shooter extends SubsystemBase implements Loggable {
           flywheelSpeedlog = flywheelSpeed.get(distance);
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
-          flywheel2.setTarget(flywheelSpeed.get(distance));
 
           hood.setTarget(hoodAngle.get(distance));
         },
@@ -157,7 +149,6 @@ public class Shooter extends SubsystemBase implements Loggable {
     return Commands.run(
         () -> {
           flywheel1.setTarget(flywheelSubscriber.get()); // flywheelSubscriber.get()
-          flywheel2.setTarget(flywheelSubscriber.get());
 
           hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
 
@@ -172,7 +163,6 @@ public class Shooter extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               flywheel1.setVoltage(0);
-              flywheel2.setVoltage(0);
 
               hood.setTarget(0);
               ;
