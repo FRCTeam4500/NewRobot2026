@@ -59,7 +59,6 @@ public class Shooter extends SubsystemBase implements Loggable {
     hoodAngle.put(2.12, 0.0); // meters , angle degrees
     hoodAngle.put(1.0, 0.0);
 
-
     // for testing
     PIDController FlywheelPID = new PIDController(0, 0, 0);
     FlywheelPID.setTolerance(1);
