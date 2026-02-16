@@ -129,7 +129,7 @@ public class Shooter extends SubsystemBase implements Loggable {
                 FeedbackController.fromTunablePID(FlywheelPID,PIDP), 
                 FeedforwardController.forConstantGravity(0, 0.1111, 0.11642, 0.018187), 
                 TargetType.Velocity);
-        flywheel2 = Motor.fromTalonFXFollower(new TalonFX(WiringConstants.ShooterMotors.flywheelMotor1), WiringConstants.ShooterMotors.flywheelMotor2,null,
+        flywheel2 = Motor.fromTalonFXFollower(WiringConstants.ShooterMotors.flywheelMotor1, WiringConstants.ShooterMotors.flywheelMotor2,null,
                 
         (TalonFX MotorFx) -> {
                     TalonFXConfiguration config = new TalonFXConfiguration();

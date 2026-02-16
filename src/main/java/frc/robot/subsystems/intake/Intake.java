@@ -25,6 +25,7 @@ public class Intake extends SubsystemBase implements Loggable {
   private final int intakeSpeed = 100;
   private final double maxExtention = 6.6;
   private final double relativeMaxExtention = 0.8;
+  
 
   public Intake() {
     intakeMotorDrive =
