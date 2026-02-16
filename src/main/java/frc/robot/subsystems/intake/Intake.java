@@ -1,11 +1,14 @@
 package frc.robot.subsystems.intake;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,9 +28,13 @@ public class Intake extends SubsystemBase implements Loggable {
   private final int intakeSpeed = 100;
   private final double maxExtention = 6.6;
   private final double relativeMaxExtention = 0.8;
-  
+  private DoubleSupplier PIDP;
 
   public Intake() {
+    PIDP =()->0.5;
+    PIDController ExtenionPID = new PIDController(0, 0, 0);
+    ExtenionPID.setTolerance(1);
+
     intakeMotorDrive =
         Motor.fromSparkMax(
             WiringConstants.IntakeMotors.IntakeMotor,
@@ -72,13 +79,7 @@ public class Intake extends SubsystemBase implements Loggable {
               sim.withHardstops(0, 6.6);
             },
             0,
-            FeedbackController.fromPID(
-                0.5,
-                0,
-                0,
-                (PIDController pid) -> {
-                  pid.setTolerance(0.5);
-                }),
+            FeedbackController.fromTunablePID(ExtenionPID, PIDP),
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
     intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0);
@@ -117,6 +118,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command extendIntake() {
     return Commands.runOnce(
             () -> {
+              PIDP = ()->0.5;
               intakeMotorExtension.setTarget(6.5);
             },
             this)
@@ -162,6 +164,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command retractIntake() {
     return Commands.runOnce(
             () -> {
+              PIDP = ()->2;
               intakeMotorExtension.setTarget(0);
             },
             this)
