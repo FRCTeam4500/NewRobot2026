@@ -1,14 +1,11 @@
 package frc.robot.subsystems.intake;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +17,7 @@ import frc.robot.utilities.FeedforwardController;
 import frc.robot.utilities.FeedforwardSim;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
+import java.util.function.DoubleSupplier;
 
 public class Intake extends SubsystemBase implements Loggable {
 
@@ -31,7 +29,7 @@ public class Intake extends SubsystemBase implements Loggable {
   private DoubleSupplier PIDP;
 
   public Intake() {
-    PIDP =()->0.5;
+    PIDP = () -> 0.5;
     PIDController ExtenionPID = new PIDController(0, 0, 0);
     ExtenionPID.setTolerance(1);
 
@@ -118,7 +116,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command extendIntake() {
     return Commands.runOnce(
             () -> {
-              PIDP = ()->0.5;
+              PIDP = () -> 0.5;
               intakeMotorExtension.setTarget(6.5);
             },
             this)
@@ -164,7 +162,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command retractIntake() {
     return Commands.runOnce(
             () -> {
-              PIDP = ()->2;
+              PIDP = () -> 2;
               intakeMotorExtension.setTarget(0);
             },
             this)

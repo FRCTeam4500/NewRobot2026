@@ -4,7 +4,9 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.MathUtil;
@@ -27,10 +29,6 @@ import frc.robot.utilities.logging.Loggable;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
-
 
 /** A class representing a motor */
 public class Motor extends SubsystemBase implements Loggable {
@@ -251,8 +249,8 @@ public class Motor extends SubsystemBase implements Loggable {
   @Override
   public void periodic() {
     if (type == TargetType.Follower) {
-    return; // Hardware-controlled
-  }
+      return; // Hardware-controlled
+    }
     if (DriverStation.isDisabled()) {
       voltageSetter.accept(0);
       return;
@@ -275,8 +273,7 @@ public class Motor extends SubsystemBase implements Loggable {
         ffVolts = ff.calculateVoltage(getPosition(), target, 0);
         break;
       case Follower:
-       break;
-      
+        break;
     }
     voltageSetter.accept(MathUtil.clamp(fbVolts + ffVolts, negativeMaxVolts, maxVolts));
   }
@@ -374,7 +371,7 @@ public class Motor extends SubsystemBase implements Loggable {
     Position,
     /** Targets a velocity */
     Velocity,
-    /**Follows a leader */
+    /** Follows a leader */
     Follower;
   }
 
@@ -427,8 +424,7 @@ public class Motor extends SubsystemBase implements Loggable {
    *     <p>In Simulation, either {@link #fromIdealSim} or {@link #fromRealisticSim} is returned,
    *     depending on whether ff is null
    */
-  
-   public static Motor fromTalonFX(
+  public static Motor fromTalonFX(
       int canID,
       Consumer<TalonFX> config,
       Consumer<FeedforwardSim> simConfig,
@@ -483,7 +479,7 @@ public class Motor extends SubsystemBase implements Loggable {
    *         .withNeutralMode(NeutralModeValue.Brake) // If zero voltage, the motor will brake
    *         .withInterted(InvertedValue.CounterClockwise_Positive); // The positive direction is CCW
    *     config.Feedback = null
-   *      
+   *
    *     motor.getConfigurator().apply(config); // Apply the config
    *   },
    *   sim -> {
@@ -513,54 +509,50 @@ public class Motor extends SubsystemBase implements Loggable {
    *     <p>In Simulation, either {@link #fromIdealSim} or {@link #fromRealisticSim} is returned,
    *     depending on whether ff is null
    */
-
   public static Motor fromTalonFXFollower(
-    TalonFX leader,
-    int followerCanID,
-    MotorAlignmentValue invertFollower,
-    Consumer<TalonFX> config) {
+      TalonFX leader,
+      int followerCanID,
+      MotorAlignmentValue invertFollower,
+      Consumer<TalonFX> config) {
 
-  TalonFX follower = new TalonFX(followerCanID);
+    TalonFX follower = new TalonFX(followerCanID);
     config.accept(follower);
-  
+
     // Hardware follow
-  follower.setControl(
-      new Follower(
-          leader.getDeviceID(),
-          invertFollower //this will be null, Inversion done in configs
-      )
-  );
+    follower.setControl(
+        new Follower(
+            leader.getDeviceID(), invertFollower // this will be null, Inversion done in configs
+            ));
 
-  return new Motor(
-      TargetType.Follower,
+    return new Motor(
+        TargetType.Follower,
 
-      // Position setter – no-op
-      position -> {},
+        // Position setter – no-op
+        position -> {},
 
-      // Voltage setter – no-op
-      voltage -> {},
+        // Voltage setter – no-op
+        voltage -> {},
 
-      // Position getter mirrors leader (useful for logging)
-      () -> leader.getPosition().getValueAsDouble(),
+        // Position getter mirrors leader (useful for logging)
+        () -> leader.getPosition().getValueAsDouble(),
 
-      // Velocity getter mirrors leader
-      () -> leader.getVelocity().getValueAsDouble(),
+        // Velocity getter mirrors leader
+        () -> leader.getVelocity().getValueAsDouble(),
 
-      // Dummy controllers (never used)
-      null, //FeedbackController.forNone(),
-      null, //FeedforwardController.forNone(),
+        // Dummy controllers (never used)
+        null, // FeedbackController.forNone(),
+        null, // FeedforwardController.forNone(),
 
-      // Logging
-      path -> {
-        HoundLog.log(path, "Mode", "Follower");
-        HoundLog.log(path, "Leader ID", leader.getDeviceID());
-        HoundLog.log(path, "Temperature", follower.getDeviceTemp().getValueAsDouble());
-        HoundLog.log(path, "Stator Current", follower.getStatorCurrent().getValueAsDouble());
-        HoundLog.log(path, "Supply Current", follower.getSupplyCurrent().getValueAsDouble());
-        HoundLog.log(path, "Applied Voltage", follower.getMotorVoltage().getValueAsDouble());
-      }
-  );
-}
+        // Logging
+        path -> {
+          HoundLog.log(path, "Mode", "Follower");
+          HoundLog.log(path, "Leader ID", leader.getDeviceID());
+          HoundLog.log(path, "Temperature", follower.getDeviceTemp().getValueAsDouble());
+          HoundLog.log(path, "Stator Current", follower.getStatorCurrent().getValueAsDouble());
+          HoundLog.log(path, "Supply Current", follower.getSupplyCurrent().getValueAsDouble());
+          HoundLog.log(path, "Applied Voltage", follower.getMotorVoltage().getValueAsDouble());
+        });
+  }
 
   /**
    *
@@ -837,6 +829,4 @@ public class Motor extends SubsystemBase implements Loggable {
         FeedforwardController.forNone(),
         path -> HoundLog.log(path, "Acceleration", stateHolder[2]));
   }
-
-
 }
