@@ -87,13 +87,7 @@ public class Hopper extends SubsystemBase implements Loggable {
               hopperMotorBeltdrive2.setTarget(beltdrivespeed);
             },
             this)
-        .andThen(
-            () -> {
-              Commands.waitUntil(
-                  () -> {
-                    return hopperMotorBeltdrive.atTarget();
-                  });
-            });
+        .andThen(Commands.idle());
   }
 
   public Command beltDriveStop() {

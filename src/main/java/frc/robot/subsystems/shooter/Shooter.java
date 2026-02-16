@@ -53,14 +53,11 @@ public class Shooter extends SubsystemBase implements Loggable {
 
     // find flywheel speed
     flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
-    flywheelSpeed.put(4.417, 1000.0);
+    flywheelSpeed.put(4.417, 48.1);
 
     // find hood angle
     hoodAngle.put(2.12, 0.0); // meters , angle degrees
-    hoodAngle.put(1.0, 60.0);
-    hoodAngle.put(1.0, 60.0);
-    hoodAngle.put(1.0, 60.0);
-    hoodAngle.put(1.0, 60.0);
+    hoodAngle.put(1.0, 0.0);
 
     // for testing
     PIDController FlywheelPID = new PIDController(0, 0, 0);

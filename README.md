@@ -1,1 +1,1 @@
-[![Build and Clean](https://github.com/FRCTeam4500/Robot2025/actions/workflows/clean-build.yml/badge.svg?branch=dev)](https://github.com/FRCTeam4500/Robot2025/actions/workflows/clean-build.yml?branch=dev)
+[![Build and Clean](https://github.com/FRCTeam4500/NewRobot2026/actions/workflows/clean-build.yml/badge.svg?branch=dev)](https://github.com/FRCTeam4500/NewRobot2026/actions/workflows/clean-build.yml?branch=dev)
