@@ -64,7 +64,8 @@ public class Swerve extends SubsystemBase implements Loggable {
     previousSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
     // previousSpeeds.vxMetersPerSecond=0;
     // previousSpeeds.vyMetersPerSecond=0;
-    tagCameras = new Limelight[] {new Limelight("limelight-front")};
+    //new Limelight("limelight-front")
+    tagCameras = new Limelight[] {};
 
     gyro =
         Gyro.fromNavX(
@@ -92,7 +93,7 @@ public class Swerve extends SubsystemBase implements Loggable {
             getModulePositions(),
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, 0.1),
-            VecBuilder.fill(5, 5, 5));
+            VecBuilder.fill(5, 5, 10));
 
     StopTilting.setupKinematics(kinematics);
     StopTilting.setupBase(

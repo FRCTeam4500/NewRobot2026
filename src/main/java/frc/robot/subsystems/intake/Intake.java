@@ -162,8 +162,8 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command retractIntake() {
     return Commands.runOnce(
             () -> {
-              PIDP = () -> 2;
-              intakeMotorExtension.setTarget(0);
+              PIDP = () -> 10;
+              intakeMotorExtension.setTarget(2);
             },
             this)
         .andThen(
@@ -177,6 +177,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public void log(String path) {
 
     HoundLog.log(path, "intakeMotorDriveAtTarget", intakeMotorDrive.atTarget());
+    HoundLog.log(path, "intakeMotorDriveAtTarget", PIDP.getAsDouble());
     HoundLog.log(path, "intakeDriveSpeed", intakeMotorDrive.getVelocity());
     HoundLog.log(path, "IntakeExtentionAtTarget", intakeMotorExtension.atTarget());
     HoundLog.log(path, "intakeMotorExtension", intakeMotorExtension.getPosition());
