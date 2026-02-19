@@ -75,8 +75,7 @@ public class Swerve extends SubsystemBase implements Loggable {
             pigeon -> {
               Pigeon2Configuration config = new Pigeon2Configuration();
               pigeon.getConfigurator().apply(config);
-            }
-            );
+            });
 
     modules =
         new SwerveModule[] {

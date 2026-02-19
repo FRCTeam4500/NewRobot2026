@@ -3,7 +3,6 @@ package frc.robot.hardware;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
-
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 
@@ -46,13 +44,14 @@ public interface Gyro extends Loggable {
   public Rotation2d getAngularVelocity();
 
   /**
-   * 
    * @param canID the pigeon's can ID
-   * @param radiansPerSecond how fast the robot thinks it is going, used for sim and gyro disconnects
+   * @param radiansPerSecond how fast the robot thinks it is going, used for sim and gyro
+   *     disconnects
    * @param config a method to configure the pigeon
    * @return the pigeon 2 wrapped as a {@link Gyro}
    */
-  public static Gyro fromPigeon2(int canID, DoubleSupplier radiansPerSecond, Consumer<Pigeon2> config) {
+  public static Gyro fromPigeon2(
+      int canID, DoubleSupplier radiansPerSecond, Consumer<Pigeon2> config) {
     if (RobotBase.isSimulation()) {
       return fromSim(radiansPerSecond);
     }
@@ -63,10 +62,12 @@ public interface Gyro extends Loggable {
         Commands.runOnce(() -> HoundLog.logFault("Pigeon 2 Disconnected...", AlertType.kError))
             .ignoringDisable(true));
     connected.onTrue(
-        Commands.runOnce(() -> HoundLog.clearFault("Pigeon 2 Disconnected...")).ignoringDisable(true));
+        Commands.runOnce(() -> HoundLog.clearFault("Pigeon 2 Disconnected..."))
+            .ignoringDisable(true));
 
     return new Gyro() {
       double lastAngle = pigeon.getRotation2d().getRadians();
+
       @Override
       public void log(String path) {
         HoundLog.log(path, "Connected", pigeon.isConnected());
@@ -97,19 +98,17 @@ public interface Gyro extends Loggable {
           return Rotation2d.fromRadians(radiansPerSecond.getAsDouble());
         }
       }
-      
     };
   }
 
   /**
-   * @param radiansPerSecond how fast the robot thinks it is going, used for sim and gyro disconnects
+   * @param radiansPerSecond how fast the robot thinks it is going, used for sim and gyro
+   *     disconnects
    * @param config Method to configure the navX
    * @return the navX on the RIO wrapped as a {@link Gyro}
    */
-  public static Gyro fromNavX2(
-      DoubleSupplier radiansPerSecond, Consumer<AHRS> config) {
-    
-        
+  public static Gyro fromNavX2(DoubleSupplier radiansPerSecond, Consumer<AHRS> config) {
+
     if (RobotBase.isSimulation()) {
       return fromSim(radiansPerSecond);
     }
