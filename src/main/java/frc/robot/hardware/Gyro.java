@@ -4,7 +4,9 @@ import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.WiringConstants;
@@ -45,15 +47,15 @@ public interface Gyro extends Loggable {
    * @param config Method to configure the navX
    * @return the navX on the RIO wrapped as a {@link Gyro}
    */
-  public static Gyro fromNavX(DoubleSupplier radiansPerSecond, Pigeon2Configuration config) {
+  public static Gyro fromNavX(DoubleSupplier radiansPerSecond, Pigeon2Configuration config, int canID) {
 
     if (RobotBase.isSimulation()) {
       return fromSim(radiansPerSecond);
     }
-    Navx navx = new Navx(canID);
+    
 
 
-    Pigeon2 pigeon = new Pigeon2(WiringConstants.SwerveWiring.gyro_ID);
+    Pigeon2 pigeon = new Pigeon2(canID);
     pigeon.getConfigurator().apply(config);
     
     Trigger connected = new Trigger(pigeon::isConnected);
@@ -61,9 +63,10 @@ public interface Gyro extends Loggable {
         Commands.runOnce(() -> HoundLog.logFault("Gyro Disconnected...", AlertType.kError))
             .ignoringDisable(true));
     connected.onTrue(
-        Commands.runOnce(() -> HoundLog.clearFault("Gyro Disconnected...")).ignoringDisable(true));*/
+        Commands.runOnce(() -> HoundLog.clearFault("Gyro Disconnected...")).ignoringDisable(true));
     return new Gyro() {
-      double lastAngle = Units.degreesToRadians(pigeon.getYaw().getValueAsDouble());
+      double lastAngle = getAngle().getRadians();
+      
 
       @Override
       public void log(String path) {
@@ -92,7 +95,8 @@ public interface Gyro extends Loggable {
         if (pigeon.isConnected()) {
           return Rotation2d.fromRadians(radiansPerSecond.getAsDouble());
         } else {
-        }*/
+            return Rotation2d.fromRadians(radiansPerSecond.getAsDouble());
+        }
       }
     };
   }

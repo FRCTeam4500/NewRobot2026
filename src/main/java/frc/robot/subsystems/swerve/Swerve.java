@@ -68,7 +68,7 @@ public class Swerve extends SubsystemBase implements Loggable {
     //new Limelight("limelight-front")
     tagCameras = new Limelight[] {};
 
-    gyro = Gyro.fromNavX(() -> getSpeeds().omegaRadiansPerSecond, new Pigeon2Configuration());
+    gyro = Gyro.fromNavX(() -> getSpeeds().omegaRadiansPerSecond, new Pigeon2Configuration(), WiringConstants.SwerveWiring.gyro_ID);
 
     modules =
         new SwerveModule[] {
