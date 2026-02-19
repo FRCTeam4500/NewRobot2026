@@ -3,6 +3,7 @@ package frc.robot.subsystems.swerve;
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 import static frc.robot.utilities.ExtendedMath.withHardDeadzone;
 
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
@@ -67,11 +68,7 @@ public class Swerve extends SubsystemBase implements Loggable {
     //new Limelight("limelight-front")
     tagCameras = new Limelight[] {};
 
-    gyro =
-        Gyro.fromNavX(
-            () -> getSpeeds().omegaRadiansPerSecond,
-            navx -> {},
-            WiringConstants.SwerveWiring.gyro_ID);
+    gyro = Gyro.fromNavX(() -> getSpeeds().omegaRadiansPerSecond, new Pigeon2Configuration());
 
     modules =
         new SwerveModule[] {
