@@ -1,10 +1,15 @@
 package frc.robot.subsystems.Hopper;
 
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,11 +30,21 @@ public class Hopper extends SubsystemBase implements Loggable {
   private Motor hopperMotorBeltdrive2;
   SysIDCommands angleSysId;
   private DoubleSubscriber hopperSpeed;
-
+  private InterpolatingDoubleTreeMap flywheelSpeed = new InterpolatingDoubleTreeMap();
+ 
   public static int beltdrivespeed = 50;
 
   public Hopper() {
     hopperSpeed = HoundLog.tunable("Hopper Speed", 50.0);
+
+    flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
+    flywheelSpeed.put(2.373, 50.0);
+    flywheelSpeed.put(2.817, 50.0);
+    flywheelSpeed.put(3.121, 53.0);
+    flywheelSpeed.put(3.565, 54.0);
+    flywheelSpeed.put(3.630, 55.0);
+
+
 
     hopperMotorBeltdrive =
         Motor.fromTalonFX(
@@ -83,11 +98,12 @@ public class Hopper extends SubsystemBase implements Loggable {
             "hopper belt drive neo", 1, 10, 10, hopperMotorBeltdrive2);
   }
 
-  public Command beltDriveShoot() {
+  public Command beltDriveShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
     return Commands.runOnce(
             () -> {
-              hopperMotorBeltdrive.setTarget(hopperSpeed.get());
-              hopperMotorBeltdrive2.setTarget(hopperSpeed.get());
+              double distance = robotPose.get().getTranslation().getDistance(target.get());
+              hopperMotorBeltdrive.setTarget(flywheelSpeed.get(distance));
+              hopperMotorBeltdrive2.setTarget(flywheelSpeed.get(distance));
             },
             this)
         .andThen(Commands.idle());
