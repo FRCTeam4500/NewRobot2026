@@ -1,7 +1,5 @@
 package frc.robot.subsystems.Hopper;
 
-import java.util.function.Supplier;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -23,6 +21,7 @@ import frc.robot.utilities.FeedforwardController;
 import frc.robot.utilities.SysIDCommands;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
+import java.util.function.Supplier;
 
 public class Hopper extends SubsystemBase implements Loggable {
 
@@ -31,7 +30,7 @@ public class Hopper extends SubsystemBase implements Loggable {
   SysIDCommands angleSysId;
   private DoubleSubscriber hopperSpeed;
   private InterpolatingDoubleTreeMap flywheelSpeed = new InterpolatingDoubleTreeMap();
- 
+
   public static int beltdrivespeed = 50;
 
   public Hopper() {
@@ -43,8 +42,6 @@ public class Hopper extends SubsystemBase implements Loggable {
     flywheelSpeed.put(3.121, 53.0);
     flywheelSpeed.put(3.565, 54.0);
     flywheelSpeed.put(3.630, 55.0);
-
-
 
     hopperMotorBeltdrive =
         Motor.fromTalonFX(
