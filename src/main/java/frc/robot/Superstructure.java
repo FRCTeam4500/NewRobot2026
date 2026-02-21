@@ -90,7 +90,8 @@ public class Superstructure implements Loggable {
   }
 
   public Command shoot() {
-    return hopper.beltDriveShoot(this.robotPose,
+    return hopper.beltDriveShoot(
+        this.robotPose,
         () -> {
           if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
             return new Translation2d(11.901424, 4.034536); // red hub
