@@ -1,10 +1,14 @@
 package frc.robot.hardware;
 
-import com.studica.frc.Navx;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
 import java.util.function.Consumer;
@@ -40,32 +44,37 @@ public interface Gyro extends Loggable {
   public Rotation2d getAngularVelocity();
 
   /**
-   * @param config Method to configure the navX
-   * @return the navX on the RIO wrapped as a {@link Gyro}
+   * @param canID the pigeon's can ID
+   * @param radiansPerSecond how fast the robot thinks it is going, used for sim and gyro
+   *     disconnects
+   * @param config a method to configure the pigeon
+   * @return the pigeon 2 wrapped as a {@link Gyro}
    */
-  public static Gyro fromNavX(DoubleSupplier radiansPerSecond, Consumer<Navx> config, int canID) {
+  public static Gyro fromPigeon2(
+      int canID, DoubleSupplier radiansPerSecond, Consumer<Pigeon2> config) {
     if (RobotBase.isSimulation()) {
       return fromSim(radiansPerSecond);
     }
-    Navx navx = new Navx(canID);
-
-    config.accept(navx);
-    // Trigger connected = new Trigger(navx);
-    /*connected.onFalse(
-        Commands.runOnce(() -> HoundLog.logFault("Gyro Disconnected...", AlertType.kError))
+    Pigeon2 pigeon = new Pigeon2(canID);
+    config.accept(pigeon);
+    Trigger connected = new Trigger(pigeon::isConnected);
+    connected.onFalse(
+        Commands.runOnce(() -> HoundLog.logFault("Pigeon 2 Disconnected...", AlertType.kError))
             .ignoringDisable(true));
     connected.onTrue(
-        Commands.runOnce(() -> HoundLog.clearFault("Gyro Disconnected...")).ignoringDisable(true));*/
+        Commands.runOnce(() -> HoundLog.clearFault("Pigeon 2 Disconnected..."))
+            .ignoringDisable(true));
+
     return new Gyro() {
-      double lastAngle = navx.getRotation2d().getRadians();
+      double lastAngle = pigeon.getRotation2d().getRadians();
 
       @Override
       public void log(String path) {
-        // HoundLog.log(path, "Connected", navx.isConnected());
-        HoundLog.log(path, "Pitch", navx.getPitch().in(Units.Degree));
-        HoundLog.log(path, "Roll", navx.getRoll().in(Units.Degree));
-        HoundLog.log(path, "Angle", navx.getYaw().in(Units.Degree));
-        if (RobotBase.isSimulation()) {
+        HoundLog.log(path, "Connected", pigeon.isConnected());
+        HoundLog.log(path, "Pitch", pigeon.getPitch().getValueAsDouble());
+        HoundLog.log(path, "Roll", pigeon.getRoll().getValueAsDouble());
+        HoundLog.log(path, "Angle", pigeon.getYaw().getValueAsDouble());
+        if (!pigeon.isConnected()) {
           lastAngle += radiansPerSecond.getAsDouble() * 0.02;
         } else {
           lastAngle = getAngle().getRadians();
@@ -74,7 +83,64 @@ public interface Gyro extends Loggable {
 
       @Override
       public Rotation2d getAngle() {
-        if (RobotBase.isReal()) {
+        if (pigeon.isConnected()) {
+          return pigeon.getRotation2d();
+        } else {
+          return Rotation2d.fromRadians(lastAngle);
+        }
+      }
+
+      @Override
+      public Rotation2d getAngularVelocity() {
+        if (pigeon.isConnected()) {
+          return Rotation2d.fromDegrees(pigeon.getAngularVelocityZWorld().getValueAsDouble());
+        } else {
+          return Rotation2d.fromRadians(radiansPerSecond.getAsDouble());
+        }
+      }
+    };
+  }
+
+  /**
+   * @param radiansPerSecond how fast the robot thinks it is going, used for sim and gyro
+   *     disconnects
+   * @param config Method to configure the navX
+   * @return the navX on the RIO wrapped as a {@link Gyro}
+   */
+  public static Gyro fromNavX2(DoubleSupplier radiansPerSecond, Consumer<AHRS> config) {
+
+    if (RobotBase.isSimulation()) {
+      return fromSim(radiansPerSecond);
+    }
+
+    AHRS navx = new AHRS(NavXComType.kMXP_SPI);
+    config.accept(navx);
+
+    Trigger connected = new Trigger(navx::isConnected);
+    connected.onFalse(
+        Commands.runOnce(() -> HoundLog.logFault("NavX Disconnected...", AlertType.kError))
+            .ignoringDisable(true));
+    connected.onTrue(
+        Commands.runOnce(() -> HoundLog.clearFault("NavX Disconnected...")).ignoringDisable(true));
+    return new Gyro() {
+      double lastAngle = getAngle().getRadians();
+
+      @Override
+      public void log(String path) {
+        HoundLog.log(path, "Connected", navx.isConnected());
+        HoundLog.log(path, "Pitch", -navx.getPitch());
+        HoundLog.log(path, "Roll", -navx.getRoll());
+        HoundLog.log(path, "Angle", getAngle().getDegrees());
+        if (!navx.isConnected()) {
+          lastAngle += radiansPerSecond.getAsDouble() * 0.02;
+        } else {
+          lastAngle = getAngle().getRadians();
+        }
+      }
+
+      @Override
+      public Rotation2d getAngle() {
+        if (navx.isConnected()) {
           return navx.getRotation2d();
         } else {
           return Rotation2d.fromRadians(lastAngle);
@@ -83,11 +149,11 @@ public interface Gyro extends Loggable {
 
       @Override
       public Rotation2d getAngularVelocity() {
-        return Rotation2d.fromRadians(radiansPerSecond.getAsDouble());
-        /*if (RobotBase.isReal()) {
-          return Rotation2d.fromDegrees(-navx.getRate());
+        if (navx.isConnected()) {
+          return Rotation2d.fromRadians(-navx.getRate());
         } else {
-        }*/
+          return Rotation2d.fromRadians(radiansPerSecond.getAsDouble());
+        }
       }
     };
   }
