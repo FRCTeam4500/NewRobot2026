@@ -65,8 +65,8 @@ public class Swerve extends SubsystemBase implements Loggable {
     previousSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
     // previousSpeeds.vxMetersPerSecond=0;
     // previousSpeeds.vyMetersPerSecond=0;
-    // new Limelight("limelight-front")
-    tagCameras = new Limelight[] {};
+    // new Limelight("limelight-front") 
+    tagCameras = new Limelight[] {new Limelight("limelight-front")};
 
     gyro =
         Gyro.fromPigeon2(
@@ -74,6 +74,7 @@ public class Swerve extends SubsystemBase implements Loggable {
             () -> getSpeeds().omegaRadiansPerSecond,
             pigeon -> {
               Pigeon2Configuration config = new Pigeon2Configuration();
+
               pigeon.getConfigurator().apply(config);
             });
 

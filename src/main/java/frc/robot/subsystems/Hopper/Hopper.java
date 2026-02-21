@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -23,10 +24,12 @@ public class Hopper extends SubsystemBase implements Loggable {
   private Motor hopperMotorBeltdrive;
   private Motor hopperMotorBeltdrive2;
   SysIDCommands angleSysId;
+  private DoubleSubscriber hopperSpeed;
 
-  public static int beltdrivespeed = 100;
+  public static int beltdrivespeed = 50;
 
   public Hopper() {
+    hopperSpeed = HoundLog.tunable("Hopper Speed", 50.0);
 
     hopperMotorBeltdrive =
         Motor.fromTalonFX(
@@ -83,8 +86,8 @@ public class Hopper extends SubsystemBase implements Loggable {
   public Command beltDriveShoot() {
     return Commands.runOnce(
             () -> {
-              hopperMotorBeltdrive.setTarget(beltdrivespeed);
-              hopperMotorBeltdrive2.setTarget(beltdrivespeed);
+              hopperMotorBeltdrive.setTarget(hopperSpeed.get());
+              hopperMotorBeltdrive2.setTarget(hopperSpeed.get());
             },
             this)
         .andThen(Commands.idle());

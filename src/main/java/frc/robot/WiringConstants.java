@@ -19,7 +19,7 @@ public class WiringConstants {
     public static final int BACK_RIGHT_DRIVE_ID = 8;
     public static final int BACK_RIGHT_ANGLE_ID = 1;
 
-    public static final int gyro_ID = 0;
+    public static final int gyro_ID = 40;
 
     public static final int FRONT_LEFT_ENCODER_ID = 2;
     public static final int FRONT_RIGHT_ENCODER_ID = 0;

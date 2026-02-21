@@ -50,7 +50,7 @@ public class Intake extends SubsystemBase implements Loggable {
             (FeedforwardSim sim) -> {},
             0,
             FeedbackController.fromPID(
-                1,
+                10,
                 0,
                 0,
                 (PIDController pid) -> {
@@ -130,7 +130,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command flexIntake() {
     return Commands.runOnce(
             () -> {
-              intakeMotorExtension.setTarget(3);
+              intakeMotorExtension.setTarget(10);
             },
             this)
         .andThen(
