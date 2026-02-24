@@ -199,6 +199,5 @@ public class Shooter extends SubsystemBase implements Loggable {
     HoundLog.log(path, "flywheelAtTrarget", flywheel1.atTarget());
     HoundLog.log(path, "HoodAtTarget", hood.atTarget());
     HoundLog.log(path, "robotDistance", this.distance);
-    
   }
 }
