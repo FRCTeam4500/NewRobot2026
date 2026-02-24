@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase implements Loggable {
               SparkMaxConfig config = new SparkMaxConfig();
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
-              config.smartCurrentLimit(60);
+              config.smartCurrentLimit(100);
               config.idleMode(IdleMode.kBrake);
               sparkmotor.configure(
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

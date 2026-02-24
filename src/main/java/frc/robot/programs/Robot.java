@@ -51,7 +51,7 @@ public class Robot extends LoggedRobot {
 
     // rev shooter
     Trigger revShooter = xbox2.rightTrigger();
-    revShooter.whileTrue(structure.StartShooterTest());
+    revShooter.whileTrue(structure.StartShooter());
 
     // intake
     Trigger ActivateIntake = xbox2.leftTrigger();
