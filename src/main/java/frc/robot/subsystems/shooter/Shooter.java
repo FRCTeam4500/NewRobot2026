@@ -62,7 +62,7 @@ public class Shooter extends SubsystemBase implements Loggable {
     flywheelSpeed.put(4.7, 75.0);
 
     // find hood angle
-    hoodAngle.put(1.583, 0.0); 
+    hoodAngle.put(1.583, 0.0);
     hoodAngle.put(2.12, 0.0); // meters , angle degrees
     hoodAngle.put(2.373, 0.0);
     hoodAngle.put(2.817, 1.0);

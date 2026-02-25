@@ -66,8 +66,6 @@ public class Robot extends LoggedRobot {
     Trigger RetractIntake = xbox2.a();
     RetractIntake.onTrue(structure.RetractIntake());
 
-  
-
     // climb lock
     // prep climb
     // climb
