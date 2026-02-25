@@ -49,23 +49,27 @@ public class Shooter extends SubsystemBase implements Loggable {
     flywheelSubscriber = HoundLog.tunable("Flywheel Speed", 0.0);
     turetSubscriber = HoundLog.tunable("TuretHood", 0.0);
     andgleSuscriber = HoundLog.tunable("turetangle", 0.0);
-    PIDP = HoundLog.tunable("PID P value", 0.85);
+    PIDP = HoundLog.tunable("PID P value", 0.95);
 
     // find flywheel speed
+    flywheelSpeed.put(1.583, 45.0);
     flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
     flywheelSpeed.put(2.373, 50.0);
     flywheelSpeed.put(2.817, 50.0);
     flywheelSpeed.put(3.121, 53.0);
     flywheelSpeed.put(3.565, 54.0);
     flywheelSpeed.put(3.630, 55.0);
+    flywheelSpeed.put(4.7, 75.0);
 
     // find hood angle
+    hoodAngle.put(1.583, 0.0); 
     hoodAngle.put(2.12, 0.0); // meters , angle degrees
-    hoodAngle.put(3.373, 0.0);
-    hoodAngle.put(3.817, 1.0);
+    hoodAngle.put(2.373, 0.0);
+    hoodAngle.put(2.817, 1.0);
     hoodAngle.put(3.158, 1.25);
     hoodAngle.put(3.565, 1.25);
     hoodAngle.put(3.630, 1.25);
+    hoodAngle.put(4.7, 1.9);
 
     // for testing
     PIDController FlywheelPID = new PIDController(0, 0, 0);

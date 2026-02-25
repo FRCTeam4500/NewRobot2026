@@ -36,12 +36,14 @@ public class Hopper extends SubsystemBase implements Loggable {
   public Hopper() {
     hopperSpeed = HoundLog.tunable("Hopper Speed", 50.0);
 
+    flywheelSpeed.put(1.583, 45.0);
     flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
     flywheelSpeed.put(2.373, 50.0);
     flywheelSpeed.put(2.817, 50.0);
     flywheelSpeed.put(3.121, 53.0);
     flywheelSpeed.put(3.565, 54.0);
     flywheelSpeed.put(3.630, 55.0);
+    flywheelSpeed.put(4.7, 75.0);
 
     hopperMotorBeltdrive =
         Motor.fromTalonFX(
@@ -99,7 +101,7 @@ public class Hopper extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               double distance = robotPose.get().getTranslation().getDistance(target.get());
-              hopperMotorBeltdrive.setTarget(flywheelSpeed.get(distance));
+              hopperMotorBeltdrive.setTarget(flywheelSpeed.get(distance)); //flywheelSpeed.get(distance)
               hopperMotorBeltdrive2.setTarget(flywheelSpeed.get(distance));
             },
             this)
