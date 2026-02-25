@@ -113,6 +113,21 @@ public class Intake extends SubsystemBase implements Loggable {
             });
   }
 
+  public Command reverseIntake() {
+    return Commands.runOnce(
+            () -> {
+              intakeMotorDrive.setVoltage(-intakeSpeed);
+            },
+            this)
+        .andThen(
+            () -> {
+              Commands.waitUntil(
+                  () -> {
+                    return intakeMotorDrive.atTarget();
+                  });
+            });
+  }
+
   public Command extendIntake() {
     return Commands.runOnce(
             () -> {
