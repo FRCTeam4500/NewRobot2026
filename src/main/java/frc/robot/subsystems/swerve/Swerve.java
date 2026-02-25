@@ -1,8 +1,8 @@
 package frc.robot.subsystems.swerve;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
-import static frc.robot.utilities.ExtendedMath.withHardDeadzone;
 import static frc.robot.utilities.ExtendedMath.signedSquare;
+import static frc.robot.utilities.ExtendedMath.withHardDeadzone;
 
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.pathplanner.lib.auto.AutoBuilder;
