@@ -2,6 +2,7 @@ package frc.robot.subsystems.swerve;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 import static frc.robot.utilities.ExtendedMath.withHardDeadzone;
+import static frc.robot.utilities.ExtendedMath.signedSquare;
 
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -444,7 +445,7 @@ public class Swerve extends SubsystemBase implements Loggable {
     targetHeading =
         Rotation2d.fromRadians(
             targetHeading.getRadians()
-                - withHardDeadzone(xbox.getRightX(), 0.1)
+                - signedSquare(withHardDeadzone(xbox.getRightX(), 0.1))
                     * speedCoefficient
                     * MAX_TELEOP_SPEEDS.omegaRadiansPerSecond
                     * 0.02);
@@ -458,11 +459,11 @@ public class Swerve extends SubsystemBase implements Loggable {
     }
     double forward =
         speedCoefficient
-            * withHardDeadzone(xbox.getLeftY(), 0.1)
+            * signedSquare(withHardDeadzone(xbox.getLeftY(), 0.1))
             * MAX_TELEOP_SPEEDS.vxMetersPerSecond;
     double sideways =
         speedCoefficient
-            * withHardDeadzone(xbox.getLeftX(), 0.1)
+            * signedSquare(withHardDeadzone(xbox.getLeftX(), 0.1))
             * MAX_TELEOP_SPEEDS.vyMetersPerSecond;
     ChassisSpeeds fieldRel = new ChassisSpeeds(forward, sideways, rotational);
     return ChassisSpeeds.fromFieldRelativeSpeeds(fieldRel, currentHeading);

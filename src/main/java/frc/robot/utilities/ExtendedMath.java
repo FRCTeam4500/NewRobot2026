@@ -101,6 +101,14 @@ public class ExtendedMath {
   }
 
   /**
+   * @param a The number to be squared
+   * @return the number squared, keeping the original sign
+   */
+  public static double signedSquare(double a) {
+    return Math.signum(a) * a * a;
+  }
+
+  /**
    * I think this is just for performance, but it's not clear that it's necessary?
    *
    * @return an equivalent rotation to the argument
