@@ -22,7 +22,7 @@ public class Climber extends SubsystemBase implements Loggable {
   private Motor climberMotor1;
   private Motor climberMotor2;
 
-  public static double CLIMBER_TARGET = 30.0;  // not final make double
+  public static double CLIMBER_TARGET = 30.0; // not final make double
 
   public Climber() {
     climberMotor1 =
@@ -48,7 +48,6 @@ public class Climber extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
-    
 
     climberMotor2 =
         Motor.fromTalonFX(
@@ -73,8 +72,7 @@ public class Climber extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
-    climberMotor1.getSysIDCommands(
-        "climber", 0, 0, 0, climberMotor2); // add motor 2 to end
+    climberMotor1.getSysIDCommands("climber", 0, 0, 0, climberMotor2); // add motor 2 to end
   }
 
   public Command runClimber() {
