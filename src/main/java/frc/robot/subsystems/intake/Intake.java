@@ -23,8 +23,11 @@ public class Intake extends SubsystemBase implements Loggable {
 
   private Motor intakeMotorDrive;
   private Motor intakeMotorExtension;
-  private final int intakeSpeed = 100;
-  private final double maxExtention = 6.6;
+  private Motor intakeMotorExtension2;
+  private final int intakeSpeed = 80;
+  private final double maxExtention1 = 8.571;
+  private final double maxExtention2 = 8.571;
+
   private final double relativeMaxExtention = 0.8;
   private DoubleSupplier PIDP;
 
@@ -80,9 +83,31 @@ public class Intake extends SubsystemBase implements Loggable {
             FeedbackController.fromTunablePID(ExtenionPID, PIDP),
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
-    intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0);
 
-    intakeMotorExtension.setTarget(0);
+            intakeMotorExtension2 =
+        Motor.fromSparkMax(
+            WiringConstants.IntakeMotors.IntakeMotorExtension2,
+            false,
+            (SparkMax sparkmotor) -> {
+              SparkMaxConfig config = new SparkMaxConfig();
+              config.encoder.positionConversionFactor(1.0);
+              config.encoder.velocityConversionFactor(1.0);
+              config.smartCurrentLimit(100);
+              config.idleMode(IdleMode.kBrake);
+              config.inverted(true);
+              sparkmotor.configure(
+                  config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            },
+            (FeedforwardSim sim) -> {
+              sim.withHardstops(0, 6.6);
+            },
+            0,
+            FeedbackController.fromTunablePID(ExtenionPID, PIDP),
+            FeedforwardController.forArmGravity(0, 0, 0, 0),
+            TargetType.Position);
+    intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0, intakeMotorExtension2);
+
+    
   }
 
   public Command startIntake() {
@@ -132,7 +157,8 @@ public class Intake extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               PIDP = () -> 0.5;
-              intakeMotorExtension.setTarget(6.5);
+              intakeMotorExtension.setTarget(maxExtention1);
+              intakeMotorExtension2.setTarget(maxExtention2);
             },
             this)
         .andThen(
@@ -178,7 +204,8 @@ public class Intake extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               PIDP = () -> 10;
-              intakeMotorExtension.setTarget(2);
+              intakeMotorExtension.setTarget(0);
+              intakeMotorExtension2.setTarget(0);
             },
             this)
         .andThen(
@@ -196,5 +223,6 @@ public class Intake extends SubsystemBase implements Loggable {
     HoundLog.log(path, "intakeDriveSpeed", intakeMotorDrive.getVelocity());
     HoundLog.log(path, "IntakeExtentionAtTarget", intakeMotorExtension.atTarget());
     HoundLog.log(path, "intakeMotorExtension", intakeMotorExtension.getPosition());
+    HoundLog.log(path, "intakeMotorExtension2", intakeMotorExtension2.getPosition());
   }
 }

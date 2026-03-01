@@ -43,13 +43,18 @@ public class WiringConstants {
   }
 
   public static class IntakeMotors {
-    public static final int IntakeMotor = 25;
+    public static final int IntakeMotor = 38;
     public static final int IntakeMotorExtension = 26;
+    public static final int IntakeMotorExtension2 = 28;
   }
 
   public static class HopperMotors {
 
     public static final int hopperMotorBeltdrive = 33;
     public static final int hopperMotorBeltdrive2ID = 34;
+  }
+
+  public static class IndexerMotors{
+    public static  final int FeederMotor = 69;
   }
 }
