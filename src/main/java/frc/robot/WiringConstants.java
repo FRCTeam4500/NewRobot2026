@@ -54,7 +54,7 @@ public class WiringConstants {
     public static final int hopperMotorBeltdrive2ID = 34;
   }
 
-  public static class IndexerMotors{
-    public static  final int FeederMotor = 69;
+  public static class IndexerMotors {
+    public static final int FeederMotor = 69;
   }
 }
