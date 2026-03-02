@@ -84,7 +84,7 @@ public class Intake extends SubsystemBase implements Loggable {
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
 
-            intakeMotorExtension2 =
+    intakeMotorExtension2 =
         Motor.fromSparkMax(
             WiringConstants.IntakeMotors.IntakeMotorExtension2,
             false,
@@ -106,8 +106,6 @@ public class Intake extends SubsystemBase implements Loggable {
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
     intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0, intakeMotorExtension2);
-
-    
   }
 
   public Command startIntake() {
