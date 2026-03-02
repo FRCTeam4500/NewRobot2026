@@ -5,7 +5,7 @@
     "data": {
       "commands": [
         {
-          "type": "sequential",
+          "type": "race",
           "data": {
             "commands": [
               {
@@ -19,6 +19,19 @@
                 "data": {
                   "waitTime": 2.0
                 }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartShooter"
+                }
               },
               {
                 "type": "named",
@@ -29,9 +42,16 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.0
+                  "waitTime": 2.0
                 }
-              },
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
               {
                 "type": "named",
                 "data": {
@@ -43,14 +63,14 @@
                 "data": {
                   "pathName": "Auto 1 Path"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Climb"
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Climb"
           }
         }
       ]
