@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Auto 4a-0"
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
@@ -131,6 +137,12 @@
                 "type": "named",
                 "data": {
                   "name": "shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartShooter"
                 }
               },
               {
