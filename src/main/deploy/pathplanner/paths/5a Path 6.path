@@ -3,24 +3,24 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.84671052631579,
-        "y": 7.410296052631579
+        "x": 5.871721384205856,
+        "y": 7.58815439219166
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.096820175438596,
-        "y": 7.4006798245614025
+        "x": 7.121831033328663,
+        "y": 7.5785381641214835
       },
       "isLocked": false,
       "linkedName": "auto 5a path 5 end"
     },
     {
       "anchor": {
-        "x": 8.2315350877193,
+        "x": 7.232,
         "y": 6.891019736842106
       },
       "prevControl": {
-        "x": 7.481469298245615,
+        "x": 6.481934210526315,
         "y": 7.208355263157895
       },
       "nextControl": null,
@@ -48,7 +48,7 @@
   "folder": "Auto 5a",
   "idealStartingState": {
     "velocity": 4.0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": false
 }

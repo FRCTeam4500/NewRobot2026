@@ -16,32 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.615745614035088,
-        "y": 7.391063596491227
+        "x": 3.513682342502218,
+        "y": 7.483152639087019
       },
       "prevControl": {
-        "x": 4.298497807017547,
-        "y": 7.410296052631579
-      },
-      "nextControl": {
-        "x": 2.9329934210526316,
-        "y": 7.371831140350875
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.557960526313704,
-        "y": 6.525603070178659
-      },
-      "prevControl": {
-        "x": 2.5098793859649122,
-        "y": 7.333366228070175
+        "x": 4.616246672582076,
+        "y": 7.5479148181011535
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "auto 5a shoot 2"
+      "linkedName": "auto 5a 4.5"
     }
   ],
   "rotationTargets": [],
@@ -58,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -50.063616853079814
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Auto 5a",

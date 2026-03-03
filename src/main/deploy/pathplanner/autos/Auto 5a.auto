@@ -5,66 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "StartShooter"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "StartShooter"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "StopShooter"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "5a Path 1"
-                }
-              }
-            ]
+            "pathName": "5a Path 1"
           }
         },
         {
@@ -93,6 +36,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "5a Path 3"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "StopIntake"
@@ -101,7 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "5a Path 3"
+            "pathName": "5a Path 4"
           }
         },
         {
@@ -117,7 +66,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "5a Path 4"
+                  "pathName": "5a Path 4.5"
                 }
               }
             ]

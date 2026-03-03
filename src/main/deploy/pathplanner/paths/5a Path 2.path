@@ -12,7 +12,7 @@
         "y": 4.564358372859333
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "auto 5a path1 end"
     },
     {
       "anchor": {
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -47,7 +47,7 @@
   "reversed": false,
   "folder": "Auto 5a",
   "idealStartingState": {
-    "velocity": 1.0,
+    "velocity": 2.0,
     "rotation": -90.0
   },
   "useDefaultConstraints": false

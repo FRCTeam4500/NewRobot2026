@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Auto 1a Path"
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
@@ -36,13 +42,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "shoot"
+                  "name": "Shoot"
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 3.0
                 }
               }
             ]
@@ -57,20 +63,8 @@
                 "data": {
                   "name": "StopShooter"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Auto 1 Path"
-                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Climb"
           }
         }
       ]

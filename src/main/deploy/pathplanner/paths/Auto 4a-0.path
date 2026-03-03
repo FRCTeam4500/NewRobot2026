@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.667,
-        "y": 7.29
+        "x": 3.562,
+        "y": 7.45
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.917,
-        "y": 7.29
+        "x": 3.812,
+        "y": 7.450000000000002
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.667,
-        "y": 7.29
+        "x": 3.562,
+        "y": 7.45
       },
       "prevControl": {
-        "x": 3.417,
-        "y": 7.29
+        "x": 3.312,
+        "y": 7.45
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -70.0
+    "rotation": -70.4
   },
   "reversed": false,
   "folder": "Auto 4a",
