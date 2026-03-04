@@ -89,12 +89,30 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "FlexIntake"
+                }
+              },
+              {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 5.0
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RetractIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5a Path 5"
           }
         },
         {
@@ -117,12 +135,6 @@
                 "type": "sequential",
                 "data": {
                   "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "5a Path 5"
-                      }
-                    },
                     {
                       "type": "path",
                       "data": {
@@ -160,7 +172,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "5a Path 9"
+                  "pathName": "5a Path 4.5"
                 }
               },
               {
@@ -202,9 +214,15 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "FlexIntake"
+                }
+              },
+              {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 10.0
                 }
               }
             ]

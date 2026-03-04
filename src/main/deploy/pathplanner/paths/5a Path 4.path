@@ -47,7 +47,7 @@
   "reversed": false,
   "folder": "Auto 5a",
   "idealStartingState": {
-    "velocity": 1.0,
+    "velocity": 4.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true
