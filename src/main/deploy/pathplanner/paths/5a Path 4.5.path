@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.513682342502218,
-        "y": 7.483152639087019
+        "x": 3.465,
+        "y": 7.484
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.763682342502218,
-        "y": 7.483152639087019
+        "x": 3.215,
+        "y": 7.484
       },
       "isLocked": false,
       "linkedName": "auto 5a 4.5"
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 2.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
