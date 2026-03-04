@@ -5,9 +5,66 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "5a Path 1"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartShooter"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartShooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopShooter"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "5a Path 1"
+                }
+              }
+            ]
           }
         },
         {
@@ -36,12 +93,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "5a Path 3"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "StopIntake"
@@ -50,7 +101,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "5a Path 4"
+            "pathName": "5a Path 3"
           }
         },
         {
@@ -66,7 +117,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "5a Path 4.5"
+                  "pathName": "5a Path 4"
                 }
               }
             ]
@@ -89,30 +140,12 @@
                 }
               },
               {
-                "type": "named",
-                "data": {
-                  "name": "FlexIntake"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 2.0
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "5a Path 5"
           }
         },
         {
@@ -135,6 +168,12 @@
                 "type": "sequential",
                 "data": {
                   "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "5a Path 5"
+                      }
+                    },
                     {
                       "type": "path",
                       "data": {
@@ -172,7 +211,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "5a Path 4.5"
+                  "pathName": "5a Path 9"
                 }
               },
               {
@@ -214,15 +253,9 @@
                 }
               },
               {
-                "type": "named",
-                "data": {
-                  "name": "FlexIntake"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
-                  "waitTime": 10.0
+                  "waitTime": 2.0
                 }
               }
             ]
