@@ -170,20 +170,27 @@ public class Intake extends SubsystemBase implements Loggable {
   }
 
   public Command flexIntake() {
-    return Commands.run(
-        () -> {
-          if (pulse == 1) {
-            retractIntake();
-            pulse = 0;
-            Commands.waitSeconds(PulseWaitTime);
 
-          } else {
-            extendIntake();
-            this.pulse = 1;
-            Commands.waitSeconds(PulseWaitTime);
-          }
-        },
-        this);
+    return retractIntake()
+            .andThen(Commands.waitSeconds(PulseWaitTime))
+            .andThen(extendIntake())
+            .andThen(Commands.waitSeconds(PulseWaitTime))
+            .repeatedly();
+
+    // return Commands.run(
+    //     () -> {
+    //       if (pulse == 1) {
+    //         retractIntake();
+    //         pulse = 0;
+    //         Commands.waitSeconds(PulseWaitTime);
+
+    //       } else {
+    //         extendIntake();
+    //         this.pulse = 1;
+    //         Commands.waitSeconds(PulseWaitTime);
+    //       }
+    //     },
+    //     this);
   }
 
   public Command extendIntakeWithGravity() {
@@ -224,7 +231,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public void log(String path) {
 
     HoundLog.log(path, "intakeMotorDriveAtTarget", intakeMotorDrive.atTarget());
-    HoundLog.log(path, "intakeMotorDriveAtTarget", PIDP.getAsDouble());
+    HoundLog.log(path, "intakeMotorPValue", PIDP.getAsDouble());
     HoundLog.log(path, "intakeDriveSpeed", intakeMotorDrive.getVelocity());
     HoundLog.log(path, "IntakeExtentionAtTarget", intakeMotorExtension.atTarget());
     HoundLog.log(path, "intakeMotorExtension", intakeMotorExtension.getPosition());
