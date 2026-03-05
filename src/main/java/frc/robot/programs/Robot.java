@@ -141,14 +141,14 @@ public class Robot extends LoggedRobot {
     NamedCommands.registerCommand("RetractIntake", structure.RetractIntake());
     NamedCommands.registerCommand("PulseIntake", structure.PulseIntake());
     SmartDashboard.putData("Auto Chooser", chooser);
-    //chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
-    //chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
-    //chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
-    //chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
+    // chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
+    // chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
+    // chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
+    // chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
     chooser.addOption("depot side 2 cycle", new PathPlannerAuto("depot side 2 cycle"));
     chooser.addOption("outpost side 2 cycle", new PathPlannerAuto("outpost side 2 cycle"));
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
-    //chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
+    // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
 
     RobotModeTriggers.autonomous().whileTrue(Commands.deferredProxy(chooser::getSelected));
   }
