@@ -139,6 +139,7 @@ public class Robot extends LoggedRobot {
     NamedCommands.registerCommand("StopIntake", structure.StopIntake());
     NamedCommands.registerCommand("ExtendIntake", structure.ExtendIntake());
     NamedCommands.registerCommand("RetractIntake", structure.RetractIntake());
+    NamedCommands.registerCommand("FlexIntake", structure.PulseIntake());
     SmartDashboard.putData("Auto Chooser", chooser);
     chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
     chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));

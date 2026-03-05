@@ -31,6 +31,10 @@ public class Intake extends SubsystemBase implements Loggable {
   private final double relativeMaxExtention = 0.8;
   private DoubleSupplier PIDP;
 
+  private int pulse =1;
+  private double PulseWaitTime =0.5;
+
+
   public Intake() {
     PIDP = () -> 0.5;
     PIDController ExtenionPID = new PIDController(0, 0, 0);
@@ -167,16 +171,19 @@ public class Intake extends SubsystemBase implements Loggable {
   }
 
   public Command flexIntake() {
-    return Commands.runOnce(
-            () -> {
-              intakeMotorExtension.setTarget(10);
-            },
-            this)
-        .andThen(
-            Commands.waitUntil(
-                () -> {
-                  return intakeMotorExtension.atTarget();
-                }));
+     return Commands.run(()->{
+      if (pulse ==1){
+        retractIntake();
+        pulse =0;
+        Commands.waitSeconds(PulseWaitTime);
+        
+      }
+      else{
+        extendIntake();
+        this.pulse =1;
+        Commands.waitSeconds(PulseWaitTime);
+      }
+    }, this);
   }
 
   public Command extendIntakeWithGravity() {

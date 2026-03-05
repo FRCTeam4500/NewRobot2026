@@ -30,6 +30,8 @@ public class Superstructure implements Loggable {
   private Hopper hopper;
   private Intake intake;
   private Supplier<Pose2d> robotPose;
+  
+
 
   public Superstructure(Supplier<Pose2d> robotPose) {
     shooter = new Shooter();
@@ -121,6 +123,7 @@ public class Superstructure implements Loggable {
 
   public Command PulseIntake() {
     return intake.flexIntake();
+   
   }
 
   // ---------------------------------------TagAlign-----------------------------------------
