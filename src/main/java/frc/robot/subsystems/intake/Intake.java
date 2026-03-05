@@ -172,10 +172,10 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command flexIntake() {
 
     return retractIntake()
-            .andThen(Commands.waitSeconds(PulseWaitTime))
-            .andThen(extendIntake())
-            .andThen(Commands.waitSeconds(PulseWaitTime))
-            .repeatedly();
+        .andThen(Commands.waitSeconds(PulseWaitTime))
+        .andThen(extendIntake())
+        .andThen(Commands.waitSeconds(PulseWaitTime))
+        .repeatedly();
 
     // return Commands.run(
     //     () -> {

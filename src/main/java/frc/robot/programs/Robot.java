@@ -150,7 +150,7 @@ public class Robot extends LoggedRobot {
     chooser.addOption("outpost side 2 cycle", new PathPlannerAuto("outpost side 2 cycle"));
     chooser.addOption("backup auto", new PathPlannerAuto("backup auto"));
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
-    //chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
+    // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
 
     RobotModeTriggers.autonomous().whileTrue(Commands.deferredProxy(chooser::getSelected));
   }
