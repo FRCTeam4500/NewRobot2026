@@ -145,6 +145,7 @@ public class Robot extends LoggedRobot {
     chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
     chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
     chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
+    // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
     chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
 
     RobotModeTriggers.autonomous().whileTrue(Commands.deferredProxy(chooser::getSelected));

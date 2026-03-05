@@ -117,12 +117,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "ExtendIntake"
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
