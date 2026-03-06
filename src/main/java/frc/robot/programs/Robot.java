@@ -8,6 +8,7 @@ package frc.robot.programs;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -21,36 +22,38 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Superstructure;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 
 public class Robot extends LoggedRobot {
   private Swerve swerve;
-  private Superstructure structure;
+  //private Superstructure structure;
   private CommandXboxController xbox;
   private CommandXboxController xbox2;
 
   /** make a robot */
   public Robot() {
     swerve = new Swerve();
-    structure =
+     /*structure =
         new Superstructure(
             () -> {
               return swerve.getPose();
-            });
+            });*/
+    StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
     DriverStation.silenceJoystickConnectionWarning(true);
     xbox = new CommandXboxController(2);
     xbox2 = new CommandXboxController(1);
     swerve.setDefaultCommand(swerve.angleCentric(xbox.getHID()));
 
     setupDriveController();
-    setupOperatorController();
+    // setupOperatorController();
     setupAuto();
   }
 
   private void setupOperatorController() {
 
     // rev shooter
-    Trigger revShooter = xbox2.rightTrigger();
+    /*Trigger revShooter = xbox2.rightTrigger();
     revShooter.whileTrue(structure.StartShooter());
 
     // intake
@@ -76,7 +79,7 @@ public class Robot extends LoggedRobot {
     FlexIntake.onFalse(structure.ExtendIntake());
     // stow shooter
     Trigger StowShooter = xbox2.b();
-    StowShooter.onTrue(structure.stow());
+    StowShooter.onTrue(structure.stow());*/
   }
 
   private void setupDriveController() {
@@ -101,7 +104,7 @@ public class Robot extends LoggedRobot {
 
     // auto align: dpad
     // to climb
-    Trigger AlignClimb = xbox.povDown().debounce(0.2);
+    /*Trigger AlignClimb = xbox.povDown().debounce(0.2);
     AlignClimb.whileTrue(structure.AlignClimb());
     // center
     Trigger AlignCenter = xbox.povDown().debounce(0.2);
@@ -124,14 +127,14 @@ public class Robot extends LoggedRobot {
     // shoot rt
     Trigger shoot = xbox.rightTrigger();
     shoot.onTrue(structure.shoot());
-    shoot.onFalse(structure.StopShooter());
+    shoot.onFalse(structure.StopShooter());*/
   }
 
   private void setupAuto() {
 
     SendableChooser<Command> chooser = new SendableChooser<>();
 
-    NamedCommands.registerCommand("StartShooter", structure.StartShooter());
+    /*NamedCommands.registerCommand("StartShooter", structure.StartShooter());
     NamedCommands.registerCommand("Shoot", structure.shoot());
     NamedCommands.registerCommand("StopShooter", structure.StopShooter());
 
@@ -139,16 +142,16 @@ public class Robot extends LoggedRobot {
     NamedCommands.registerCommand("StopIntake", structure.StopIntake());
     NamedCommands.registerCommand("ExtendIntake", structure.ExtendIntake());
     NamedCommands.registerCommand("RetractIntake", structure.RetractIntake());
-    NamedCommands.registerCommand("PulseIntake", structure.PulseIntake());
+    NamedCommands.registerCommand("PulseIntake", structure.PulseIntake());*/
     SmartDashboard.putData("Auto Chooser", chooser);
     // chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
     // chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
     // chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
     // chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
     chooser.setDefaultOption("None", Commands.none());
-    chooser.addOption("depot side 2 cycle", new PathPlannerAuto("depot side 2 cycle"));
-    chooser.addOption("outpost side 2 cycle", new PathPlannerAuto("outpost side 2 cycle"));
-    chooser.addOption("backup auto", new PathPlannerAuto("backup auto"));
+    //chooser.addOption("depot side 2 cycle", new PathPlannerAuto("depot side 2 cycle"));
+    //chooser.addOption("outpost side 2 cycle", new PathPlannerAuto("outpost side 2 cycle"));
+    //chooser.addOption("backup auto", new PathPlannerAuto("backup auto"));
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
     // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
 
@@ -157,9 +160,10 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotPeriodic() {
+    StopTilting.updateCenterOfMass(new Transform3d[] {});
     double start = Timer.getFPGATimestamp();
     HoundLog.log("Swerve", swerve);
-    HoundLog.log("Superstrucutre", structure);
+   // HoundLog.log("Superstrucutre", structure);
     double loggingLoop = Timer.getFPGATimestamp() - start;
 
     start = Timer.getFPGATimestamp();
