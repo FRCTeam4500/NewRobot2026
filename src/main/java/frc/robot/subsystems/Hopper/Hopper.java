@@ -127,6 +127,8 @@ public class Hopper extends SubsystemBase implements Loggable {
 
   @Override
   public void log(String path) {
+    HoundLog.log(path, "HopperMotor1", hopperMotorBeltdrive);
+    HoundLog.log(path, "HopperMotor2", hopperMotorBeltdrive2);
     HoundLog.log(path, "BeltDriveSpeed", hopperMotorBeltdrive.getVelocity());
     HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive.atTarget());
     SmartDashboard.putData("Angle Dynamic Forward", angleSysId.dynamicForward());

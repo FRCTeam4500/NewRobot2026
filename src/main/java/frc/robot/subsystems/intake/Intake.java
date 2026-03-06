@@ -60,7 +60,7 @@ public class Intake extends SubsystemBase implements Loggable {
                 0,
                 0,
                 (PIDController pid) -> {
-                  pid.setTolerance(0.5);
+                  pid.setTolerance(10);
                 }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
@@ -75,7 +75,7 @@ public class Intake extends SubsystemBase implements Loggable {
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
               config.smartCurrentLimit(100);
-              config.idleMode(IdleMode.kBrake);
+              config.idleMode(IdleMode.kCoast);
               sparkmotor.configure(
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
@@ -96,8 +96,8 @@ public class Intake extends SubsystemBase implements Loggable {
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
               config.smartCurrentLimit(100);
-              config.idleMode(IdleMode.kBrake);
-              config.inverted(true);
+              config.idleMode(IdleMode.kCoast);
+              config.inverted(true); 
               sparkmotor.configure(
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
@@ -171,8 +171,7 @@ public class Intake extends SubsystemBase implements Loggable {
 
   public Command flexIntake() {
 
-    return retractIntake()
-        .andThen(Commands.waitSeconds(PulseWaitTime))
+    return retractIntake().withTimeout(PulseWaitTime)
         .andThen(extendIntake())
         .andThen(Commands.waitSeconds(PulseWaitTime))
         .repeatedly();
@@ -229,7 +228,9 @@ public class Intake extends SubsystemBase implements Loggable {
 
   @Override
   public void log(String path) {
-
+    HoundLog.log(path, "IntakeDriveMotor", intakeMotorDrive);
+    HoundLog.log(path, "intakeExtention1", intakeMotorExtension);
+    HoundLog.log(path, "intakeExtention2", intakeMotorExtension2);
     HoundLog.log(path, "intakeMotorDriveAtTarget", intakeMotorDrive.atTarget());
     HoundLog.log(path, "intakeMotorPValue", PIDP.getAsDouble());
     HoundLog.log(path, "intakeDriveSpeed", intakeMotorDrive.getVelocity());

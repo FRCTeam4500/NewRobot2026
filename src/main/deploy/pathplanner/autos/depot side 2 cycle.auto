@@ -31,13 +31,13 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "StartIntake"
+                              "name": "ExtendIntake"
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "ExtendIntake"
+                              "name": "StartIntake"
                             }
                           }
                         ]

@@ -195,7 +195,9 @@ public class Shooter extends SubsystemBase implements Loggable {
 
   @Override
   public void log(String path) {
-
+    HoundLog.log(path, "ShooterFlywhel1", flywheel1);
+    HoundLog.log(path, "ShooterFlywhel2", flywheel2);
+    HoundLog.log(path, "hoodMoter", hood);
     HoundLog.log(path, "flywheelSpeed", flywheel1.getVelocity());
     HoundLog.log(path, "hoodAnlge", hood.getPosition());
     HoundLog.log(path, "expectedFlywheelSpeed", flywheelSpeedlog);
