@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase implements Loggable {
               SparkMaxConfig config = new SparkMaxConfig();
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
-              config.smartCurrentLimit(60);
+              config.smartCurrentLimit(100);
               config.idleMode(IdleMode.kCoast);
               config.inverted(true);
               sparkmotor.configure(
@@ -56,7 +56,7 @@ public class Intake extends SubsystemBase implements Loggable {
             (FeedforwardSim sim) -> {},
             0,
             FeedbackController.fromPID(
-                10,
+                1,
                 0,
                 0,
                 (PIDController pid) -> {
@@ -114,7 +114,7 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command startIntake() {
     return Commands.runOnce(
             () -> {
-              intakeMotorDrive.setTarget(intakeSpeed);
+              intakeMotorDrive.setVoltage(12);;
             },
             this)
         .andThen(
