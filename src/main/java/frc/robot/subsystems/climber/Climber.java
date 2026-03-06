@@ -22,6 +22,8 @@ public class Climber extends SubsystemBase implements Loggable {
   private Motor climberMotor1;
   private Motor climberMotor2;
 
+  public static double CLIMBER_TARGET = 30.0; // not final make double
+
   public Climber() {
     climberMotor1 =
         Motor.fromTalonFX(
@@ -46,39 +48,44 @@ public class Climber extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
-    climberMotor1.getSysIDCommands(
-        "climber", 0, 0, 0); // add motor 2 to end for correcnt sysid template
 
-    /* climberMotor2 = Motor.fromTalonFX(
+    climberMotor2 =
+        Motor.fromTalonFX(
             WiringConstants.ClimberMotors.ClimberMotor2,
-
             (TalonFX motorFx) -> {
-                TalonFXConfiguration config = new TalonFXConfiguration();
-                config.CurrentLimits.SupplyCurrentLimit = 40;
+              TalonFXConfiguration config = new TalonFXConfiguration();
+              config.CurrentLimits.SupplyCurrentLimit = 40;
+              config.CurrentLimits.SupplyCurrentLimitEnable = true;
+              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+              config.Feedback.SensorToMechanismRatio = 1;
+              config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+              motorFx.getConfigurator().apply(config);
             },
-            (FeedforwardSim ball) -> {
-
-            },
+            (FeedforwardSim balls) -> {},
             0,
-            FeedbackController.fromPID(0, 0, 0, (PIDController pid) ->
-            {pid.setTolerance(1);}),
+            FeedbackController.fromPID(
+                1,
+                0,
+                0,
+                (PIDController pid) -> {
+                  pid.setTolerance(1);
+                }),
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
-
-
-    */
+    climberMotor1.getSysIDCommands("climber", 0, 0, 0, climberMotor2); // add motor 2 to end
   }
 
   public Command runClimber() {
     return Commands.runOnce(
             () -> {
-              climberMotor1.setTarget(0);
+              climberMotor1.setTarget(CLIMBER_TARGET);
+              climberMotor2.setTarget(CLIMBER_TARGET);
             },
             this)
         .andThen(
             Commands.waitUntil(
                 () -> {
-                  return climberMotor1.atTarget();
+                  return (climberMotor1.atTarget());
                 }));
   }
 
@@ -87,18 +94,22 @@ public class Climber extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               climberMotor1.setTarget(0);
+              climberMotor2.setTarget(0);
             },
             this)
         .andThen(
             Commands.waitUntil(
                 () -> {
-                  return climberMotor1.atTarget();
+                  return (climberMotor1.atTarget());
                 }));
   }
 
   @Override
   public void log(String path) {
 
-    HoundLog.log(path, "climberMotor1", climberMotor1.atTarget());
+    HoundLog.log(path, "climberMotor1AtTarget", climberMotor1.atTarget());
+    HoundLog.log(path, "climberMotor1Position", climberMotor1.getPosition());
+    HoundLog.log(path, "climberMotor2AtTarget", climberMotor2.atTarget());
+    HoundLog.log(path, "climberMotor2Position", climberMotor2.getPosition());
   }
 }
