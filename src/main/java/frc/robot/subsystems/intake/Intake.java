@@ -97,7 +97,7 @@ public class Intake extends SubsystemBase implements Loggable {
               config.encoder.velocityConversionFactor(1.0);
               config.smartCurrentLimit(100);
               config.idleMode(IdleMode.kCoast);
-              config.inverted(true); 
+              config.inverted(true);
               sparkmotor.configure(
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
@@ -171,7 +171,8 @@ public class Intake extends SubsystemBase implements Loggable {
 
   public Command flexIntake() {
 
-    return retractIntake().withTimeout(PulseWaitTime)
+    return retractIntake()
+        .withTimeout(PulseWaitTime)
         .andThen(extendIntake())
         .andThen(Commands.waitSeconds(PulseWaitTime))
         .repeatedly();
