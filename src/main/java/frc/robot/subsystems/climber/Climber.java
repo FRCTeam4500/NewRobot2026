@@ -19,8 +19,16 @@ import frc.robot.utilities.logging.Loggable;
 
 public class Climber extends SubsystemBase implements Loggable {
 
+
   private Motor climberMotor1;
   private Motor climberMotor2;
+  private double temp =60;
+  private double max= 58.5;
+  private double max2 = 72.5;
+  private double mid =20;
+  private double mid2 =20;
+  private double min =2;
+  private double volts =10;
 
   public static double CLIMBER_TARGET = 30.0; // not final make double
 
@@ -32,7 +40,7 @@ public class Climber extends SubsystemBase implements Loggable {
               TalonFXConfiguration config = new TalonFXConfiguration();
               config.CurrentLimits.SupplyCurrentLimit = 40;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
-              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
               motorFx.getConfigurator().apply(config);
@@ -78,8 +86,8 @@ public class Climber extends SubsystemBase implements Loggable {
   public Command runClimber() {
     return Commands.runOnce(
             () -> {
-              climberMotor1.setTarget(CLIMBER_TARGET);
-              climberMotor2.setTarget(CLIMBER_TARGET);
+              climberMotor1.setTarget(max);
+              climberMotor2.setTarget(max2);
             },
             this)
         .andThen(
@@ -90,11 +98,11 @@ public class Climber extends SubsystemBase implements Loggable {
   }
 
   // end of auto climb
-  public Command releaseClimber() {
+  public Command stowClimber() {
     return Commands.runOnce(
             () -> {
-              climberMotor1.setTarget(0);
-              climberMotor2.setTarget(0);
+              climberMotor1.setTarget(min);
+              climberMotor2.setTarget(min);
             },
             this)
         .andThen(
@@ -104,6 +112,65 @@ public class Climber extends SubsystemBase implements Loggable {
                 }));
   }
 
+  public Command releaseClimber() {
+    return Commands.runOnce(
+            () -> {
+              climberMotor1.setTarget(mid);
+              climberMotor2.setTarget(mid2);
+            },
+            this)
+        .andThen(
+            Commands.waitUntil(
+                () -> {
+                  return (climberMotor1.atTarget());
+                }));
+  }
+
+  public Command leftup() {
+    return Commands.runOnce(
+            () -> {
+              climberMotor2.setVoltage(volts);;
+            },
+            this);
+  }
+  public Command rightup() {
+    return Commands.runOnce(
+            () -> {
+              climberMotor1.setVoltage(volts);;
+            },
+            this);
+  }
+  public Command leftdown() {
+    return Commands.runOnce(
+            () -> {
+              climberMotor2.setVoltage(-volts);;
+            },
+            this);
+  }
+  public Command rightdown() {
+    return Commands.runOnce(
+            () -> {
+              climberMotor1.setVoltage(-volts);;
+            },
+            this);
+  }
+  public Command leftstop() {
+    return Commands.runOnce(
+            () -> {
+              climberMotor2.setVoltage(0);;
+            },
+            this);
+  }
+  public Command rightstiop() {
+    return Commands.runOnce(
+            () -> {
+              climberMotor1.setVoltage(0);;
+            },
+            this);
+  }
+
+
+
   @Override
   public void log(String path) {
 
@@ -111,5 +178,7 @@ public class Climber extends SubsystemBase implements Loggable {
     HoundLog.log(path, "climberMotor1Position", climberMotor1.getPosition());
     HoundLog.log(path, "climberMotor2AtTarget", climberMotor2.atTarget());
     HoundLog.log(path, "climberMotor2Position", climberMotor2.getPosition());
+    HoundLog.log(path, "ClimberMotor1", climberMotor1);
+    HoundLog.log(path, "ClimberMotor2", climberMotor2);
   }
 }

@@ -97,9 +97,9 @@ public class SwerveConstants {
   /** Configuration for FRONT_LEFT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig FRONT_LEFT_CONFIG =
       new ModuleConfig(
-          60,
+          50,
           true,
-          80,
+          70,
           true,
           17.5,
           new FeedbackConstants(0.1, 0, 0), // drive PID
@@ -115,9 +115,9 @@ public class SwerveConstants {
   /** Configuration for FRONT_RIGHT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig FRONT_RIGHT_CONFIG =
       new ModuleConfig(
-          60,
+          50,
           true,
-          80,
+          70,
           true,
           17.5,
           new FeedbackConstants(0.1, 0, 0),
@@ -132,9 +132,9 @@ public class SwerveConstants {
   /** Configuration for BACK_LEFT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig BACK_LEFT_CONFIG =
       new ModuleConfig(
-          60,
+          50,
           true,
-          80,
+          70,
           true,
           17.5,
           new FeedbackConstants(0.1, 0, 0),
@@ -149,9 +149,9 @@ public class SwerveConstants {
   /** Configuration for BACK_RIGHT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig BACK_RIGHT_CONFIG =
       new ModuleConfig(
-          60,
+          50,
           true,
-          80,
+          70,
           true,
           17.5,
           new FeedbackConstants(0.1, 0, 0), // drive PID

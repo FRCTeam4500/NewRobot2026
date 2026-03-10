@@ -21,12 +21,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Superstructure;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 
 public class Robot extends LoggedRobot {
   private Swerve swerve;
+  //private Climber climber;
   //private Superstructure structure;
   private CommandXboxController xbox;
   private CommandXboxController xbox2;
@@ -34,6 +36,7 @@ public class Robot extends LoggedRobot {
   /** make a robot */
   public Robot() {
     swerve = new Swerve();
+    //climber = new Climber();
      /*structure =
         new Superstructure(
             () -> {
@@ -46,22 +49,33 @@ public class Robot extends LoggedRobot {
     swerve.setDefaultCommand(swerve.angleCentric(xbox.getHID()));
 
     setupDriveController();
-    // setupOperatorController();
+    setupOperatorController();
     setupAuto();
   }
 
   private void setupOperatorController() {
-
+/* 
     // rev shooter
-    /*Trigger revShooter = xbox2.rightTrigger();
-    revShooter.whileTrue(structure.StartShooter());
+    Trigger revShooter = xbox2.rightTrigger();
+    revShooter.whileTrue(climber.leftdown());
+    revShooter.onFalse(climber.leftstop());
 
     // intake
     Trigger ActivateIntake = xbox2.leftTrigger();
-    ActivateIntake.whileTrue(structure.StartIntake());
-    ActivateIntake.onFalse(structure.StopIntake());
+    ActivateIntake.whileTrue(climber.rightdown());
+    ActivateIntake.onFalse(climber.rightstiop());
+
+    xbox2.leftBumper().whileTrue(climber.rightup());
+    xbox2.leftBumper().onFalse(climber.rightstiop());
+
+    xbox2.rightBumper().whileTrue(climber.leftup());
+    xbox2.rightBumper().onFalse(climber.leftstop());
+    
+     Trigger RetractIntake = xbox2.a();
+    RetractIntake.onTrue(climber.runClimber());*/
 
     // extend intake
+    /* 
     Trigger ExtendIntake = xbox2.y();
     ExtendIntake.onTrue(structure.ExtendIntake());
 
@@ -133,17 +147,19 @@ public class Robot extends LoggedRobot {
   private void setupAuto() {
 
     SendableChooser<Command> chooser = new SendableChooser<>();
-
+    //NamedCommands.registerCommand("RunClimb", climber.runClimber());
+    //NamedCommands.registerCommand("ReleaseClimb", climber.releaseClimber());
     /*NamedCommands.registerCommand("StartShooter", structure.StartShooter());
     NamedCommands.registerCommand("Shoot", structure.shoot());
     NamedCommands.registerCommand("StopShooter", structure.StopShooter());
-
+left trench
     NamedCommands.registerCommand("StartIntake", structure.StartIntake());
     NamedCommands.registerCommand("StopIntake", structure.StopIntake());
     NamedCommands.registerCommand("ExtendIntake", structure.ExtendIntake());
     NamedCommands.registerCommand("RetractIntake", structure.RetractIntake());
     NamedCommands.registerCommand("PulseIntake", structure.PulseIntake());*/
     SmartDashboard.putData("Auto Chooser", chooser);
+    chooser.addOption("left trench", new PathPlannerAuto("left trench"));
     // chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
     // chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
     // chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
@@ -151,7 +167,7 @@ public class Robot extends LoggedRobot {
     chooser.setDefaultOption("None", Commands.none());
     //chooser.addOption("depot side 2 cycle", new PathPlannerAuto("depot side 2 cycle"));
     //chooser.addOption("outpost side 2 cycle", new PathPlannerAuto("outpost side 2 cycle"));
-    //chooser.addOption("backup auto", new PathPlannerAuto("backup auto"));
+    chooser.addOption("backup auto", new PathPlannerAuto("backup auto"));
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
     // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
 
@@ -163,6 +179,7 @@ public class Robot extends LoggedRobot {
     StopTilting.updateCenterOfMass(new Transform3d[] {});
     double start = Timer.getFPGATimestamp();
     HoundLog.log("Swerve", swerve);
+   // HoundLog.log("Climber", climber);
    // HoundLog.log("Superstrucutre", structure);
     double loggingLoop = Timer.getFPGATimestamp() - start;
 

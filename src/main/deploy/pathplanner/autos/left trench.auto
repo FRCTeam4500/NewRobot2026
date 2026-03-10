@@ -5,21 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "RunClimb"
+            "waitTime": 5.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Auto 1a Path"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ReleaseClimb"
+            "pathName": "New New Path"
           }
         }
       ]

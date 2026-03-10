@@ -186,7 +186,7 @@ public class Shooter extends SubsystemBase implements Loggable {
               flywheel1.setVoltage(0);
               flywheel2.setVoltage(0);
 
-              hood.setTarget(0);
+              hood.setTarget(0); 
               ;
             },
             this)
