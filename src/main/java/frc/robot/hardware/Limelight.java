@@ -136,7 +136,8 @@ public class Limelight implements Loggable {
     }
     double[] raw = table.getEntry("botpose_wpiblue").getDoubleArray(new double[11]);
     return new PoseEstimate(
-        new Pose2d(raw[0], raw[1], Rotation2d.fromDegrees(raw[5] + 12)), // #TODO remove before comp was 8
+        new Pose2d(
+            raw[0], raw[1], Rotation2d.fromDegrees(raw[5] + 12)), // #TODO remove before comp was 8
         raw[6] / 1000,
         (int) raw[7],
         raw[9],

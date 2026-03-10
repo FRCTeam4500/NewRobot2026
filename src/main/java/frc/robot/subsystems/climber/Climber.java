@@ -19,16 +19,15 @@ import frc.robot.utilities.logging.Loggable;
 
 public class Climber extends SubsystemBase implements Loggable {
 
-
   private Motor climberMotor1;
   private Motor climberMotor2;
-  private double temp =60;
-  private double max= 58.5;
+  private double temp = 60;
+  private double max = 58.5;
   private double max2 = 72.5;
-  private double mid =20;
-  private double mid2 =20;
-  private double min =2;
-  private double volts =10;
+  private double mid = 20;
+  private double mid2 = 20;
+  private double min = 2;
+  private double volts = 10;
 
   public static double CLIMBER_TARGET = 30.0; // not final make double
 
@@ -128,48 +127,57 @@ public class Climber extends SubsystemBase implements Loggable {
 
   public Command leftup() {
     return Commands.runOnce(
-            () -> {
-              climberMotor2.setVoltage(volts);;
-            },
-            this);
+        () -> {
+          climberMotor2.setVoltage(volts);
+          ;
+        },
+        this);
   }
+
   public Command rightup() {
     return Commands.runOnce(
-            () -> {
-              climberMotor1.setVoltage(volts);;
-            },
-            this);
+        () -> {
+          climberMotor1.setVoltage(volts);
+          ;
+        },
+        this);
   }
+
   public Command leftdown() {
     return Commands.runOnce(
-            () -> {
-              climberMotor2.setVoltage(-volts);;
-            },
-            this);
+        () -> {
+          climberMotor2.setVoltage(-volts);
+          ;
+        },
+        this);
   }
+
   public Command rightdown() {
     return Commands.runOnce(
-            () -> {
-              climberMotor1.setVoltage(-volts);;
-            },
-            this);
+        () -> {
+          climberMotor1.setVoltage(-volts);
+          ;
+        },
+        this);
   }
+
   public Command leftstop() {
     return Commands.runOnce(
-            () -> {
-              climberMotor2.setVoltage(0);;
-            },
-            this);
+        () -> {
+          climberMotor2.setVoltage(0);
+          ;
+        },
+        this);
   }
+
   public Command rightstiop() {
     return Commands.runOnce(
-            () -> {
-              climberMotor1.setVoltage(0);;
-            },
-            this);
+        () -> {
+          climberMotor1.setVoltage(0);
+          ;
+        },
+        this);
   }
-
-
 
   @Override
   public void log(String path) {

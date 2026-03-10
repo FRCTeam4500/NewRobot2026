@@ -114,7 +114,8 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command startIntake() {
     return Commands.runOnce(
             () -> {
-              intakeMotorDrive.setVoltage(12);;
+              intakeMotorDrive.setVoltage(12);
+              ;
             },
             this)
         .andThen(
