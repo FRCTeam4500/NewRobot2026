@@ -54,19 +54,19 @@ public class Shooter extends SubsystemBase implements Loggable {
     // find flywheel speed
     flywheelSpeed.put(1.583, 45.0);
     flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
-    flywheelSpeed.put(2.373, 50.0);
-    flywheelSpeed.put(2.817, 50.0);
-    flywheelSpeed.put(3.121, 53.0);
-    flywheelSpeed.put(3.565, 53.0);
+    flywheelSpeed.put(2.329, 50.0);
+    flywheelSpeed.put(2.996, 50.0);
+    flywheelSpeed.put(3.334, 52.0);
+    flywheelSpeed.put(3.565, 52.0);
     flywheelSpeed.put(3.630, 55.0);
     flywheelSpeed.put(4.7, 75.0);
 
     // find hood angle
     hoodAngle.put(1.583, 0.0);
     hoodAngle.put(2.12, 0.0); // meters , angle degrees
-    hoodAngle.put(2.373, 0.0);
-    hoodAngle.put(2.817, 1.0);
-    hoodAngle.put(3.158, 1.75);
+    hoodAngle.put(2.329, 0.0);
+    hoodAngle.put(2.996, 1.75);
+    hoodAngle.put(3.334, 1.75);
     hoodAngle.put(3.565, 1.75);
     hoodAngle.put(3.630, 1.75);
     hoodAngle.put(4.7, 1.9);
@@ -195,7 +195,9 @@ public class Shooter extends SubsystemBase implements Loggable {
 
   @Override
   public void log(String path) {
-
+    HoundLog.log(path, "ShooterFlywhel1", flywheel1);
+    HoundLog.log(path, "ShooterFlywhel2", flywheel2);
+    HoundLog.log(path, "hoodMoter", hood);
     HoundLog.log(path, "flywheelSpeed", flywheel1.getVelocity());
     HoundLog.log(path, "hoodAnlge", hood.getPosition());
     HoundLog.log(path, "expectedFlywheelSpeed", flywheelSpeedlog);

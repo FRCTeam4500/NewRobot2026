@@ -136,7 +136,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "shoot"
+                  "name": null
                 }
               },
               {

@@ -38,10 +38,10 @@ public class Hopper extends SubsystemBase implements Loggable {
 
     flywheelSpeed.put(1.583, 45.0);
     flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
-    flywheelSpeed.put(2.373, 50.0);
-    flywheelSpeed.put(2.817, 50.0);
-    flywheelSpeed.put(3.121, 53.0);
-    flywheelSpeed.put(3.565, 53.0);
+    flywheelSpeed.put(2.329, 50.0);
+    flywheelSpeed.put(2.996, 50.0);
+    flywheelSpeed.put(3.334, 52.0);
+    flywheelSpeed.put(3.565, 52.0);
     flywheelSpeed.put(3.630, 55.0);
     flywheelSpeed.put(4.7, 75.0);
 
@@ -127,6 +127,8 @@ public class Hopper extends SubsystemBase implements Loggable {
 
   @Override
   public void log(String path) {
+    HoundLog.log(path, "HopperMotor1", hopperMotorBeltdrive);
+    HoundLog.log(path, "HopperMotor2", hopperMotorBeltdrive2);
     HoundLog.log(path, "BeltDriveSpeed", hopperMotorBeltdrive.getVelocity());
     HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive.atTarget());
     SmartDashboard.putData("Angle Dynamic Forward", angleSysId.dynamicForward());

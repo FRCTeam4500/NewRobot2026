@@ -33,15 +33,22 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "Auto 5b 3"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Auto 5b 4"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Auto 5b 3"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Auto 5b 4"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -127,15 +134,22 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "Auto 5b 6"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Auto 5b 7"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Auto 5b 6"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Auto 5b 7"
+                      }
+                    }
+                  ]
                 }
               }
             ]

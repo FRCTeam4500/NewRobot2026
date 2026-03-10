@@ -99,7 +99,7 @@ public class Swerve extends SubsystemBase implements Loggable {
             getModulePositions(),
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, 0.1),
-            VecBuilder.fill(5, 5, 10));
+            VecBuilder.fill(.9, .9, .9));
 
     StopTilting.setupKinematics(kinematics);
     StopTilting.setupBase(
