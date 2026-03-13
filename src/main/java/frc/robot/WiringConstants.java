@@ -43,7 +43,8 @@ public class WiringConstants {
   }
 
   public static class IntakeMotors {
-    public static final int IntakeMotor = 38;
+    public static final int IntakeMotor1 = 30;
+    public static final int IntakeMotor2 = 31; //need to update this
     public static final int IntakeMotorExtension = 26;
     public static final int IntakeMotorExtension2 = 28;
   }

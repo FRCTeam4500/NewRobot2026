@@ -1,5 +1,9 @@
 package frc.robot.subsystems.intake;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
@@ -22,9 +26,11 @@ import java.util.function.DoubleSupplier;
 public class Intake extends SubsystemBase implements Loggable {
 
   private Motor intakeMotorDrive;
+  private Motor intakeMotorDrive2;
   private Motor intakeMotorExtension;
   private Motor intakeMotorExtension2;
   private final int intakeSpeed = 80;
+  private final int intakeVoltage = 12;
   private final double maxExtention1 = 8.571;
   private final double maxExtention2 = 8.571;
 
@@ -39,7 +45,8 @@ public class Intake extends SubsystemBase implements Loggable {
     PIDController ExtenionPID = new PIDController(0, 0, 0);
     ExtenionPID.setTolerance(1);
 
-    intakeMotorDrive =
+    /*
+     * intakeMotorDrive =
         Motor.fromSparkMax(
             WiringConstants.IntakeMotors.IntakeMotor,
             false,
@@ -64,7 +71,61 @@ public class Intake extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
-    intakeMotorDrive.getSysIDCommands("intake drive neo", 0, 0, 0);
+     */
+
+    intakeMotorDrive =
+        Motor.fromTalonFX(
+          WiringConstants.IntakeMotors.IntakeMotor1,
+          (TalonFX MotorFx) -> {
+            TalonFXConfiguration config = new TalonFXConfiguration();
+            config.CurrentLimits.SupplyCurrentLimit = 100;
+              config.CurrentLimits.StatorCurrentLimit = 80;
+              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimitEnable = true;
+              config.Feedback.SensorToMechanismRatio = 1;
+              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+              config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+              MotorFx.getConfigurator().apply(config);
+          }, 
+          (FeedforwardSim sim) -> {}, 
+          0, 
+          FeedbackController.fromPID(
+              1, 
+              0, 
+              0,
+              (PIDController pid) -> {
+                  pid.setTolerance(10);
+              }), 
+          FeedforwardController.forConstantGravity(0,0,0,0), 
+          TargetType.Velocity);
+
+    intakeMotorDrive2 =
+        Motor.fromTalonFX(
+          WiringConstants.IntakeMotors.IntakeMotor2,
+          (TalonFX MotorFx) -> {
+            TalonFXConfiguration config = new TalonFXConfiguration();
+            config.CurrentLimits.SupplyCurrentLimit = 100;
+              config.CurrentLimits.StatorCurrentLimit = 80;
+              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimitEnable = true;
+              config.Feedback.SensorToMechanismRatio = 1;
+              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+              config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+              MotorFx.getConfigurator().apply(config);
+          }, 
+          (FeedforwardSim sim) -> {}, 
+          0, 
+          FeedbackController.fromPID(
+              1, 
+              0, 
+              0,
+              (PIDController pid) -> {
+                  pid.setTolerance(10);
+              }), 
+          FeedforwardController.forConstantGravity(0,0,0,0), 
+          TargetType.Velocity);
+    intakeMotorDrive.getSysIDCommands("intake drive kraken", 0, 0, 0, intakeMotorDrive2);
+    
 
     intakeMotorExtension =
         Motor.fromSparkMax(
@@ -114,7 +175,8 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command startIntake() {
     return Commands.runOnce(
             () -> {
-              intakeMotorDrive.setVoltage(12);
+              intakeMotorDrive.setVoltage(intakeVoltage);
+              intakeMotorDrive2.setVoltage(intakeVoltage);
               ;
             },
             this)
@@ -129,6 +191,7 @@ public class Intake extends SubsystemBase implements Loggable {
     return Commands.runOnce(
             () -> {
               intakeMotorDrive.setVoltage(0);
+              intakeMotorDrive2.setVoltage(0);
             },
             this)
         .andThen(
@@ -143,7 +206,8 @@ public class Intake extends SubsystemBase implements Loggable {
   public Command reverseIntake() {
     return Commands.runOnce(
             () -> {
-              intakeMotorDrive.setVoltage(-intakeSpeed);
+              intakeMotorDrive.setVoltage(-intakeVoltage);
+              intakeMotorDrive2.setVoltage(-intakeVoltage);
             },
             this)
         .andThen(
