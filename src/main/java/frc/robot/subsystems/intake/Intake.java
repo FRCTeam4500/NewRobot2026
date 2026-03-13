@@ -46,19 +46,46 @@ public class Intake extends SubsystemBase implements Loggable {
     ExtenionPID.setTolerance(1);
 
     /*
-     * intakeMotorDrive =
-        Motor.fromSparkMax(
-            WiringConstants.IntakeMotors.IntakeMotor,
-            false,
-            (SparkMax sparkmotor) -> {
-              SparkMaxConfig config = new SparkMaxConfig();
-              config.encoder.positionConversionFactor(1.0);
-              config.encoder.velocityConversionFactor(1.0);
-              config.smartCurrentLimit(100);
-              config.idleMode(IdleMode.kCoast);
-              config.inverted(true);
-              sparkmotor.configure(
-                  config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    * intakeMotorDrive =
+       Motor.fromSparkMax(
+           WiringConstants.IntakeMotors.IntakeMotor,
+           false,
+           (SparkMax sparkmotor) -> {
+             SparkMaxConfig config = new SparkMaxConfig();
+             config.encoder.positionConversionFactor(1.0);
+             config.encoder.velocityConversionFactor(1.0);
+             config.smartCurrentLimit(100);
+             config.idleMode(IdleMode.kCoast);
+             config.inverted(true);
+             sparkmotor.configure(
+                 config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+           },
+           (FeedforwardSim sim) -> {},
+           0,
+           FeedbackController.fromPID(
+               1,
+               0,
+               0,
+               (PIDController pid) -> {
+                 pid.setTolerance(10);
+               }),
+           FeedforwardController.forConstantGravity(0, 0, 0, 0),
+           TargetType.Velocity);
+    */
+
+    intakeMotorDrive =
+        Motor.fromTalonFX(
+            WiringConstants.IntakeMotors.IntakeMotor1,
+            (TalonFX MotorFx) -> {
+              TalonFXConfiguration config = new TalonFXConfiguration();
+              config.CurrentLimits.SupplyCurrentLimit = 100;
+              config.CurrentLimits.StatorCurrentLimit = 80;
+              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimitEnable = true;
+              config.Feedback.SensorToMechanismRatio = 1;
+              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+              config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+              MotorFx.getConfigurator().apply(config);
             },
             (FeedforwardSim sim) -> {},
             0,
@@ -71,40 +98,13 @@ public class Intake extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
-     */
-
-    intakeMotorDrive =
-        Motor.fromTalonFX(
-          WiringConstants.IntakeMotors.IntakeMotor1,
-          (TalonFX MotorFx) -> {
-            TalonFXConfiguration config = new TalonFXConfiguration();
-            config.CurrentLimits.SupplyCurrentLimit = 100;
-              config.CurrentLimits.StatorCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimitEnable = false;
-              config.CurrentLimits.SupplyCurrentLimitEnable = true;
-              config.Feedback.SensorToMechanismRatio = 1;
-              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-              config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-              MotorFx.getConfigurator().apply(config);
-          }, 
-          (FeedforwardSim sim) -> {}, 
-          0, 
-          FeedbackController.fromPID(
-              1, 
-              0, 
-              0,
-              (PIDController pid) -> {
-                  pid.setTolerance(10);
-              }), 
-          FeedforwardController.forConstantGravity(0,0,0,0), 
-          TargetType.Velocity);
 
     intakeMotorDrive2 =
         Motor.fromTalonFX(
-          WiringConstants.IntakeMotors.IntakeMotor2,
-          (TalonFX MotorFx) -> {
-            TalonFXConfiguration config = new TalonFXConfiguration();
-            config.CurrentLimits.SupplyCurrentLimit = 100;
+            WiringConstants.IntakeMotors.IntakeMotor2,
+            (TalonFX MotorFx) -> {
+              TalonFXConfiguration config = new TalonFXConfiguration();
+              config.CurrentLimits.SupplyCurrentLimit = 100;
               config.CurrentLimits.StatorCurrentLimit = 80;
               config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
@@ -112,20 +112,19 @@ public class Intake extends SubsystemBase implements Loggable {
               config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
               config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
               MotorFx.getConfigurator().apply(config);
-          }, 
-          (FeedforwardSim sim) -> {}, 
-          0, 
-          FeedbackController.fromPID(
-              1, 
-              0, 
-              0,
-              (PIDController pid) -> {
+            },
+            (FeedforwardSim sim) -> {},
+            0,
+            FeedbackController.fromPID(
+                1,
+                0,
+                0,
+                (PIDController pid) -> {
                   pid.setTolerance(10);
-              }), 
-          FeedforwardController.forConstantGravity(0,0,0,0), 
-          TargetType.Velocity);
+                }),
+            FeedforwardController.forConstantGravity(0, 0, 0, 0),
+            TargetType.Velocity);
     intakeMotorDrive.getSysIDCommands("intake drive kraken", 0, 0, 0, intakeMotorDrive2);
-    
 
     intakeMotorExtension =
         Motor.fromSparkMax(
