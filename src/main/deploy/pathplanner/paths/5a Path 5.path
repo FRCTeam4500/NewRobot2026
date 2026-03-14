@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.38629508818171,
-        "y": 6.925084788485156
+        "x": 3.0718087384259265,
+        "y": 7.361060329861111
       },
       "isLocked": false,
       "linkedName": "auto 5a shoot 2"
@@ -20,15 +20,24 @@
         "y": 7.58815439219166
       },
       "prevControl": {
-        "x": 4.169649015784803,
-        "y": 7.732397813244291
+        "x": 4.165405092592593,
+        "y": 7.583611255787037
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "auto 5a path 5 end"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.21159539473684166,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 0.8535567434210526,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
