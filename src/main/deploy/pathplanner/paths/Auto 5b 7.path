@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 6.888898292824074,
-        "y": 0.6367024739583327
+        "y": 0.6367024739583322
       },
       "isLocked": false,
       "linkedName": "Auto 5b 6 end"
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 142.64435985017002
   },
   "reversed": false,
   "folder": "Auto 5b",

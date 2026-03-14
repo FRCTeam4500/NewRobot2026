@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.799,
-        "y": 0.565
+        "x": 3.5055879555832674,
+        "y": 0.811201938253052
       },
       "isLocked": true,
       "linkedName": "auto 5b shoot alighn"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 3.549,
-        "y": 0.565
+        "y": 1.0
       },
       "prevControl": {
         "x": 3.299,
-        "y": 0.5649999999999998
+        "y": 0.9999999999999999
       },
       "nextControl": null,
       "isLocked": true,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 70.0
+    "rotation": -119.5647043414045
   },
   "reversed": false,
   "folder": "Auto 5b",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 142.64435985017002
   },
   "useDefaultConstraints": false
 }

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4653948535936108,
-        "y": 7.483531499556344
+        "x": 3.283730758101852,
+        "y": 6.908610098379629
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.567959183673469,
-        "y": 7.500006189661871
+        "x": 4.38629508818171,
+        "y": 6.925084788485156
       },
       "isLocked": false,
       "linkedName": "auto 5a shoot 2"
@@ -48,7 +48,7 @@
   "folder": "Auto 5a",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -72.87781005148446
+    "rotation": 114.64518825172794
   },
   "useDefaultConstraints": false
 }
