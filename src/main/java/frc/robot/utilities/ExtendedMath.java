@@ -261,7 +261,7 @@ public class ExtendedMath {
   public static Rotation2d getHubAngle(Translation2d current, Alliance currentAlliance) {
     return new Translation2d(currentAlliance == Alliance.Blue ? 4.625584 : 11.901424, 4.034536)
         .minus(current)
-        .getAngle();
+        .getAngle().minus(Rotation2d.fromDegrees(180));
   }
 
   public static Rotation2d getHubAngle(Translation2d current) {

@@ -29,8 +29,8 @@ public class WiringConstants {
 
   public static class ShooterMotors {
 
-    public static final int flywheelMotor1 = 19;
-    public static final int flywheelMotor2 = 20;
+    public static final int flywheelMotor1 = 33;
+    public static final int flywheelMotor2 = 34;
     public static final int turretheadMotor = 27;
     // public static final int turretturnMotor = 67;
 
@@ -38,21 +38,21 @@ public class WiringConstants {
   }
 
   public static class ClimberMotors {
-    public static final int ClimberMotor1 = 30;
-    public static final int ClimberMotor2 = 31;
+    public static final int ClimberMotor1 = 0;
+    public static final int ClimberMotor2 = 0;
   }
 
   public static class IntakeMotors {
     public static final int IntakeMotor1 = 30;
     public static final int IntakeMotor2 = 31; // need to update this
     public static final int IntakeMotorExtension = 26;
-    public static final int IntakeMotorExtension2 = 28;
+    public static final int IntakeMotorExtension2 = 38;
   }
 
   public static class HopperMotors {
 
-    public static final int hopperMotorBeltdrive = 33;
-    public static final int hopperMotorBeltdrive2ID = 34;
+    public static final int hopperMotorBeltdrive = 19;
+    public static final int hopperMotorBeltdrive2ID = 20;
   }
 
   public static class IndexerMotors {

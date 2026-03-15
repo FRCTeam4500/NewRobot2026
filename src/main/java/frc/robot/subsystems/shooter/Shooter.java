@@ -16,15 +16,18 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.WiringConstants;
 import frc.robot.hardware.Motor;
 import frc.robot.hardware.Motor.TargetType;
 import frc.robot.utilities.FeedbackController;
 import frc.robot.utilities.FeedforwardController;
 import frc.robot.utilities.FeedforwardSim;
+import frc.robot.utilities.SysIDCommands;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
 import java.util.function.Supplier;
@@ -43,6 +46,7 @@ public class Shooter extends SubsystemBase implements Loggable {
   private DoubleSubscriber turetSubscriber;
   private DoubleSubscriber andgleSuscriber;
   private DoubleSubscriber PIDP;
+  private SysIDCommands angleSysId;
 
   public Shooter() {
 
@@ -85,14 +89,14 @@ public class Shooter extends SubsystemBase implements Loggable {
               config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
-              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
               config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
               MotorFx.getConfigurator().apply(config);
             },
             (FeedforwardSim sim) -> {},
             0,
             FeedbackController.fromTunablePID(FlywheelPID, PIDP),
-            FeedforwardController.forConstantGravity(0, 0.1111, 0.11642, 0.018187),
+            FeedforwardController.forConstantGravity(0, 0.13559, 0.12119, 0.022783),
             TargetType.Velocity);
     flywheel2 =
         Motor.fromTalonFX(
@@ -104,18 +108,17 @@ public class Shooter extends SubsystemBase implements Loggable {
               config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
-              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
               config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
               MotorFx.getConfigurator().apply(config);
             },
             (FeedforwardSim sim) -> {},
             0,
             FeedbackController.fromTunablePID(FlywheelPID, PIDP),
-            FeedforwardController.forConstantGravity(0, 0.11108, 0.11641, 0.018121),
+            FeedforwardController.forConstantGravity(0, 0.12814, 0.12043, 0.025504),
             TargetType.Velocity);
-    flywheel1
-        .getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2)
-        .putOnDashboard("flywheel", this);
+     angleSysId =flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2);
+        
 
     hood =
         Motor.fromSparkMax(
@@ -136,7 +139,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             },
             0,
             FeedbackController.fromPID(
-                1.5,
+                .75,
                 0,
                 0,
                 (PIDController pid) -> {
@@ -205,5 +208,6 @@ public class Shooter extends SubsystemBase implements Loggable {
     HoundLog.log(path, "flywheelAtTrarget", flywheel1.atTarget());
     HoundLog.log(path, "HoodAtTarget", hood.atTarget());
     HoundLog.log(path, "robotDistance", this.distance);
+    
   }
 }

@@ -30,6 +30,7 @@ public class Hopper extends SubsystemBase implements Loggable {
   SysIDCommands angleSysId;
   private DoubleSubscriber hopperSpeed;
   private InterpolatingDoubleTreeMap flywheelSpeed = new InterpolatingDoubleTreeMap();
+  private double beltSpeed = 60;
 
   public static int beltdrivespeed = 50;
 
@@ -77,7 +78,7 @@ public class Hopper extends SubsystemBase implements Loggable {
               config.CurrentLimits.SupplyCurrentLimit = 100;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
-              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
               config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
               MotorFx.getConfigurator().apply(config);
             },
@@ -94,7 +95,7 @@ public class Hopper extends SubsystemBase implements Loggable {
             TargetType.Velocity);
     angleSysId =
         hopperMotorBeltdrive.getSysIDCommands(
-            "hopper belt drive neo", 1, 10, 10, hopperMotorBeltdrive2);
+            "hopper belt drive neo", 1, 10, 10);
   }
 
   public Command beltDriveShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
@@ -102,8 +103,8 @@ public class Hopper extends SubsystemBase implements Loggable {
             () -> {
               double distance = robotPose.get().getTranslation().getDistance(target.get());
               hopperMotorBeltdrive.setTarget(
-                  flywheelSpeed.get(distance)); // flywheelSpeed.get(distance)
-              hopperMotorBeltdrive2.setTarget(flywheelSpeed.get(distance));
+                  hopperSpeed.get()); // flywheelSpeed.get(distance)
+              hopperMotorBeltdrive2.setVoltage(10);;
             },
             this)
         .andThen(Commands.idle());
@@ -129,11 +130,14 @@ public class Hopper extends SubsystemBase implements Loggable {
   public void log(String path) {
     HoundLog.log(path, "HopperMotor1", hopperMotorBeltdrive);
     HoundLog.log(path, "HopperMotor2", hopperMotorBeltdrive2);
-    HoundLog.log(path, "BeltDriveSpeed", hopperMotorBeltdrive.getVelocity());
-    HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive.atTarget());
+    HoundLog.log(path, "HopperFeedSpeed", hopperMotorBeltdrive.getVelocity());
+    HoundLog.log(path, "HopperFeedatTarget", hopperMotorBeltdrive.atTarget());
+    HoundLog.log(path, "BeltDriveSpeed", hopperMotorBeltdrive2.getVelocity());
+    HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive2.atTarget());
     SmartDashboard.putData("Angle Dynamic Forward", angleSysId.dynamicForward());
     SmartDashboard.putData("Angle Dynamic Reverse", angleSysId.dynamicReverse());
     SmartDashboard.putData("Angle Quasistatic Forward", angleSysId.quasistaticForward());
     SmartDashboard.putData("Angle Quasistatic Reverse", angleSysId.quasistaticReverse());
+    
   }
 }

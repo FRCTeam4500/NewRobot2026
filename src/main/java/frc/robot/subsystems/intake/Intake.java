@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase implements Loggable {
   private Motor intakeMotorExtension;
   private Motor intakeMotorExtension2;
   private final int intakeSpeed = 80;
-  private final int intakeVoltage = 12;
+  private final int intakeVoltage = 11;
   private final double maxExtention1 = 8.571;
   private final double maxExtention2 = 8.571;
 
@@ -83,7 +83,7 @@ public class Intake extends SubsystemBase implements Loggable {
               config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
-              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
               config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
               MotorFx.getConfigurator().apply(config);
             },
@@ -109,7 +109,7 @@ public class Intake extends SubsystemBase implements Loggable {
               config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
-              config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+              config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
               config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
               MotorFx.getConfigurator().apply(config);
             },
@@ -136,6 +136,7 @@ public class Intake extends SubsystemBase implements Loggable {
               config.encoder.velocityConversionFactor(1.0);
               config.smartCurrentLimit(100);
               config.idleMode(IdleMode.kCoast);
+              config.inverted(true);
               sparkmotor.configure(
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
@@ -157,7 +158,7 @@ public class Intake extends SubsystemBase implements Loggable {
               config.encoder.velocityConversionFactor(1.0);
               config.smartCurrentLimit(100);
               config.idleMode(IdleMode.kCoast);
-              config.inverted(true);
+              config.inverted(false);
               sparkmotor.configure(
                   config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
             },
