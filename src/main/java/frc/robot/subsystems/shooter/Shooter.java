@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -45,6 +46,7 @@ public class Shooter extends SubsystemBase implements Loggable {
   private DoubleSubscriber andgleSuscriber;
   private DoubleSubscriber PIDP;
   private SysIDCommands angleSysId;
+  private DoubleSubscriber hoodGravityFeedforward;
 
   public Shooter() {
 
@@ -52,6 +54,7 @@ public class Shooter extends SubsystemBase implements Loggable {
     turetSubscriber = HoundLog.tunable("TuretHood", 0.0);
     andgleSuscriber = HoundLog.tunable("turetangle", 0.0);
     PIDP = HoundLog.tunable("PID P value", 0.95);
+    hoodGravityFeedforward = HoundLog.tunable("Hood Gravity Feedforward", 1.0);
 
     // find flywheel speed
     flywheelSpeed.put(1.583, 45.0);
@@ -117,14 +120,15 @@ public class Shooter extends SubsystemBase implements Loggable {
             TargetType.Velocity);
     angleSysId = flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2);
 
+    double hoodGearReduction = 1;
     hood =
         Motor.fromSparkMax(
             WiringConstants.ShooterMotors.turretheadMotor,
             false,
             (SparkMax sparkMotor) -> {
               SparkMaxConfig config = new SparkMaxConfig();
-              config.encoder.positionConversionFactor(1.0);
-              config.encoder.velocityConversionFactor(1.0);
+              config.encoder.positionConversionFactor(1.0 / hoodGearReduction * 360);
+              config.encoder.velocityConversionFactor(1.0 / hoodGearReduction * 360);
               config.smartCurrentLimit(40);
               config.idleMode(IdleMode.kBrake);
               config.inverted(false);
@@ -171,7 +175,8 @@ public class Shooter extends SubsystemBase implements Loggable {
           flywheel1.setTarget(flywheelSubscriber.get()); // flywheelSubscriber.get()
           flywheel2.setTarget(flywheelSubscriber.get());
 
-          hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
+          // hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
+          hood.setVoltage(hoodGravityFeedforward.get() * Math.cos(Units.degreesToRadians(hood.getPosition())));
 
           double distance = robotPose.get().getTranslation().getDistance(target.get());
           this.distance = distance;
@@ -180,7 +185,6 @@ public class Shooter extends SubsystemBase implements Loggable {
   }
 
   public Command idle() {
-    // flywheel.setTarget(0);
     return Commands.runOnce(
             () -> {
               flywheel1.setVoltage(0);
