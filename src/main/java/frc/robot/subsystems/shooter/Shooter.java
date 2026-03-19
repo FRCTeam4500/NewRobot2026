@@ -30,6 +30,8 @@ import frc.robot.utilities.FeedforwardSim;
 import frc.robot.utilities.SysIDCommands;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
+
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class Shooter extends SubsystemBase implements Loggable {
@@ -46,6 +48,7 @@ public class Shooter extends SubsystemBase implements Loggable {
   private DoubleSubscriber turetSubscriber;
   private DoubleSubscriber andgleSuscriber;
   private DoubleSubscriber PIDP;
+  private DoubleSupplier PIDHood;
   private SysIDCommands angleSysId;
 
   public Shooter() {
@@ -53,7 +56,7 @@ public class Shooter extends SubsystemBase implements Loggable {
     flywheelSubscriber = HoundLog.tunable("Flywheel Speed", 0.0);
     turetSubscriber = HoundLog.tunable("TuretHood", 0.0);
     andgleSuscriber = HoundLog.tunable("turetangle", 0.0);
-    PIDP = HoundLog.tunable("PID P value", 0.95);
+    PIDP = HoundLog.tunable("PID P value", 0.3);
 
     // find flywheel speed
     flywheelSpeed.put(1.583, 45.0);
@@ -79,6 +82,10 @@ public class Shooter extends SubsystemBase implements Loggable {
     PIDController FlywheelPID = new PIDController(0, 0, 0);
     FlywheelPID.setTolerance(1);
 
+    PIDHood = () -> 0.5;
+    PIDController ExtenionPID = new PIDController(0, 0, 0);
+    ExtenionPID.setTolerance(.05);
+
     flywheel1 =
         Motor.fromTalonFX(
             WiringConstants.ShooterMotors.flywheelMotor1,
@@ -96,7 +103,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             (FeedforwardSim sim) -> {},
             0,
             FeedbackController.fromTunablePID(FlywheelPID, PIDP),
-            FeedforwardController.forConstantGravity(0, 0.13559, 0.12119, 0.022783),
+            FeedforwardController.forConstantGravity(0, 0.098553, 0.11532, 0.040236),
             TargetType.Velocity);
     flywheel2 =
         Motor.fromTalonFX(
@@ -115,7 +122,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             (FeedforwardSim sim) -> {},
             0,
             FeedbackController.fromTunablePID(FlywheelPID, PIDP),
-            FeedforwardController.forConstantGravity(0, 0.12814, 0.12043, 0.025504),
+            FeedforwardController.forConstantGravity(0, 0.10196, 0.11401, 0.044742),
             TargetType.Velocity);
      angleSysId =flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2);
         
@@ -128,7 +135,7 @@ public class Shooter extends SubsystemBase implements Loggable {
               SparkMaxConfig config = new SparkMaxConfig();
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
-              config.smartCurrentLimit(40);
+              config.smartCurrentLimit(20);
               config.idleMode(IdleMode.kBrake);
               config.inverted(false);
               sparkMotor.configure(
@@ -138,15 +145,13 @@ public class Shooter extends SubsystemBase implements Loggable {
               sim.withHardstops(0, 4);
             },
             0,
-            FeedbackController.fromPID(
-                .75,
-                0,
-                0,
-                (PIDController pid) -> {
-                  pid.setTolerance(0.05);
-                }),
+            // FeedbackController.fromTunablePID(ExtenionPID, PIDHood),
+            FeedbackController.fromPID(.75, 0, 0, pid -> pid.setTolerance(0.05)),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Position);
+
+            flywheel1.setVoltage(0);
+            flywheel2.setVoltage(0);
   }
 
   public Command readyShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
@@ -162,7 +167,7 @@ public class Shooter extends SubsystemBase implements Loggable {
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
           flywheel2.setTarget(flywheelSpeed.get(distance));
-
+          PIDHood =()-> 2;
           hood.setTarget(hoodAngle.get(distance));
         },
         this);
@@ -173,7 +178,7 @@ public class Shooter extends SubsystemBase implements Loggable {
         () -> {
           flywheel1.setTarget(flywheelSubscriber.get()); // flywheelSubscriber.get()
           flywheel2.setTarget(flywheelSubscriber.get());
-
+          PIDHood =()-> 2;
           hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
 
           double distance = robotPose.get().getTranslation().getDistance(target.get());
@@ -188,9 +193,9 @@ public class Shooter extends SubsystemBase implements Loggable {
             () -> {
               flywheel1.setVoltage(0);
               flywheel2.setVoltage(0);
-
-              hood.setTarget(0);
-              ;
+              PIDHood = ()-> 0.5;
+              // hood.setTarget(0.5);
+              hood.setVoltage(0);
             },
             this)
         .andThen(Commands.idle());
@@ -208,6 +213,11 @@ public class Shooter extends SubsystemBase implements Loggable {
     HoundLog.log(path, "flywheelAtTrarget", flywheel1.atTarget());
     HoundLog.log(path, "HoodAtTarget", hood.atTarget());
     HoundLog.log(path, "robotDistance", this.distance);
+    HoundLog.log(path, "hoodPValue", PIDHood.getAsDouble());
+    SmartDashboard.putData("Angle Dynamic Forward", angleSysId.dynamicForward());
+    SmartDashboard.putData("Angle Dynamic Reverse", angleSysId.dynamicReverse());
+    SmartDashboard.putData("Angle Quasistatic Forward", angleSysId.quasistaticForward());
+    SmartDashboard.putData("Angle Quasistatic Reverse", angleSysId.quasistaticReverse());
     
   }
 }

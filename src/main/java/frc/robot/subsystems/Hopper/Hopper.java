@@ -61,13 +61,13 @@ public class Hopper extends SubsystemBase implements Loggable {
             null,
             0,
             FeedbackController.fromPID(
-                1,
+                .3,
                 0,
                 0,
                 (PIDController pid) -> {
                   pid.setTolerance(1);
                 }),
-            FeedforwardController.forConstantGravity(0, 0, 0, 0),
+            FeedforwardController.forConstantGravity(0, 0.049901, 0.12029, 0.0067009),
             TargetType.Velocity);
 
     hopperMotorBeltdrive2 =
@@ -79,7 +79,7 @@ public class Hopper extends SubsystemBase implements Loggable {
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-              config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+              config.MotorOutput.NeutralMode = NeutralModeValue.Coast; 
               MotorFx.getConfigurator().apply(config);
             },
             null,
@@ -134,10 +134,7 @@ public class Hopper extends SubsystemBase implements Loggable {
     HoundLog.log(path, "HopperFeedatTarget", hopperMotorBeltdrive.atTarget());
     HoundLog.log(path, "BeltDriveSpeed", hopperMotorBeltdrive2.getVelocity());
     HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive2.atTarget());
-    SmartDashboard.putData("Angle Dynamic Forward", angleSysId.dynamicForward());
-    SmartDashboard.putData("Angle Dynamic Reverse", angleSysId.dynamicReverse());
-    SmartDashboard.putData("Angle Quasistatic Forward", angleSysId.quasistaticForward());
-    SmartDashboard.putData("Angle Quasistatic Reverse", angleSysId.quasistaticReverse());
+    
     
   }
 }

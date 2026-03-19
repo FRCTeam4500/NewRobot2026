@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase implements Loggable {
   private Motor intakeMotorExtension;
   private Motor intakeMotorExtension2;
   private final int intakeSpeed = 80;
-  private final int intakeVoltage = 11;
+  private final int intakeVoltage = 9;
   private final double maxExtention1 = 8.571;
   private final double maxExtention2 = 8.571;
 
