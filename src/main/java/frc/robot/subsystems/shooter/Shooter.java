@@ -176,7 +176,8 @@ public class Shooter extends SubsystemBase implements Loggable {
           flywheel2.setTarget(flywheelSubscriber.get());
 
           // hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
-          hood.setVoltage(hoodGravityFeedforward.get() * Math.cos(Units.degreesToRadians(hood.getPosition())));
+          hood.setVoltage(
+              hoodGravityFeedforward.get() * Math.cos(Units.degreesToRadians(hood.getPosition())));
 
           double distance = robotPose.get().getTranslation().getDistance(target.get());
           this.distance = distance;

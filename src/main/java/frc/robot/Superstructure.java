@@ -64,16 +64,12 @@ public class Superstructure implements Loggable {
   public Command StartShooter() {
     // return shooterFly.speedup();
     return shooter.readyShoot(
-        this.robotPose,
-        () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation())
-      );
+        this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
   }
 
   public Command StartShooterTest() {
     return shooter.test(
-        this.robotPose,
-        () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation())
-      );
+        this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
   }
 
   public Command StopShooter() {

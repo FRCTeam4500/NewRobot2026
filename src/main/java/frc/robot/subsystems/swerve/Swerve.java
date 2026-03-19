@@ -278,7 +278,8 @@ public class Swerve extends SubsystemBase implements Loggable {
   }
 
   public Command hubCentricDrive(XboxController xbox) {
-    return angleCentric(xbox, () -> ExtendedMath.getTargetAngle(getEstimatedPose().getTranslation()));
+    return angleCentric(
+        xbox, () -> ExtendedMath.getTargetAngle(getEstimatedPose().getTranslation()));
   }
 
   public Pose2d getEstimatedPose() {
