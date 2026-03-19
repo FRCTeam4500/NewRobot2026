@@ -7,6 +7,8 @@
 
 package frc.robot.utilities;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -256,6 +258,34 @@ public class ExtendedMath {
     }
     // return our calculated virtual target that we should shoot at
     return virtualTarget;
+  }
+
+  public static Translation2d getCurrentTarget(Translation2d current) {
+    if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
+            if (current.getX() < 11) {
+              if (current.getY() > 4) {
+                return new Translation2d(15, 7); // red outpost corner
+              } else {
+                return new Translation2d(15, 1); // red depot corner
+              }
+            } else {
+              return new Translation2d(11.901424, 4.034536); // red hub
+            }
+          } else {
+            if (current.getX() > 5.5) {
+              if (current.getY() > 4) {
+                return new Translation2d(1, 7); // blue depot corner
+              } else {
+                return new Translation2d(1, 1); // blue outpost corner
+              }
+            }
+            return new Translation2d(4.625594, 4.034536); // blue hub
+          }
+  }
+
+  public static Rotation2d getTargetAngle(Translation2d current) {
+    Translation2d target = getCurrentTarget(current);
+    return target.minus(current).getAngle().minus(Rotation2d.k180deg);
   }
 
   public static Rotation2d getHubAngle(Translation2d current, Alliance currentAlliance) {
