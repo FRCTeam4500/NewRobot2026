@@ -16,11 +16,9 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.WiringConstants;
 import frc.robot.hardware.Motor;
 import frc.robot.hardware.Motor.TargetType;
@@ -124,8 +122,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             FeedbackController.fromTunablePID(FlywheelPID, PIDP),
             FeedforwardController.forConstantGravity(0, 0.10196, 0.11401, 0.044742),
             TargetType.Velocity);
-     angleSysId =flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2);
-        
+    angleSysId = flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2);
 
     hood =
         Motor.fromSparkMax(

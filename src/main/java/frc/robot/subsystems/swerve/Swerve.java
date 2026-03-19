@@ -61,10 +61,9 @@ public class Swerve extends SubsystemBase implements Loggable {
   public static final double MAX_FORWARD_SENSITIVITY = 6;
   public static final double MAX_SIDEWAYS_SENSITIVITY = 6;
 
-
   /** Creates a new {@link Swerve} using the constants defined in {@link SwerveConstants} */
   public Swerve() {
-    
+
     previousSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
     // previousSpeeds.vxMetersPerSecond=0;
     // previousSpeeds.vyMetersPerSecond=0;

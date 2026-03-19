@@ -93,18 +93,16 @@ public class Hopper extends SubsystemBase implements Loggable {
                 }),
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Velocity);
-    angleSysId =
-        hopperMotorBeltdrive.getSysIDCommands(
-            "hopper belt drive neo", 1, 10, 10);
+    angleSysId = hopperMotorBeltdrive.getSysIDCommands("hopper belt drive neo", 1, 10, 10);
   }
 
   public Command beltDriveShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
     return Commands.runOnce(
             () -> {
               double distance = robotPose.get().getTranslation().getDistance(target.get());
-              hopperMotorBeltdrive.setTarget(
-                  hopperSpeed.get()); // flywheelSpeed.get(distance)
-              hopperMotorBeltdrive2.setVoltage(10);;
+              hopperMotorBeltdrive.setTarget(hopperSpeed.get()); // flywheelSpeed.get(distance)
+              hopperMotorBeltdrive2.setVoltage(10);
+              ;
             },
             this)
         .andThen(Commands.idle());
