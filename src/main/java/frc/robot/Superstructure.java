@@ -13,6 +13,7 @@ import frc.robot.subsystems.Hopper.Hopper;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.orchestra.Orc;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.utilities.ExtendedMath;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
@@ -64,25 +65,15 @@ public class Superstructure implements Loggable {
     // return shooterFly.speedup();
     return shooter.readyShoot(
         this.robotPose,
-        () -> {
-          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
-            return new Translation2d(11.901424, 4.034536); // red hub
-          } else {
-            return new Translation2d(4.625594, 4.034536); // blue hub
-          }
-        });
+        () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation())
+      );
   }
 
   public Command StartShooterTest() {
     return shooter.test(
         this.robotPose,
-        () -> {
-          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
-            return new Translation2d(11.901424, 4.034536); // red hub
-          } else {
-            return new Translation2d(4.625594, 4.034536); // blue hub
-          }
-        });
+        () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation())
+      );
   }
 
   public Command StopShooter() {
