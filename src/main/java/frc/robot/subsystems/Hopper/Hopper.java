@@ -9,7 +9,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -79,7 +78,7 @@ public class Hopper extends SubsystemBase implements Loggable {
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-              config.MotorOutput.NeutralMode = NeutralModeValue.Coast; 
+              config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
               MotorFx.getConfigurator().apply(config);
             },
             null,
@@ -132,7 +131,5 @@ public class Hopper extends SubsystemBase implements Loggable {
     HoundLog.log(path, "HopperFeedatTarget", hopperMotorBeltdrive.atTarget());
     HoundLog.log(path, "BeltDriveSpeed", hopperMotorBeltdrive2.getVelocity());
     HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive2.atTarget());
-    
-    
   }
 }

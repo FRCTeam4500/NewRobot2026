@@ -30,7 +30,6 @@ import frc.robot.utilities.FeedforwardSim;
 import frc.robot.utilities.SysIDCommands;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
-
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -152,8 +151,8 @@ public class Shooter extends SubsystemBase implements Loggable {
             FeedforwardController.forConstantGravity(0, 0, 0, 0),
             TargetType.Position);
 
-            flywheel1.setVoltage(0);
-            flywheel2.setVoltage(0);
+    flywheel1.setVoltage(0);
+    flywheel2.setVoltage(0);
   }
 
   public Command readyShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
@@ -169,7 +168,7 @@ public class Shooter extends SubsystemBase implements Loggable {
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
           flywheel2.setTarget(flywheelSpeed.get(distance));
-          PIDHood =()-> 2;
+          PIDHood = () -> 2;
           hood.setTarget(hoodAngle.get(distance));
         },
         this);
@@ -196,7 +195,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             () -> {
               flywheel1.setVoltage(0);
               flywheel2.setVoltage(0);
-              PIDHood = ()-> 0.5;
+              PIDHood = () -> 0.5;
               // hood.setTarget(0.5);
               hood.setVoltage(0);
             },
@@ -221,6 +220,5 @@ public class Shooter extends SubsystemBase implements Loggable {
     SmartDashboard.putData("Angle Dynamic Reverse", angleSysId.dynamicReverse());
     SmartDashboard.putData("Angle Quasistatic Forward", angleSysId.quasistaticForward());
     SmartDashboard.putData("Angle Quasistatic Reverse", angleSysId.quasistaticReverse());
-    
   }
 }
