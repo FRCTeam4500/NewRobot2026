@@ -3,6 +3,7 @@
   "robotLength": 0.6,
   "holonomicMode": true,
   "pathFolders": [
+    "Left Bump",
     "Left Trench",
     "Auto 7",
     "Auto 6",
