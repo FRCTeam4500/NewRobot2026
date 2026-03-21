@@ -56,28 +56,50 @@ public class Shooter extends SubsystemBase implements Loggable {
     flywheelSubscriber = HoundLog.tunable("Flywheel Speed", 0.0);
     turetSubscriber = HoundLog.tunable("TuretHood", 0.0);
     andgleSuscriber = HoundLog.tunable("turetangle", 0.0);
-    PIDP = HoundLog.tunable("PID P value", 0.95);
-    hoodGravityFeedforward = HoundLog.tunable("Hood Gravity Feedforward", 1.0);
+    PIDP = HoundLog.tunable("PID P value", 0.3);
+    hoodGravityFeedforward = HoundLog.tunable("Hood Gravity Feedforward", 0.0);
 
     // find flywheel speed
-    flywheelSpeed.put(1.583, 45.0);
-    flywheelSpeed.put(2.12, 48.0); // meters , motor speed units
-    flywheelSpeed.put(2.329, 50.0);
-    flywheelSpeed.put(2.996, 50.0);
-    flywheelSpeed.put(3.334, 52.0);
-    flywheelSpeed.put(3.565, 52.0);
-    flywheelSpeed.put(3.630, 55.0);
-    flywheelSpeed.put(4.7, 75.0);
+   flywheelSpeed.put(1.73166, 47.0);
+flywheelSpeed.put(2.059, 48.0);
+flywheelSpeed.put(2.375, 48.0);
+flywheelSpeed.put(2.686, 49.0);
+flywheelSpeed.put(2.917, 50.0);
+flywheelSpeed.put(3.174, 52.0);
+flywheelSpeed.put(3.338, 53.0);
+flywheelSpeed.put(3.622, 54.0);
+flywheelSpeed.put(3.967, 55.0);
+flywheelSpeed.put(4.144, 55.0);
+flywheelSpeed.put(4.367, 58.0);
+flywheelSpeed.put(5.075, 62.0);
+flywheelSpeed.put(5.19, 62.0);
+flywheelSpeed.put(5.2, 50.0);
+flywheelSpeed.put(5.3604, 50.0);
+flywheelSpeed.put(6.855, 50.0);
+flywheelSpeed.put(8.314, 58.0);
+flywheelSpeed.put(9.516, 58.0);
+flywheelSpeed.put(10.9, 80.0);
 
     // find hood angle
-    hoodAngle.put(1.583, 0.0);
-    hoodAngle.put(2.12, 0.0); // meters , angle degrees
-    hoodAngle.put(2.329, 0.0);
-    hoodAngle.put(2.996, 1.75);
-    hoodAngle.put(3.334, 1.75);
-    hoodAngle.put(3.565, 1.75);
-    hoodAngle.put(3.630, 1.75);
-    hoodAngle.put(4.7, 1.9);
+    hoodAngle.put(1.73166, 0.0);
+hoodAngle.put(2.059, 2.0);
+hoodAngle.put(2.375, 4.0);
+hoodAngle.put(2.686, 6.0);
+hoodAngle.put(2.917, 6.5);
+hoodAngle.put(3.174, 6.5);
+hoodAngle.put(3.338, 6.5);
+hoodAngle.put(3.622, 8.0);
+hoodAngle.put(3.967, 10.0);
+hoodAngle.put(4.144, 10.0);
+hoodAngle.put(4.367, 10.0);
+hoodAngle.put(5.075, 12.0);
+hoodAngle.put(5.19, 12.0);
+hoodAngle.put(5.2, 20.0);
+hoodAngle.put(5.3604, 20.0);
+hoodAngle.put(6.855, 24.0);
+hoodAngle.put(8.314, 24.0);
+hoodAngle.put(9.516, 24.0);
+hoodAngle.put(10.9, 24.0);
 
     // for testing
     PIDController FlywheelPID = new PIDController(0, 0, 0);
@@ -127,7 +149,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             TargetType.Velocity);
     angleSysId = flywheel1.getSysIDCommands("flywheelMotorkraken", 1, 10, 10, flywheel2);
 
-    double hoodGearReduction = 1;
+    double hoodGearReduction = 53;
     hood =
         Motor.fromSparkMax(
             WiringConstants.ShooterMotors.turretheadMotor,
@@ -147,8 +169,8 @@ public class Shooter extends SubsystemBase implements Loggable {
             },
             0,
             // FeedbackController.fromTunablePID(ExtenionPID, PIDHood),
-            FeedbackController.fromPID(.75, 0, 0, pid -> pid.setTolerance(0.05)),
-            FeedforwardController.forConstantGravity(0, 0, 0, 0),
+            FeedbackController.fromPID(.1, 0, 0, pid -> pid.setTolerance(0.05)),
+            FeedforwardController.forConstantGravity(0.45, 0, 0, 0),
             TargetType.Position);
 
             flywheel1.setVoltage(0);
@@ -170,6 +192,8 @@ public class Shooter extends SubsystemBase implements Loggable {
           flywheel2.setTarget(flywheelSpeed.get(distance));
           PIDHood =()-> 2;
           hood.setTarget(hoodAngle.get(distance));
+
+          this.distance = distance;
         },
         this);
   }
@@ -180,9 +204,8 @@ public class Shooter extends SubsystemBase implements Loggable {
           flywheel1.setTarget(flywheelSubscriber.get()); // flywheelSubscriber.get()
           flywheel2.setTarget(flywheelSubscriber.get());
 
-          // hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
-          hood.setVoltage(
-              hoodGravityFeedforward.get() * Math.cos(Units.degreesToRadians(hood.getPosition())));
+           hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
+          //hood.setVoltage(hoodGravityFeedforward.get() * Math.cos(Units.degreesToRadians(hood.getPosition())));
 
           double distance = robotPose.get().getTranslation().getDistance(target.get());
           this.distance = distance;
@@ -216,10 +239,6 @@ public class Shooter extends SubsystemBase implements Loggable {
     HoundLog.log(path, "HoodAtTarget", hood.atTarget());
     HoundLog.log(path, "robotDistance", this.distance);
     HoundLog.log(path, "hoodPValue", PIDHood.getAsDouble());
-    SmartDashboard.putData("Angle Dynamic Forward", angleSysId.dynamicForward());
-    SmartDashboard.putData("Angle Dynamic Reverse", angleSysId.dynamicReverse());
-    SmartDashboard.putData("Angle Quasistatic Forward", angleSysId.quasistaticForward());
-    SmartDashboard.putData("Angle Quasistatic Reverse", angleSysId.quasistaticReverse());
     
   }
 }

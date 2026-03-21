@@ -33,10 +33,7 @@ public class Robot extends LoggedRobot {
   public Robot() {
     swerve = new Swerve();
     structure =
-        new Superstructure(
-            () -> {
-              return swerve.getPose();
-            });
+        new Superstructure(swerve);
     DriverStation.silenceJoystickConnectionWarning(true);
     xbox = new CommandXboxController(2);
     xbox2 = new CommandXboxController(1);
@@ -51,7 +48,7 @@ public class Robot extends LoggedRobot {
 
     // rev shooter
     Trigger revShooter = xbox2.rightTrigger();
-    revShooter.whileTrue(structure.StartShooterTest());
+    revShooter.whileTrue(structure.StartShooter());
 
     // intake
     Trigger ActivateIntake = xbox2.leftTrigger();

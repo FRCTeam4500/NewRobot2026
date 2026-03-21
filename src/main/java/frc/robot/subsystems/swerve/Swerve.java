@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -58,11 +59,31 @@ public class Swerve extends SubsystemBase implements Loggable {
   private PoseFeedbackController poseFeedback;
   private Translation2d robotAcceleration;
   private ChassisSpeeds previousSpeeds;
+  public final InterpolatingDoubleTreeMap distanceToTimeMap;
   public static final double MAX_FORWARD_SENSITIVITY = 6;
   public static final double MAX_SIDEWAYS_SENSITIVITY = 6;
 
   /** Creates a new {@link Swerve} using the constants defined in {@link SwerveConstants} */
   public Swerve() {
+    distanceToTimeMap = new InterpolatingDoubleTreeMap();
+    distanceToTimeMap.put(2.19, 1.01);
+    distanceToTimeMap.put(1.896782763482843, 1.32);
+    distanceToTimeMap.put(2.43, 1.2);
+    distanceToTimeMap.put(2.80, 1.13);
+    distanceToTimeMap.put(3.31, 1.4);
+    distanceToTimeMap.put(3.72, 1.33);
+    distanceToTimeMap.put(4.14, 1.48);
+    distanceToTimeMap.put(4.47, 1.32);
+    distanceToTimeMap.put(4.92, 1.38);
+    distanceToTimeMap.put(5.29, 0.94);
+
+
+
+
+
+
+
+
 
     previousSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
     // previousSpeeds.vxMetersPerSecond=0;
@@ -279,7 +300,12 @@ public class Swerve extends SubsystemBase implements Loggable {
 
   public Command hubCentricDrive(XboxController xbox) {
     return angleCentric(
-        xbox, () -> ExtendedMath.getTargetAngle(getEstimatedPose().getTranslation()));
+        xbox, () -> {
+          // return ExtendedMath.getTargetAngle(getPose().getTranslation());
+          Translation2d target = ExtendedMath.getCurrentTarget(getPose().getTranslation());
+          return ExtendedMath.getTargetAngle(getEstimatedPose().getTranslation(), ExtendedMath.calculateTargetOnMove(target, getPose().getTranslation(), getSpeeds(), new Translation2d(), 0, distanceToTimeMap));
+        });
+
   }
 
   public Pose2d getEstimatedPose() {

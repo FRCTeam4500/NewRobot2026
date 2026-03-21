@@ -5,6 +5,8 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,6 +15,7 @@ import frc.robot.subsystems.Hopper.Hopper;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.orchestra.Orc;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.utilities.ExtendedMath;
 import frc.robot.utilities.StopTilting;
 import frc.robot.utilities.logging.HoundLog;
@@ -31,12 +34,16 @@ public class Superstructure implements Loggable {
   private Hopper hopper;
   private Intake intake;
   private Supplier<Pose2d> robotPose;
+  private Supplier<ChassisSpeeds> robotSpeeds;
+  private InterpolatingDoubleTreeMap distanceToTimeMap;
 
-  public Superstructure(Supplier<Pose2d> robotPose) {
+  public Superstructure(Swerve swerve) {
     shooter = new Shooter();
     hopper = new Hopper();
     intake = new Intake();
-    this.robotPose = robotPose;
+    this.robotPose = swerve::getPose;
+    this.robotSpeeds = swerve::getSpeeds;
+    distanceToTimeMap = swerve.distanceToTimeMap;
     StopTilting.setupSuperstructure(new Transform3d[] {}, new double[] {});
   }
 
@@ -64,7 +71,15 @@ public class Superstructure implements Loggable {
   public Command StartShooter() {
     // return shooterFly.speedup();
     return shooter.readyShoot(
-        this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
+        // this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
+        this.robotPose, () -> ExtendedMath.calculateTargetOnMove(
+          ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()), 
+          robotPose.get().getTranslation(), 
+          robotSpeeds.get(), 
+          new Translation2d(), 
+          0, 
+          distanceToTimeMap)
+        );
   }
 
   public Command StartShooterTest() {
@@ -79,13 +94,14 @@ public class Superstructure implements Loggable {
   public Command shoot() {
     return hopper.beltDriveShoot(
         this.robotPose,
-        () -> {
-          if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
-            return new Translation2d(11.916, 4); // red hub
-          } else {
-            return new Translation2d(4.632, 4); // blue hub
-          }
-        });
+        () -> ExtendedMath.calculateTargetOnMove(
+          ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()), 
+          robotPose.get().getTranslation(), 
+          robotSpeeds.get(), 
+          new Translation2d(), 
+          0, 
+          distanceToTimeMap)
+        );
   }
 
   // --------------------------------------intake----------------------------------------------

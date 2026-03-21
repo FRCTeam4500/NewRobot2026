@@ -241,7 +241,7 @@ public class ExtendedMath {
       // update our virtual target using the original target translation and the previously
       // calculated offset
       // this is our estimate for where we should actually aim to score in our true target
-      virtualTarget = target.minus(offset);
+      virtualTarget = target.plus(offset);
       // lookup our shot time for this new shot
       double newShotTime = distanceToTime.get(virtualTarget.getDistance(robotPose));
       // if the times are very different (0.01 might be too low a number here)
@@ -263,9 +263,9 @@ public class ExtendedMath {
     if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))) {
       if (current.getX() < 11) {
         if (current.getY() > 4) {
-          return new Translation2d(15, 7); // red outpost corner
+          return new Translation2d(15, 6.5); // red outpost corner
         } else {
-          return new Translation2d(15, 1); // red depot corner
+          return new Translation2d(15, 1.5); // red depot corner
         }
       } else {
         return new Translation2d(11.901424, 4.034536); // red hub
@@ -273,9 +273,9 @@ public class ExtendedMath {
     } else {
       if (current.getX() > 5.5) {
         if (current.getY() > 4) {
-          return new Translation2d(1, 7); // blue depot corner
+          return new Translation2d(1, 6.5); // blue depot corner
         } else {
-          return new Translation2d(1, 1); // blue outpost corner
+          return new Translation2d(1, 1.5); // blue outpost corner
         }
       }
       return new Translation2d(4.625594, 4.034536); // blue hub
@@ -284,6 +284,10 @@ public class ExtendedMath {
 
   public static Rotation2d getTargetAngle(Translation2d current) {
     Translation2d target = getCurrentTarget(current);
+    return target.minus(current).getAngle().minus(Rotation2d.k180deg);
+  }
+
+  public static Rotation2d getTargetAngle(Translation2d current, Translation2d target) {
     return target.minus(current).getAngle().minus(Rotation2d.k180deg);
   }
 
