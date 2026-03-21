@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,7 +30,6 @@ import frc.robot.utilities.FeedforwardSim;
 import frc.robot.utilities.SysIDCommands;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
-
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -173,8 +173,8 @@ hoodAngle.put(10.9, 24.0);
             FeedforwardController.forConstantGravity(0.45, 0, 0, 0),
             TargetType.Position);
 
-            flywheel1.setVoltage(0);
-            flywheel2.setVoltage(0);
+    flywheel1.setVoltage(0);
+    flywheel2.setVoltage(0);
   }
 
   public Command readyShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
@@ -190,7 +190,7 @@ hoodAngle.put(10.9, 24.0);
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
           flywheel2.setTarget(flywheelSpeed.get(distance));
-          PIDHood =()-> 2;
+          PIDHood = () -> 2;
           hood.setTarget(hoodAngle.get(distance));
 
           this.distance = distance;
@@ -218,7 +218,7 @@ hoodAngle.put(10.9, 24.0);
             () -> {
               flywheel1.setVoltage(0);
               flywheel2.setVoltage(0);
-              PIDHood = ()-> 0.5;
+              PIDHood = () -> 0.5;
               // hood.setTarget(0.5);
               hood.setVoltage(0);
             },
