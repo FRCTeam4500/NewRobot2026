@@ -235,12 +235,37 @@ public class Intake extends SubsystemBase implements Loggable {
   }
 
   public Command flexIntake() {
+    return moveIntake(0.7)
+      .andThen(Commands.waitSeconds(0.25))
+      .andThen(moveIntake(0.6))
+      .andThen(Commands.waitSeconds(0.25))
+      .andThen(moveIntake(0.5))
+      .andThen(Commands.waitSeconds(0.25))
+      .andThen(moveIntake(0.4))
+      .andThen(Commands.waitSeconds(0.25))
+      .andThen(moveIntake(0.3))
+      .andThen(Commands.waitSeconds(0.25))
+      .andThen(moveIntake(0.2))
+      .andThen(Commands.waitSeconds(0.25))
+      .andThen(moveIntake(0.1))
+      .andThen(Commands.waitSeconds(0.25))
+      .andThen(moveIntake(0))
+      .andThen(Commands.waitSeconds(0.25));
 
-    return retractIntake()
-        .withTimeout(PulseWaitTime)
-        .andThen(extendIntake())
-        .andThen(Commands.waitSeconds(PulseWaitTime))
-        .repeatedly();
+  }
+  private Command moveIntake(double position) {
+    return Commands.runOnce(() -> {
+      if (intakeMotorExtension.getPosition() > position) {
+        PIDP = () -> 10;
+      } else {
+        PIDP = () -> 0.5;
+      }
+      intakeMotorExtension.setTarget(position);
+      intakeMotorExtension2.setTarget(position);
+    }, this).andThen(
+      Commands.waitUntil(intakeMotorExtension::atTarget)
+    );
+  }
 
     // return Commands.run(
     //     () -> {
@@ -256,7 +281,6 @@ public class Intake extends SubsystemBase implements Loggable {
     //       }
     //     },
     //     this);
-  }
 
   public Command extendIntakeWithGravity() {
     return Commands.runOnce(

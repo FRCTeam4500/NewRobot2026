@@ -3,15 +3,16 @@
   "robotLength": 0.6,
   "holonomicMode": true,
   "pathFolders": [
-    "Auto 1",
-    "Auto 2",
-    "Auto 3",
-    "Auto 4a",
-    "Auto 4b",
-    "Auto 5a",
-    "Auto 6",
+    "Left Trench",
     "Auto 7",
-    "Auto 5b"
+    "Auto 6",
+    "Auto 5b",
+    "Auto 5a",
+    "Auto 4b",
+    "Auto 4a",
+    "Auto 3",
+    "Auto 2",
+    "Auto 1"
   ],
   "autoFolders": [],
   "defaultMaxVel": 4.0,
@@ -38,5 +39,7 @@
   "brModuleY": -0.3556,
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
-  "robotFeatures": []
+  "robotFeatures": [
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.4397,\"y\":0.0},\"size\":{\"width\":0.8,\"length\":0.2794},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":false}}"
+  ]
 }
