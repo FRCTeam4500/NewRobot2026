@@ -236,51 +236,52 @@ public class Intake extends SubsystemBase implements Loggable {
 
   public Command flexIntake() {
     return moveIntake(0.7)
-      .andThen(Commands.waitSeconds(0.25))
-      .andThen(moveIntake(0.6))
-      .andThen(Commands.waitSeconds(0.25))
-      .andThen(moveIntake(0.5))
-      .andThen(Commands.waitSeconds(0.25))
-      .andThen(moveIntake(0.4))
-      .andThen(Commands.waitSeconds(0.25))
-      .andThen(moveIntake(0.3))
-      .andThen(Commands.waitSeconds(0.25))
-      .andThen(moveIntake(0.2))
-      .andThen(Commands.waitSeconds(0.25))
-      .andThen(moveIntake(0.1))
-      .andThen(Commands.waitSeconds(0.25))
-      .andThen(moveIntake(0))
-      .andThen(Commands.waitSeconds(0.25));
-
+        .andThen(Commands.waitSeconds(0.25))
+        .andThen(moveIntake(0.6))
+        .andThen(Commands.waitSeconds(0.25))
+        .andThen(moveIntake(0.5))
+        .andThen(Commands.waitSeconds(0.25))
+        .andThen(moveIntake(0.4))
+        .andThen(Commands.waitSeconds(0.25))
+        .andThen(moveIntake(0.3))
+        .andThen(Commands.waitSeconds(0.25))
+        .andThen(moveIntake(0.2))
+        .andThen(Commands.waitSeconds(0.25))
+        .andThen(moveIntake(0.1))
+        .andThen(Commands.waitSeconds(0.25))
+        .andThen(moveIntake(0))
+        .andThen(Commands.waitSeconds(0.25));
   }
+
   private Command moveIntake(double position) {
-    return Commands.runOnce(() -> {
-      if (intakeMotorExtension.getPosition() > position) {
-        PIDP = () -> 10;
-      } else {
-        PIDP = () -> 0.5;
-      }
-      intakeMotorExtension.setTarget(position);
-      intakeMotorExtension2.setTarget(position);
-    }, this).andThen(
-      Commands.waitUntil(intakeMotorExtension::atTarget)
-    );
+    return Commands.runOnce(
+            () -> {
+              if (intakeMotorExtension.getPosition() > position) {
+                PIDP = () -> 10;
+              } else {
+                PIDP = () -> 0.5;
+              }
+              intakeMotorExtension.setTarget(position);
+              intakeMotorExtension2.setTarget(position);
+            },
+            this)
+        .andThen(Commands.waitUntil(intakeMotorExtension::atTarget));
   }
 
-    // return Commands.run(
-    //     () -> {
-    //       if (pulse == 1) {
-    //         retractIntake();
-    //         pulse = 0;
-    //         Commands.waitSeconds(PulseWaitTime);
+  // return Commands.run(
+  //     () -> {
+  //       if (pulse == 1) {
+  //         retractIntake();
+  //         pulse = 0;
+  //         Commands.waitSeconds(PulseWaitTime);
 
-    //       } else {
-    //         extendIntake();
-    //         this.pulse = 1;
-    //         Commands.waitSeconds(PulseWaitTime);
-    //       }
-    //     },
-    //     this);
+  //       } else {
+  //         extendIntake();
+  //         this.pulse = 1;
+  //         Commands.waitSeconds(PulseWaitTime);
+  //       }
+  //     },
+  //     this);
 
   public Command extendIntakeWithGravity() {
     return Commands.runOnce(
