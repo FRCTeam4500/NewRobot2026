@@ -71,8 +71,8 @@ public class Superstructure implements Loggable {
   public Command StartShooter() {
     // return shooterFly.speedup();
     return shooter.readyShoot(
-        // this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
-        this.robotPose,
+         this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
+        /*this.robotPose,
         () ->
             ExtendedMath.calculateTargetOnMove(
                 ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()),
@@ -80,7 +80,7 @@ public class Superstructure implements Loggable {
                 robotSpeeds.get(),
                 new Translation2d(),
                 0,
-                distanceToTimeMap));
+                distanceToTimeMap));*/
   }
 
   public Command zeroIntakeOnFloor() {
