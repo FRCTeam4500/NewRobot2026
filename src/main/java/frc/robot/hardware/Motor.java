@@ -453,10 +453,10 @@ public class Motor extends SubsystemBase implements Loggable {
         path -> {
           HoundLog.log(path, "Acceleration", motor.getAcceleration().getValueAsDouble());
           HoundLog.log(path, "Temperature", motor.getDeviceTemp().getValueAsDouble());
-          HoundLog.log(path, "Stator Current", motor.getStatorCurrent().getValueAsDouble());
+          HoundLog.log(path, "Stator Current", motor.getTorqueCurrent().getValueAsDouble());
           HoundLog.log(path, "Supply Current", motor.getSupplyCurrent().getValueAsDouble());
-          HoundLog.log(path, "Applied Voltage", motor.getMotorVoltage().getValueAsDouble());
-          HoundLog.log(path, "Bus Voltage", motor.getSupplyVoltage().getValueAsDouble());
+          HoundLog.log(path, "Stator Voltage", motor.getMotorVoltage().getValueAsDouble());
+          HoundLog.log(path, "Supply Voltage", motor.getSupplyVoltage().getValueAsDouble());
           HoundLog.log(path, "Motor Status", motor.getMotorOutputStatus().getValue());
         });
   }
@@ -547,10 +547,13 @@ public class Motor extends SubsystemBase implements Loggable {
         path -> {
           HoundLog.log(path, "Mode", "Follower");
           HoundLog.log(path, "Leader ID", leader.getDeviceID());
+          HoundLog.log(path, "Acceleration", follower.getAcceleration().getValueAsDouble());
           HoundLog.log(path, "Temperature", follower.getDeviceTemp().getValueAsDouble());
-          HoundLog.log(path, "Stator Current", follower.getStatorCurrent().getValueAsDouble());
+          HoundLog.log(path, "Stator Current", follower.getTorqueCurrent().getValueAsDouble());
           HoundLog.log(path, "Supply Current", follower.getSupplyCurrent().getValueAsDouble());
-          HoundLog.log(path, "Applied Voltage", follower.getMotorVoltage().getValueAsDouble());
+          HoundLog.log(path, "Stator Voltage", follower.getMotorVoltage().getValueAsDouble());
+          HoundLog.log(path, "Supply Voltage", follower.getSupplyVoltage().getValueAsDouble());
+          HoundLog.log(path, "Motor Status", follower.getMotorOutputStatus().getValue());
         });
   }
 
@@ -630,10 +633,14 @@ public class Motor extends SubsystemBase implements Loggable {
         fb,
         ff,
         path -> {
-          HoundLog.log(path, "Applied Volts", motor.getAppliedOutput() * motor.getBusVoltage());
+          double busVoltage = motor.getBusVoltage();
+          double outputCurrent = motor.getOutputCurrent();
+          double motorVoltage = motor.getAppliedOutput() * busVoltage;
           HoundLog.log(path, "Temperature", motor.getMotorTemperature());
-          HoundLog.log(path, "Stator Current", motor.getOutputCurrent());
-          HoundLog.log(path, "Bus Voltage", motor.getBusVoltage());
+          HoundLog.log(path, "Stator Current", outputCurrent);
+          HoundLog.log(path, "Supply Current", motorVoltage * outputCurrent / busVoltage);
+          HoundLog.log(path, "Stator Voltage", motorVoltage);
+          HoundLog.log(path, "Supply Voltage", busVoltage);
         });
   }
 
@@ -707,11 +714,14 @@ public class Motor extends SubsystemBase implements Loggable {
         fb,
         ff,
         path -> {
-          HoundLog.log(path, "Bus Voltage", motor.getBusVoltage());
+          double busVoltage = motor.getBusVoltage();
+          double outputCurrent = motor.getStatorCurrent();
+          double motorVoltage = motor.getMotorOutputVoltage();
           HoundLog.log(path, "Temperature", motor.getTemperature());
-          HoundLog.log(path, "Output Voltage", motor.getMotorOutputVoltage());
-          HoundLog.log(path, "Stator Current", motor.getStatorCurrent());
-          HoundLog.log(path, "Supply Current", motor.getSupplyCurrent());
+          HoundLog.log(path, "Stator Current", outputCurrent);
+          HoundLog.log(path, "Supply Current", motorVoltage * outputCurrent / busVoltage);
+          HoundLog.log(path, "Stator Voltage", motorVoltage);
+          HoundLog.log(path, "Supply Voltage", busVoltage);
         });
   }
 
