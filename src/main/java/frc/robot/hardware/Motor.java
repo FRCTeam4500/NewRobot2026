@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Mechanism;
+import frc.robot.programs.Robot;
 import frc.robot.utilities.FeedbackController;
 import frc.robot.utilities.FeedforwardController;
 import frc.robot.utilities.FeedforwardSim;
@@ -30,7 +31,6 @@ import frc.robot.utilities.logging.Loggable;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
-import frc.robot.programs.Robot;
 
 /** A class representing a motor */
 public class Motor extends SubsystemBase implements Loggable {
@@ -557,7 +557,6 @@ public class Motor extends SubsystemBase implements Loggable {
 
         // Velocity getter mirrors leader
         () -> leader.getVelocity().getValueAsDouble(),
-
         () -> follower.getSupplyVoltage().getValueAsDouble(),
         () -> follower.getSupplyCurrent().getValueAsDouble(),
 
