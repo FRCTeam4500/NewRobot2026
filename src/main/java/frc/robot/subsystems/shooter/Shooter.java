@@ -15,9 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -60,46 +58,46 @@ public class Shooter extends SubsystemBase implements Loggable {
     hoodGravityFeedforward = HoundLog.tunable("Hood Gravity Feedforward", 0.0);
 
     // find flywheel speed
-   flywheelSpeed.put(1.73166, 47.0);
-flywheelSpeed.put(2.059, 48.0);
-flywheelSpeed.put(2.375, 48.0);
-flywheelSpeed.put(2.686, 49.0);
-flywheelSpeed.put(2.917, 50.0);
-flywheelSpeed.put(3.174, 52.0);
-flywheelSpeed.put(3.338, 53.0);
-flywheelSpeed.put(3.622, 54.0);
-flywheelSpeed.put(3.967, 55.0);
-flywheelSpeed.put(4.144, 55.0);
-flywheelSpeed.put(4.367, 58.0);
-flywheelSpeed.put(5.075, 62.0);
-flywheelSpeed.put(5.19, 62.0);
-flywheelSpeed.put(5.2, 50.0);
-flywheelSpeed.put(5.3604, 50.0);
-flywheelSpeed.put(6.855, 50.0);
-flywheelSpeed.put(8.314, 58.0);
-flywheelSpeed.put(9.516, 58.0);
-flywheelSpeed.put(10.9, 80.0);
+    flywheelSpeed.put(1.73166, 47.0);
+    flywheelSpeed.put(2.059, 48.0);
+    flywheelSpeed.put(2.375, 48.0);
+    flywheelSpeed.put(2.686, 49.0);
+    flywheelSpeed.put(2.917, 50.0);
+    flywheelSpeed.put(3.174, 52.0);
+    flywheelSpeed.put(3.338, 53.0);
+    flywheelSpeed.put(3.622, 54.0);
+    flywheelSpeed.put(3.967, 55.0);
+    flywheelSpeed.put(4.144, 55.0);
+    flywheelSpeed.put(4.367, 58.0);
+    flywheelSpeed.put(5.075, 62.0);
+    flywheelSpeed.put(5.19, 62.0);
+    flywheelSpeed.put(5.2, 50.0);
+    flywheelSpeed.put(5.3604, 50.0);
+    flywheelSpeed.put(6.855, 50.0);
+    flywheelSpeed.put(8.314, 58.0);
+    flywheelSpeed.put(9.516, 58.0);
+    flywheelSpeed.put(10.9, 80.0);
 
     // find hood angle
     hoodAngle.put(1.73166, 0.0);
-hoodAngle.put(2.059, 2.0);
-hoodAngle.put(2.375, 4.0);
-hoodAngle.put(2.686, 6.0);
-hoodAngle.put(2.917, 6.5);
-hoodAngle.put(3.174, 6.5);
-hoodAngle.put(3.338, 6.5);
-hoodAngle.put(3.622, 8.0);
-hoodAngle.put(3.967, 10.0);
-hoodAngle.put(4.144, 10.0);
-hoodAngle.put(4.367, 10.0);
-hoodAngle.put(5.075, 12.0);
-hoodAngle.put(5.19, 12.0);
-hoodAngle.put(5.2, 20.0);
-hoodAngle.put(5.3604, 20.0);
-hoodAngle.put(6.855, 24.0);
-hoodAngle.put(8.314, 24.0);
-hoodAngle.put(9.516, 24.0);
-hoodAngle.put(10.9, 24.0);
+    hoodAngle.put(2.059, 2.0);
+    hoodAngle.put(2.375, 4.0);
+    hoodAngle.put(2.686, 6.0);
+    hoodAngle.put(2.917, 6.5);
+    hoodAngle.put(3.174, 6.5);
+    hoodAngle.put(3.338, 6.5);
+    hoodAngle.put(3.622, 8.0);
+    hoodAngle.put(3.967, 10.0);
+    hoodAngle.put(4.144, 10.0);
+    hoodAngle.put(4.367, 10.0);
+    hoodAngle.put(5.075, 12.0);
+    hoodAngle.put(5.19, 12.0);
+    hoodAngle.put(5.2, 20.0);
+    hoodAngle.put(5.3604, 20.0);
+    hoodAngle.put(6.855, 24.0);
+    hoodAngle.put(8.314, 24.0);
+    hoodAngle.put(9.516, 24.0);
+    hoodAngle.put(10.9, 24.0);
 
     // for testing
     PIDController FlywheelPID = new PIDController(0, 0, 0);
@@ -189,7 +187,7 @@ hoodAngle.put(10.9, 24.0);
           flywheelSpeedlog = flywheelSpeed.get(distance);
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
-          flywheel2.setTarget(flywheelSpeed.get(distance)); 
+          flywheel2.setTarget(flywheelSpeed.get(distance));
           PIDHood = () -> 2;
           hood.setTarget(hoodAngle.get(distance));
 
@@ -204,8 +202,9 @@ hoodAngle.put(10.9, 24.0);
           flywheel1.setTarget(flywheelSubscriber.get()); // flywheelSubscriber.get()
           flywheel2.setTarget(flywheelSubscriber.get());
 
-           hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
-          //hood.setVoltage(hoodGravityFeedforward.get() * Math.cos(Units.degreesToRadians(hood.getPosition())));
+          hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
+          // hood.setVoltage(hoodGravityFeedforward.get() *
+          // Math.cos(Units.degreesToRadians(hood.getPosition())));
 
           double distance = robotPose.get().getTranslation().getDistance(target.get());
           this.distance = distance;
@@ -216,12 +215,12 @@ hoodAngle.put(10.9, 24.0);
   public Command idle() {
     return Commands.runOnce(
             () -> {
-              //for testing
+              // for testing
               flywheel1.setVoltage(0);
               flywheel2.setVoltage(0);
-              //for matches
-              //flywheel1.setTarget(47);
-              //flywheel2.setTarget(47);
+              // for matches
+              // flywheel1.setTarget(47);
+              // flywheel2.setTarget(47);
               PIDHood = () -> 0.5;
               // hood.setTarget(0.5);
               hood.setVoltage(0);
@@ -243,6 +242,5 @@ hoodAngle.put(10.9, 24.0);
     HoundLog.log(path, "HoodAtTarget", hood.atTarget());
     HoundLog.log(path, "robotDistance", this.distance);
     HoundLog.log(path, "hoodPValue", PIDHood.getAsDouble());
-    
   }
 }

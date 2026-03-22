@@ -77,14 +77,6 @@ public class Swerve extends SubsystemBase implements Loggable {
     distanceToTimeMap.put(4.92, 1.38);
     distanceToTimeMap.put(5.29, 0.94);
 
-
-
-
-
-
-
-
-
     previousSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
     // previousSpeeds.vxMetersPerSecond=0;
     // previousSpeeds.vyMetersPerSecond=0;
@@ -301,12 +293,20 @@ public class Swerve extends SubsystemBase implements Loggable {
 
   public Command hubCentricDrive(XboxController xbox) {
     return angleCentric(
-        xbox, () -> {
+        xbox,
+        () -> {
           // return ExtendedMath.getTargetAngle(getPose().getTranslation());
           Translation2d target = ExtendedMath.getCurrentTarget(getPose().getTranslation());
-          return ExtendedMath.getTargetAngle(getEstimatedPose().getTranslation(), ExtendedMath.calculateTargetOnMove(target, getPose().getTranslation(), getSpeeds(), new Translation2d(), 0, distanceToTimeMap));
+          return ExtendedMath.getTargetAngle(
+              getEstimatedPose().getTranslation(),
+              ExtendedMath.calculateTargetOnMove(
+                  target,
+                  getPose().getTranslation(),
+                  getSpeeds(),
+                  new Translation2d(),
+                  0,
+                  distanceToTimeMap));
         });
-
   }
 
   public Pose2d getEstimatedPose() {

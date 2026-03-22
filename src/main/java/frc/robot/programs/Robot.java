@@ -32,8 +32,7 @@ public class Robot extends LoggedRobot {
   /** make a robot */
   public Robot() {
     swerve = new Swerve();
-    structure =
-        new Superstructure(swerve);
+    structure = new Superstructure(swerve);
     DriverStation.silenceJoystickConnectionWarning(true);
     xbox = new CommandXboxController(2);
     xbox2 = new CommandXboxController(1);
@@ -75,7 +74,6 @@ public class Robot extends LoggedRobot {
     // stow shooter
     Trigger StowShooter = xbox2.b();
     StowShooter.onTrue(structure.stow());
-
 
     Trigger zeroIntake = xbox2.povDown();
     zeroIntake.onTrue(structure.zeroIntakeOnFloor());
@@ -151,7 +149,7 @@ public class Robot extends LoggedRobot {
     chooser.setDefaultOption("None", Commands.none());
     chooser.addOption("Left Bump Double Swipe", new PathPlannerAuto("Left Bump Double Swipe"));
     chooser.addOption("Left Trench Double Swipe", new PathPlannerAuto("Left Trench Double Swipe"));
-    
+
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
     // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
 

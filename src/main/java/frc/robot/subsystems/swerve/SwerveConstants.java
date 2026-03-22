@@ -93,8 +93,9 @@ public class SwerveConstants {
       FeedbackConstants anglePID,
       double angleTolerance,
       FeedforwardController angleFeedforward) {}
-      double driveSupply =50;
-      double driveStator =70;
+
+  double driveSupply = 50;
+  double driveStator = 70;
 
   /** Configuration for FRONT_LEFT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig FRONT_LEFT_CONFIG =

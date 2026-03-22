@@ -173,10 +173,11 @@ public class Intake extends SubsystemBase implements Loggable {
   }
 
   public Command zeroAtFloor() {
-    return Commands.runOnce(() -> {
-      intakeMotorExtension.resetPosition(maxExtention1);
-      intakeMotorExtension2.resetPosition(maxExtention2);
-    });
+    return Commands.runOnce(
+        () -> {
+          intakeMotorExtension.resetPosition(maxExtention1);
+          intakeMotorExtension2.resetPosition(maxExtention2);
+        });
   }
 
   public Command startIntake() {
@@ -258,9 +259,7 @@ public class Intake extends SubsystemBase implements Loggable {
     //     .andThen(Commands.waitSeconds(0.25))
     //     .andThen(moveIntake(0))
     //     .andThen(Commands.waitSeconds(0.25));
-    return moveIntake(5).withTimeout(0.25)
-      .andThen(extendIntake()).withTimeout(0.25)
-      .repeatedly();
+    return moveIntake(5).withTimeout(0.25).andThen(extendIntake()).withTimeout(0.25).repeatedly();
   }
 
   private Command moveIntake(double position) {

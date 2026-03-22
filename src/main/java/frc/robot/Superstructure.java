@@ -72,14 +72,15 @@ public class Superstructure implements Loggable {
     // return shooterFly.speedup();
     return shooter.readyShoot(
         // this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
-        this.robotPose, () -> ExtendedMath.calculateTargetOnMove(
-          ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()), 
-          robotPose.get().getTranslation(), 
-          robotSpeeds.get(), 
-          new Translation2d(), 
-          0, 
-          distanceToTimeMap)
-        );
+        this.robotPose,
+        () ->
+            ExtendedMath.calculateTargetOnMove(
+                ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()),
+                robotPose.get().getTranslation(),
+                robotSpeeds.get(),
+                new Translation2d(),
+                0,
+                distanceToTimeMap));
   }
 
   public Command zeroIntakeOnFloor() {
@@ -98,14 +99,14 @@ public class Superstructure implements Loggable {
   public Command shoot() {
     return hopper.beltDriveShoot(
         this.robotPose,
-        () -> ExtendedMath.calculateTargetOnMove(
-          ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()), 
-          robotPose.get().getTranslation(), 
-          robotSpeeds.get(), 
-          new Translation2d(), 
-          0, 
-          distanceToTimeMap)
-        );
+        () ->
+            ExtendedMath.calculateTargetOnMove(
+                ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()),
+                robotPose.get().getTranslation(),
+                robotSpeeds.get(),
+                new Translation2d(),
+                0,
+                distanceToTimeMap));
   }
 
   // --------------------------------------intake----------------------------------------------
