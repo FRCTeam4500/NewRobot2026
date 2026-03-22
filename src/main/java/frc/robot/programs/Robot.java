@@ -38,6 +38,7 @@ public class Robot extends LoggedRobot {
     xbox = new CommandXboxController(2);
     xbox2 = new CommandXboxController(1);
     swerve.setDefaultCommand(swerve.angleCentric(xbox.getHID()));
+    RobotModeTriggers.teleop().onTrue(structure.stow().alongWith(structure.StopIntake()));
 
     setupDriveController();
     setupOperatorController();
@@ -68,12 +69,16 @@ public class Robot extends LoggedRobot {
     // climb
     // declimb
     // intake flexing
-    Trigger FlexIntake = xbox.x();
+    Trigger FlexIntake = xbox2.x();
     FlexIntake.whileTrue(structure.PulseIntake());
     FlexIntake.onFalse(structure.ExtendIntake());
     // stow shooter
     Trigger StowShooter = xbox2.b();
     StowShooter.onTrue(structure.stow());
+
+
+    Trigger zeroIntake = xbox2.povDown();
+    zeroIntake.onTrue(structure.zeroIntakeOnFloor());
   }
 
   private void setupDriveController() {
@@ -137,15 +142,16 @@ public class Robot extends LoggedRobot {
     NamedCommands.registerCommand("ExtendIntake", structure.ExtendIntake());
     NamedCommands.registerCommand("RetractIntake", structure.RetractIntake());
     NamedCommands.registerCommand("PulseIntake", structure.PulseIntake());
+    NamedCommands.registerCommand("HubCentric", swerve.hubCentricDrive(xbox.getHID()));
     SmartDashboard.putData("Auto Chooser", chooser);
     // chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
     // chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
     // chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
     // chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
     chooser.setDefaultOption("None", Commands.none());
-    chooser.addOption("depot side 2 cycle", new PathPlannerAuto("depot side 2 cycle"));
-    chooser.addOption("outpost side 2 cycle", new PathPlannerAuto("outpost side 2 cycle"));
-    chooser.addOption("backup auto", new PathPlannerAuto("backup auto"));
+    chooser.addOption("Left Bump Double Swipe", new PathPlannerAuto("Left Bump Double Swipe"));
+    chooser.addOption("Left Trench Double Swipe", new PathPlannerAuto("Left Trench Double Swipe"));
+    
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
     // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
 

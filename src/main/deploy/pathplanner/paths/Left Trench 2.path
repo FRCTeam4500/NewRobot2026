@@ -3,83 +3,87 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.048,
-        "y": 7.238
+        "x": 3.046903283052351,
+        "y": 6.887985803016859
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.9417804609990466,
-        "y": 7.156038492221342
+        "x": 4.471384205856255,
+        "y": 7.6283939662821645
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "left trench 1 pass"
     },
     {
       "anchor": {
-        "x": 7.1833214709371305,
-        "y": 7.3111743772242
+        "x": 6.121206743566992,
+        "y": 7.322573203194321
       },
       "prevControl": {
-        "x": 6.844357557458567,
-        "y": 7.468900727739313
+        "x": 5.839739753552665,
+        "y": 7.752463599705703
       },
       "nextControl": {
-        "x": 7.784801195476341,
-        "y": 7.031294431046967
+        "x": 6.484604501990007,
+        "y": 6.767548237560284
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.709916963226573,
-        "y": 2.88914590747331
+        "x": 6.121206743566992,
+        "y": 4.17583850931677
       },
       "prevControl": {
-        "x": 7.319994099216763,
-        "y": 2.950153621072329
+        "x": 5.792037677442536,
+        "y": 4.693104184655199
       },
       "nextControl": {
-        "x": 5.741589561091341,
-        "y": 2.7923131672597865
+        "x": 6.255425616615282,
+        "y": 3.9649231373837432
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.85994068801898,
-        "y": 7.225100830367734
+        "x": 6.121206743566992,
+        "y": 7.161614906832297
       },
       "prevControl": {
-        "x": 6.253114932778309,
-        "y": 7.078624150947591
+        "x": 6.491418111137686,
+        "y": 6.964168844127928
       },
       "nextControl": {
-        "x": 4.978316231982286,
-        "y": 7.553549157126504
+        "x": 5.2761756876663695,
+        "y": 7.612298136645961
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.048,
-        "y": 7.238
+        "x": 3.046903283052351,
+        "y": 6.887985803016859
       },
       "prevControl": {
-        "x": 5.184228393458722,
-        "y": 7.3622530677822136
+        "x": 3.956317657497781,
+        "y": 7.797400177462288
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "left trench 1 pass"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.33,
-      "rotationDegrees": 94.927
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 0.6931216931216939,
+      "rotationDegrees": 180.0
     },
     {
       "waypointRelativePos": 1.0,
@@ -90,8 +94,16 @@
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 2.3711615487316435,
-      "rotationDegrees": 91.0
+      "waypointRelativePos": 2.6984126984126897,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 3.0105820105820027,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 3.6666666666666616,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [
@@ -121,13 +133,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 94.927
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "Left Trench",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 94.927
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

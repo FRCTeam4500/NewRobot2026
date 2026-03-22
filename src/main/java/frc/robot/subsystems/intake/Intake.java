@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase implements Loggable {
   private Motor intakeMotorExtension;
   private Motor intakeMotorExtension2;
   private final int intakeSpeed = 80;
-  private final int intakeVoltage = 9;
+  private final int intakeVoltage = 10;
   private final double maxExtention1 = 8.571;
   private final double maxExtention2 = 8.571;
 
@@ -78,9 +78,9 @@ public class Intake extends SubsystemBase implements Loggable {
             WiringConstants.IntakeMotors.IntakeMotor1,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 100;
-              config.CurrentLimits.StatorCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimit = 80;
+              config.CurrentLimits.StatorCurrentLimit = 60;
+              config.CurrentLimits.StatorCurrentLimitEnable = true;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -104,9 +104,9 @@ public class Intake extends SubsystemBase implements Loggable {
             WiringConstants.IntakeMotors.IntakeMotor2,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 100;
-              config.CurrentLimits.StatorCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimit = 80;
+              config.CurrentLimits.StatorCurrentLimit = 60;
+              config.CurrentLimits.StatorCurrentLimitEnable = true;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -134,7 +134,7 @@ public class Intake extends SubsystemBase implements Loggable {
               SparkMaxConfig config = new SparkMaxConfig();
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
-              config.smartCurrentLimit(100);
+              config.smartCurrentLimit(50);
               config.idleMode(IdleMode.kCoast);
               config.inverted(true);
               sparkmotor.configure(
@@ -156,7 +156,7 @@ public class Intake extends SubsystemBase implements Loggable {
               SparkMaxConfig config = new SparkMaxConfig();
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
-              config.smartCurrentLimit(100);
+              config.smartCurrentLimit(50);
               config.idleMode(IdleMode.kCoast);
               config.inverted(false);
               sparkmotor.configure(
@@ -170,6 +170,13 @@ public class Intake extends SubsystemBase implements Loggable {
             FeedforwardController.forArmGravity(0, 0, 0, 0),
             TargetType.Position);
     intakeMotorExtension.getSysIDCommands("intake extend neo", 0, 0, 0, intakeMotorExtension2);
+  }
+
+  public Command zeroAtFloor() {
+    return Commands.runOnce(() -> {
+      intakeMotorExtension.resetPosition(maxExtention1);
+      intakeMotorExtension2.resetPosition(maxExtention2);
+    });
   }
 
   public Command startIntake() {
@@ -235,22 +242,25 @@ public class Intake extends SubsystemBase implements Loggable {
   }
 
   public Command flexIntake() {
-    return moveIntake(0.7)
-        .andThen(Commands.waitSeconds(0.25))
-        .andThen(moveIntake(0.6))
-        .andThen(Commands.waitSeconds(0.25))
-        .andThen(moveIntake(0.5))
-        .andThen(Commands.waitSeconds(0.25))
-        .andThen(moveIntake(0.4))
-        .andThen(Commands.waitSeconds(0.25))
-        .andThen(moveIntake(0.3))
-        .andThen(Commands.waitSeconds(0.25))
-        .andThen(moveIntake(0.2))
-        .andThen(Commands.waitSeconds(0.25))
-        .andThen(moveIntake(0.1))
-        .andThen(Commands.waitSeconds(0.25))
-        .andThen(moveIntake(0))
-        .andThen(Commands.waitSeconds(0.25));
+    // return moveIntake(0.7)
+    //     .andThen(Commands.waitSeconds(0.25))
+    //     .andThen(moveIntake(0.6))
+    //     .andThen(Commands.waitSeconds(0.25))
+    //     .andThen(moveIntake(0.5))
+    //     .andThen(Commands.waitSeconds(0.25))
+    //     .andThen(moveIntake(0.4))
+    //     .andThen(Commands.waitSeconds(0.25))
+    //     .andThen(moveIntake(0.3))
+    //     .andThen(Commands.waitSeconds(0.25))
+    //     .andThen(moveIntake(0.2))
+    //     .andThen(Commands.waitSeconds(0.25))
+    //     .andThen(moveIntake(0.1))
+    //     .andThen(Commands.waitSeconds(0.25))
+    //     .andThen(moveIntake(0))
+    //     .andThen(Commands.waitSeconds(0.25));
+    return moveIntake(5).withTimeout(0.25)
+      .andThen(extendIntake()).withTimeout(0.25)
+      .repeatedly();
   }
 
   private Command moveIntake(double position) {

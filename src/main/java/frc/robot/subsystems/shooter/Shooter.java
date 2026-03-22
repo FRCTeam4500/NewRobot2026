@@ -114,9 +114,9 @@ hoodAngle.put(10.9, 24.0);
             WiringConstants.ShooterMotors.flywheelMotor1,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 100;
-              config.CurrentLimits.StatorCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimit = 50;
+              config.CurrentLimits.StatorCurrentLimit = 60;
+              config.CurrentLimits.StatorCurrentLimitEnable = true;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -133,9 +133,9 @@ hoodAngle.put(10.9, 24.0);
             WiringConstants.ShooterMotors.flywheelMotor2,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 100;
-              config.CurrentLimits.StatorCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimit = 50;
+              config.CurrentLimits.StatorCurrentLimit = 60;
+              config.CurrentLimits.StatorCurrentLimitEnable = true;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -158,7 +158,7 @@ hoodAngle.put(10.9, 24.0);
               SparkMaxConfig config = new SparkMaxConfig();
               config.encoder.positionConversionFactor(1.0 / hoodGearReduction * 360);
               config.encoder.velocityConversionFactor(1.0 / hoodGearReduction * 360);
-              config.smartCurrentLimit(40);
+              config.smartCurrentLimit(20);
               config.idleMode(IdleMode.kBrake);
               config.inverted(false);
               sparkMotor.configure(
@@ -189,7 +189,7 @@ hoodAngle.put(10.9, 24.0);
           flywheelSpeedlog = flywheelSpeed.get(distance);
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
-          flywheel2.setTarget(flywheelSpeed.get(distance));
+          flywheel2.setTarget(flywheelSpeed.get(distance)); 
           PIDHood = () -> 2;
           hood.setTarget(hoodAngle.get(distance));
 
@@ -216,8 +216,12 @@ hoodAngle.put(10.9, 24.0);
   public Command idle() {
     return Commands.runOnce(
             () -> {
+              //for testing
               flywheel1.setVoltage(0);
               flywheel2.setVoltage(0);
+              //for matches
+              //flywheel1.setTarget(47);
+              //flywheel2.setTarget(47);
               PIDHood = () -> 0.5;
               // hood.setTarget(0.5);
               hood.setVoltage(0);

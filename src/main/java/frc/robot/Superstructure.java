@@ -82,6 +82,10 @@ public class Superstructure implements Loggable {
         );
   }
 
+  public Command zeroIntakeOnFloor() {
+    return intake.zeroAtFloor();
+  }
+
   public Command StartShooterTest() {
     return shooter.test(
         this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));

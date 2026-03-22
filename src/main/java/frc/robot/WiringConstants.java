@@ -32,9 +32,6 @@ public class WiringConstants {
     public static final int flywheelMotor1 = 33;
     public static final int flywheelMotor2 = 34;
     public static final int turretheadMotor = 27;
-    // public static final int turretturnMotor = 67;
-
-    // sparkmax 20 id
   }
 
   public static class ClimberMotors {
@@ -44,7 +41,7 @@ public class WiringConstants {
 
   public static class IntakeMotors {
     public static final int IntakeMotor1 = 18;
-    public static final int IntakeMotor2 = 31; // need to update this
+    public static final int IntakeMotor2 = 31;
     public static final int IntakeMotorExtension = 26;
     public static final int IntakeMotorExtension2 = 38;
   }

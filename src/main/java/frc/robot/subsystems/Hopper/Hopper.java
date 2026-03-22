@@ -60,8 +60,10 @@ flywheelSpeed.put(10.9, 80.0);
             WiringConstants.HopperMotors.hopperMotorBeltdrive,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 100;
+              config.CurrentLimits.SupplyCurrentLimit = 50;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
+              config.CurrentLimits.StatorCurrentLimit = 60;
+              config.CurrentLimits.StatorCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
               config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
@@ -84,7 +86,9 @@ flywheelSpeed.put(10.9, 80.0);
             WiringConstants.HopperMotors.hopperMotorBeltdrive2ID,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 100;
+              config.CurrentLimits.SupplyCurrentLimit = 50;
+              config.CurrentLimits.StatorCurrentLimit = 60;
+              config.CurrentLimits.StatorCurrentLimitEnable = true;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
