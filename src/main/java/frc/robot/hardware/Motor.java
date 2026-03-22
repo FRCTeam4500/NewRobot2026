@@ -26,6 +26,7 @@ import frc.robot.utilities.FeedforwardSim;
 import frc.robot.utilities.SysIDCommands;
 import frc.robot.utilities.logging.HoundLog;
 import frc.robot.utilities.logging.Loggable;
+
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
@@ -296,6 +297,7 @@ public class Motor extends SubsystemBase implements Loggable {
     double supplyCurrent = supplyCurrentGetter.getAsDouble();
     double powerDraw = Math.abs(supplyVoltage * supplyCurrent);
     energyUsed += powerDraw * 0.02;
+    Robot.totalCurrentDraw += supplyCurrent;
     Robot.totalPowerDraw += powerDraw;
     HoundLog.log(path, "Supply Voltage", supplyVoltage);
     HoundLog.log(path, "Supply Current", supplyCurrent);

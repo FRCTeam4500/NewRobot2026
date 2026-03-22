@@ -28,6 +28,7 @@ public class Robot extends LoggedRobot {
   private Superstructure structure;
   private CommandXboxController xbox;
   private CommandXboxController xbox2;
+  public static double totalCurrentDraw;
   public static double totalPowerDraw;
   private double totalEnergyUsed;
 
@@ -163,9 +164,11 @@ public class Robot extends LoggedRobot {
     double start = Timer.getFPGATimestamp();
     HoundLog.log("Swerve", swerve);
     HoundLog.log("Superstrucutre", structure);
+    HoundLog.log("Current Draw", totalCurrentDraw);
     HoundLog.log("Power Draw", totalPowerDraw);
     totalEnergyUsed += totalPowerDraw * 0.02;
     HoundLog.log("Energy Used", totalEnergyUsed);
+    totalCurrentDraw = 0;
     totalPowerDraw = 0;
     double loggingLoop = Timer.getFPGATimestamp() - start;
 
