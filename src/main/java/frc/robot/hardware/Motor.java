@@ -29,6 +29,7 @@ import frc.robot.utilities.logging.Loggable;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
+import frc.robot.programs.Robot;
 
 /** A class representing a motor */
 public class Motor extends SubsystemBase implements Loggable {
@@ -37,11 +38,14 @@ public class Motor extends SubsystemBase implements Loggable {
   private boolean useVoltage;
   private double maxVolts;
   private double negativeMaxVolts;
+  private double energyUsed;
   private TargetType type;
   private DoubleConsumer positionSetter;
   private DoubleConsumer voltageSetter;
   private DoubleSupplier positionGetter;
   private DoubleSupplier velocityGetter;
+  private DoubleSupplier supplyVoltageGetter;
+  private DoubleSupplier supplyCurrentGetter;
   private FeedbackController fb;
   private FeedforwardController ff;
   private Loggable motorInfo;
@@ -71,6 +75,8 @@ public class Motor extends SubsystemBase implements Loggable {
       DoubleConsumer voltageSetter,
       DoubleSupplier positionGetter,
       DoubleSupplier velocityGetter,
+      DoubleSupplier supplyVoltageGetter,
+      DoubleSupplier supplyCurrentGetter,
       FeedbackController fb,
       FeedforwardController ff,
       Loggable motorInfo) {
@@ -83,6 +89,8 @@ public class Motor extends SubsystemBase implements Loggable {
     this.voltageSetter = voltageSetter;
     this.positionGetter = positionGetter;
     this.velocityGetter = velocityGetter;
+    this.supplyVoltageGetter = supplyVoltageGetter;
+    this.supplyCurrentGetter = supplyCurrentGetter;
     this.fb = fb;
     this.ff = ff;
     this.motorInfo = motorInfo;
@@ -284,6 +292,15 @@ public class Motor extends SubsystemBase implements Loggable {
     HoundLog.log(path, "Motor Info", motorInfo);
     HoundLog.log(path, "Position", getPosition());
     HoundLog.log(path, "Velocity", getVelocity());
+    double supplyVoltage = supplyVoltageGetter.getAsDouble();
+    double supplyCurrent = supplyCurrentGetter.getAsDouble();
+    double powerDraw = Math.abs(supplyVoltage * supplyCurrent);
+    energyUsed += powerDraw * 0.02;
+    Robot.totalPowerDraw += powerDraw;
+    HoundLog.log(path, "Supply Voltage", supplyVoltage);
+    HoundLog.log(path, "Supply Current", supplyCurrent);
+    HoundLog.log(path, "Power Draw", powerDraw);
+    HoundLog.log(path, "Energy Used", energyUsed);
     HoundLog.log(path, "At Target", atTarget());
     HoundLog.log(path, "Target", target);
     if (useVoltage) {
@@ -448,15 +465,15 @@ public class Motor extends SubsystemBase implements Loggable {
         motor::setVoltage,
         () -> motor.getPosition().getValueAsDouble(),
         () -> motor.getVelocity().getValueAsDouble(),
+        () -> motor.getSupplyVoltage().getValueAsDouble(),
+        () -> motor.getSupplyCurrent().getValueAsDouble(),
         fb,
         ff,
         path -> {
           HoundLog.log(path, "Acceleration", motor.getAcceleration().getValueAsDouble());
           HoundLog.log(path, "Temperature", motor.getDeviceTemp().getValueAsDouble());
           HoundLog.log(path, "Stator Current", motor.getTorqueCurrent().getValueAsDouble());
-          HoundLog.log(path, "Supply Current", motor.getSupplyCurrent().getValueAsDouble());
           HoundLog.log(path, "Stator Voltage", motor.getMotorVoltage().getValueAsDouble());
-          HoundLog.log(path, "Supply Voltage", motor.getSupplyVoltage().getValueAsDouble());
           HoundLog.log(path, "Motor Status", motor.getMotorOutputStatus().getValue());
         });
   }
@@ -539,6 +556,9 @@ public class Motor extends SubsystemBase implements Loggable {
         // Velocity getter mirrors leader
         () -> leader.getVelocity().getValueAsDouble(),
 
+        () -> follower.getSupplyVoltage().getValueAsDouble(),
+        () -> follower.getSupplyCurrent().getValueAsDouble(),
+
         // Dummy controllers (never used)
         null, // FeedbackController.forNone(),
         null, // FeedforwardController.forNone(),
@@ -550,9 +570,7 @@ public class Motor extends SubsystemBase implements Loggable {
           HoundLog.log(path, "Acceleration", follower.getAcceleration().getValueAsDouble());
           HoundLog.log(path, "Temperature", follower.getDeviceTemp().getValueAsDouble());
           HoundLog.log(path, "Stator Current", follower.getTorqueCurrent().getValueAsDouble());
-          HoundLog.log(path, "Supply Current", follower.getSupplyCurrent().getValueAsDouble());
           HoundLog.log(path, "Stator Voltage", follower.getMotorVoltage().getValueAsDouble());
-          HoundLog.log(path, "Supply Voltage", follower.getSupplyVoltage().getValueAsDouble());
           HoundLog.log(path, "Motor Status", follower.getMotorOutputStatus().getValue());
         });
   }
@@ -630,17 +648,14 @@ public class Motor extends SubsystemBase implements Loggable {
         motor::setVoltage,
         () -> motor.getEncoder().getPosition(),
         () -> motor.getEncoder().getVelocity() / 60,
+        () -> motor.getBusVoltage(),
+        () -> motor.getOutputCurrent() * motor.getAppliedOutput(),
         fb,
         ff,
         path -> {
-          double busVoltage = motor.getBusVoltage();
-          double outputCurrent = motor.getOutputCurrent();
-          double motorVoltage = motor.getAppliedOutput() * busVoltage;
           HoundLog.log(path, "Temperature", motor.getMotorTemperature());
-          HoundLog.log(path, "Stator Current", outputCurrent);
-          HoundLog.log(path, "Supply Current", motorVoltage * outputCurrent / busVoltage);
-          HoundLog.log(path, "Stator Voltage", motorVoltage);
-          HoundLog.log(path, "Supply Voltage", busVoltage);
+          HoundLog.log(path, "Stator Current", motor.getOutputCurrent());
+          HoundLog.log(path, "Stator Voltage", motor.getAppliedOutput() * motor.getBusVoltage());
         });
   }
 
@@ -711,17 +726,14 @@ public class Motor extends SubsystemBase implements Loggable {
         voltage -> motor.set(ControlMode.PercentOutput, voltage / motor.getBusVoltage()),
         () -> motor.getSelectedSensorPosition() * conversionFactor,
         () -> motor.getSelectedSensorVelocity() * 10 * conversionFactor,
+        () -> motor.getBusVoltage(),
+        () -> motor.getStatorCurrent() * motor.getMotorOutputPercent(),
         fb,
         ff,
         path -> {
-          double busVoltage = motor.getBusVoltage();
-          double outputCurrent = motor.getStatorCurrent();
-          double motorVoltage = motor.getMotorOutputVoltage();
           HoundLog.log(path, "Temperature", motor.getTemperature());
-          HoundLog.log(path, "Stator Current", outputCurrent);
-          HoundLog.log(path, "Supply Current", motorVoltage * outputCurrent / busVoltage);
-          HoundLog.log(path, "Stator Voltage", motorVoltage);
-          HoundLog.log(path, "Supply Voltage", busVoltage);
+          HoundLog.log(path, "Stator Voltage", motor.getMotorOutputVoltage());
+          HoundLog.log(path, "Stator Current", motor.getStatorCurrent());
         });
   }
 
@@ -772,6 +784,8 @@ public class Motor extends SubsystemBase implements Loggable {
         sim::setVoltage,
         () -> sim.getState().position(),
         () -> sim.getState().velocity(),
+        () -> 12,
+        () -> 0,
         fb,
         ff,
         path -> {
@@ -835,6 +849,8 @@ public class Motor extends SubsystemBase implements Loggable {
         },
         () -> stateHolder[0],
         () -> stateHolder[1],
+        () -> 12,
+        () -> 0,
         fb,
         FeedforwardController.forNone(),
         path -> HoundLog.log(path, "Acceleration", stateHolder[2]));
