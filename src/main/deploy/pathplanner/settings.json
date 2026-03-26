@@ -14,7 +14,9 @@
     "Auto 7",
     "Left Bump",
     "Left Trench",
-    "Right Bump"
+    "single cycle right",
+    "Right Bump",
+    "single cycle left"
   ],
   "autoFolders": [],
   "defaultMaxVel": 4.0,

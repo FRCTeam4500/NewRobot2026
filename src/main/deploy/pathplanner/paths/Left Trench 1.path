@@ -32,48 +32,48 @@
     },
     {
       "anchor": {
-        "x": 6.998429458740017,
-        "y": 4.095359361135758
+        "x": 7.239866903283053,
+        "y": 4.956486246672582
       },
       "prevControl": {
-        "x": 6.990381543921916,
-        "y": 4.900150842945873
+        "x": 7.231818988464951,
+        "y": 5.761277728482697
       },
       "nextControl": {
-        "x": 7.007273762795853,
-        "y": 3.210928955552267
+        "x": 7.248711207338888,
+        "y": 4.072055841089091
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.867604259094943,
-        "y": 7.000656610470275
+        "x": 6.2338775510204085,
+        "y": 5.423265306122448
       },
       "prevControl": {
-        "x": 8.393322616533945,
-        "y": 6.660653977123783
+        "x": 6.806126759183652,
+        "y": 5.169272342071382
       },
       "nextControl": {
-        "x": 6.386787932570792,
-        "y": 7.958358473827992
+        "x": 4.728917480035492,
+        "y": 6.091242236024844
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.046903283052351,
-        "y": 6.887985803016859
+        "x": 2.531836734693877,
+        "y": 4.956486246672582
       },
       "prevControl": {
-        "x": 2.869849157060588,
-        "y": 7.564010647741036
+        "x": 2.354782608702114,
+        "y": 5.632511091396759
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "left trench 1 pass"
+      "linkedName": "new bumb left"
     }
   ],
   "rotationTargets": [
@@ -82,11 +82,11 @@
       "rotationDegrees": -110.0
     },
     {
-      "waypointRelativePos": 3.0476190476190443,
+      "waypointRelativePos": 2.671957671957675,
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 3.2857142857142843,
+      "waypointRelativePos": 3.0052910052910056,
       "rotationDegrees": 0.0
     },
     {
@@ -107,6 +107,19 @@
         "nominalVoltage": 12.0,
         "unlimited": false
       }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 3.0434782608695654,
+      "maxWaypointRelativePos": 3.4983277591973243,
+      "constraints": {
+        "maxVelocity": 2.5,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
     }
   ],
   "pointTowardsZones": [],
@@ -121,7 +134,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 150.0
   },
   "reversed": false,
   "folder": "Left Trench",

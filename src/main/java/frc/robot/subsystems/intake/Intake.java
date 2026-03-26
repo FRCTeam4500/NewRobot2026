@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase implements Loggable {
   private Motor intakeMotorExtension;
   private Motor intakeMotorExtension2;
   private final int intakeSpeed = 80;
-  private final int intakeVoltage = 10;
+  private final int intakeVoltage = 12;
   private final double maxExtention1 = 8.571;
   private final double maxExtention2 = 8.571;
 
@@ -79,8 +79,8 @@ public class Intake extends SubsystemBase implements Loggable {
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
               config.CurrentLimits.SupplyCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimit = 60;
-              config.CurrentLimits.StatorCurrentLimitEnable = true;
+              config.CurrentLimits.StatorCurrentLimit = 100;
+              config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -105,8 +105,8 @@ public class Intake extends SubsystemBase implements Loggable {
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
               config.CurrentLimits.SupplyCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimit = 60;
-              config.CurrentLimits.StatorCurrentLimitEnable = true;
+              config.CurrentLimits.StatorCurrentLimit = 100;
+              config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -134,7 +134,7 @@ public class Intake extends SubsystemBase implements Loggable {
               SparkMaxConfig config = new SparkMaxConfig();
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
-              config.smartCurrentLimit(50);
+              config.smartCurrentLimit(100);
               config.idleMode(IdleMode.kCoast);
               config.inverted(true);
               sparkmotor.configure(
@@ -156,7 +156,7 @@ public class Intake extends SubsystemBase implements Loggable {
               SparkMaxConfig config = new SparkMaxConfig();
               config.encoder.positionConversionFactor(1.0);
               config.encoder.velocityConversionFactor(1.0);
-              config.smartCurrentLimit(50);
+              config.smartCurrentLimit(100);
               config.idleMode(IdleMode.kCoast);
               config.inverted(false);
               sparkmotor.configure(
@@ -241,6 +241,17 @@ public class Intake extends SubsystemBase implements Loggable {
                   return intakeMotorExtension.atTarget();
                 }));
   }
+  public Command killIntake() {
+    return Commands.run(
+            () -> {
+              PIDP = () -> 0.5;
+              intakeMotorExtension.setVoltage(0);
+              intakeMotorExtension2.setVoltage(0);
+            },
+            this);
+        
+  }
+
 
   public Command flexIntake() {
     // return moveIntake(0.7)
@@ -259,7 +270,7 @@ public class Intake extends SubsystemBase implements Loggable {
     //     .andThen(Commands.waitSeconds(0.25))
     //     .andThen(moveIntake(0))
     //     .andThen(Commands.waitSeconds(0.25));
-    return moveIntake(5).withTimeout(0.25).andThen(extendIntake()).withTimeout(0.25).repeatedly();
+    return moveIntake(2).withTimeout(1).andThen(killIntake()).withTimeout(1).repeatedly();
   }
 
   private Command moveIntake(double position) {
@@ -329,6 +340,7 @@ public class Intake extends SubsystemBase implements Loggable {
   @Override
   public void log(String path) {
     HoundLog.log(path, "IntakeDriveMotor", intakeMotorDrive);
+    HoundLog.log(path, "IntakeDriveMotor", intakeMotorDrive2);
     HoundLog.log(path, "intakeExtention1", intakeMotorExtension);
     HoundLog.log(path, "intakeExtention2", intakeMotorExtension2);
     HoundLog.log(path, "intakeMotorDriveAtTarget", intakeMotorDrive.atTarget());

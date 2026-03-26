@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -168,7 +169,7 @@ public class Shooter extends SubsystemBase implements Loggable {
             0,
             // FeedbackController.fromTunablePID(ExtenionPID, PIDHood),
             FeedbackController.fromPID(.1, 0, 0, pid -> pid.setTolerance(0.05)),
-            FeedforwardController.forConstantGravity(0.45, 0, 0, 0),
+            FeedforwardController.forConstantGravity(.45, 0, 0, 0),
             TargetType.Position);
 
     flywheel1.setVoltage(0);
@@ -203,8 +204,7 @@ public class Shooter extends SubsystemBase implements Loggable {
           flywheel2.setTarget(flywheelSubscriber.get());
 
           hood.setTarget(turetSubscriber.get()); // turetSubscriber.get()
-          // hood.setVoltage(hoodGravityFeedforward.get() *
-          // Math.cos(Units.degreesToRadians(hood.getPosition())));
+           //hood.setVoltage(hoodGravityFeedforward.get() *Math.cos(Units.degreesToRadians(hood.getPosition())));
 
           double distance = robotPose.get().getTranslation().getDistance(target.get());
           this.distance = distance;

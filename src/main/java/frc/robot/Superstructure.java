@@ -64,7 +64,7 @@ public class Superstructure implements Loggable {
   }
 
   public Command stow() {
-    return shooter.idle().andThen(hopper.beltDriveStop());
+    return shooter.idle().alongWith(hopper.beltDriveStop());
   }
 
   // ------------------SHOOTER+HOPPER-------------------------------------------

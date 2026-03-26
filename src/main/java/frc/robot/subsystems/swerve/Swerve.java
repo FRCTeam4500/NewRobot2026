@@ -588,8 +588,8 @@ public class Swerve extends SubsystemBase implements Loggable {
     estimator.update(gyro.getAngle(), getModulePositions());
     for (Limelight camera : tagCameras) {
       PoseEstimate estimate =
-          camera.getPoseMT2(
-              estimator.getEstimatedPosition().getRotation(), Rotation2d.fromDegrees(0));
+          //camera.getPoseMT2(estimator.getEstimatedPosition().getRotation(), Rotation2d.fromDegrees(0));
+          camera.getPoseMT1();
       if (estimate.exists()
           && (estimate.tagCount() > 1 // sees more than one tag
               || estimate.averageDistance() < 2 // within 2m

@@ -51,7 +51,7 @@ public class Robot extends LoggedRobot {
 
     // rev shooter
     Trigger revShooter = xbox2.rightTrigger();
-    revShooter.whileTrue(structure.StartShooter());
+    revShooter.whileTrue(structure.StartShooterTest());
 
     // intake
     Trigger ActivateIntake = xbox2.leftTrigger();
@@ -145,13 +145,9 @@ public class Robot extends LoggedRobot {
     NamedCommands.registerCommand("PulseIntake", structure.PulseIntake());
     NamedCommands.registerCommand("HubCentric", swerve.hubCentricDrive(xbox.getHID()));
     SmartDashboard.putData("Auto Chooser", chooser);
-    // chooser.addOption("center shoot/climb", new PathPlannerAuto("Auto 1"));
-    // chooser.addOption("left shoot/climb", new PathPlannerAuto("Auto 2a"));
-    // chooser.addOption("midle set", new PathPlannerAuto("Auto 4a"));
-    // chooser.addOption("2 midle cycle", new PathPlannerAuto("Auto 5a"));
     chooser.setDefaultOption("None", Commands.none());
-    chooser.addOption("Left Bump Double Swipe", new PathPlannerAuto("Left Bump Double Swipe"));
-    chooser.addOption("Left Trench Double Swipe", new PathPlannerAuto("Left Trench Double Swipe"));
+    chooser.addOption("Left Trench Single Swipe", new PathPlannerAuto("Left Trench Single Swipe"));
+    chooser.addOption("Left Trench Single Swipe no pre", new PathPlannerAuto("Left Trench Single Swipe no pre"));
 
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
     // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));
