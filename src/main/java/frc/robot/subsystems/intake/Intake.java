@@ -241,17 +241,16 @@ public class Intake extends SubsystemBase implements Loggable {
                   return intakeMotorExtension.atTarget();
                 }));
   }
+
   public Command killIntake() {
     return Commands.run(
-            () -> {
-              PIDP = () -> 0.5;
-              intakeMotorExtension.setVoltage(0);
-              intakeMotorExtension2.setVoltage(0);
-            },
-            this);
-        
+        () -> {
+          PIDP = () -> 0.5;
+          intakeMotorExtension.setVoltage(0);
+          intakeMotorExtension2.setVoltage(0);
+        },
+        this);
   }
-
 
   public Command flexIntake() {
     // return moveIntake(0.7)

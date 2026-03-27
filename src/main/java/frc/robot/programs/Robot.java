@@ -146,8 +146,11 @@ public class Robot extends LoggedRobot {
     NamedCommands.registerCommand("HubCentric", swerve.hubCentricDrive(xbox.getHID()));
     SmartDashboard.putData("Auto Chooser", chooser);
     chooser.setDefaultOption("None", Commands.none());
-    chooser.addOption("Right Trench Single Swipe no pre", new PathPlannerAuto("Right Trench Single Swipe no pre"));
-    chooser.addOption("Left Trench Single Swipe no pre", new PathPlannerAuto("Left Trench Single Swipe no pre"));
+    chooser.addOption(
+        "Right Trench Single Swipe no pre",
+        new PathPlannerAuto("Right Trench Single Swipe no pre"));
+    chooser.addOption(
+        "Left Trench Single Swipe no pre", new PathPlannerAuto("Left Trench Single Swipe no pre"));
 
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
     // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));

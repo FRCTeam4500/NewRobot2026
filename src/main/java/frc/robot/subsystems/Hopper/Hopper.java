@@ -37,21 +37,21 @@ public class Hopper extends SubsystemBase implements Loggable {
     hopperSpeed = HoundLog.tunable("Hopper Speed", 50.0);
 
     flywheelSpeed.put(1.701, 48.0);
-flywheelSpeed.put(2.045, 49.5);
-flywheelSpeed.put(2.344, 49.5);
-flywheelSpeed.put(2.771, 55.0);
-flywheelSpeed.put(3.305, 55.0);
-flywheelSpeed.put(3.613, 61.0);
-flywheelSpeed.put(4.096, 61.0);
-flywheelSpeed.put(4.412, 62.0);
-flywheelSpeed.put(4.752, 64.0);
-flywheelSpeed.put(5.1, 64.0);
-flywheelSpeed.put(5.2, 50.0);
-flywheelSpeed.put(5.3604, 50.0);
-flywheelSpeed.put(6.855, 50.0);
-flywheelSpeed.put(8.314, 58.0);
-flywheelSpeed.put(9.516, 58.0);
-flywheelSpeed.put(10.9, 80.0);
+    flywheelSpeed.put(2.045, 49.5);
+    flywheelSpeed.put(2.344, 49.5);
+    flywheelSpeed.put(2.771, 55.0);
+    flywheelSpeed.put(3.305, 55.0);
+    flywheelSpeed.put(3.613, 61.0);
+    flywheelSpeed.put(4.096, 61.0);
+    flywheelSpeed.put(4.412, 62.0);
+    flywheelSpeed.put(4.752, 64.0);
+    flywheelSpeed.put(5.1, 64.0);
+    flywheelSpeed.put(5.2, 50.0);
+    flywheelSpeed.put(5.3604, 50.0);
+    flywheelSpeed.put(6.855, 50.0);
+    flywheelSpeed.put(8.314, 58.0);
+    flywheelSpeed.put(9.516, 58.0);
+    flywheelSpeed.put(10.9, 80.0);
 
     hopperMotorBeltdrive =
         Motor.fromTalonFX(
@@ -111,7 +111,8 @@ flywheelSpeed.put(10.9, 80.0);
     return Commands.runOnce(
             () -> {
               double distance = robotPose.get().getTranslation().getDistance(target.get());
-              hopperMotorBeltdrive.setTarget(flywheelSpeed.get(distance)); //flywheelSpeed.get(distance)
+              hopperMotorBeltdrive.setTarget(
+                  flywheelSpeed.get(distance)); // flywheelSpeed.get(distance)
               hopperMotorBeltdrive2.setVoltage(10);
               ;
             },
