@@ -36,25 +36,23 @@ public class Hopper extends SubsystemBase implements Loggable {
   public Hopper() {
     hopperSpeed = HoundLog.tunable("Hopper Speed", 50.0);
 
-    flywheelSpeed.put(1.73166, 47.0);
-    flywheelSpeed.put(2.059, 48.0);
-    flywheelSpeed.put(2.375, 48.0);
-    flywheelSpeed.put(2.686, 49.0);
-    flywheelSpeed.put(2.917, 50.0);
-    flywheelSpeed.put(3.174, 52.0);
-    flywheelSpeed.put(3.338, 53.0);
-    flywheelSpeed.put(3.622, 54.0);
-    flywheelSpeed.put(3.967, 55.0);
-    flywheelSpeed.put(4.144, 55.0);
-    flywheelSpeed.put(4.367, 58.0);
-    flywheelSpeed.put(5.075, 62.0);
-    flywheelSpeed.put(5.19, 62.0);
-    flywheelSpeed.put(5.2, 50.0);
-    flywheelSpeed.put(5.3604, 50.0);
-    flywheelSpeed.put(6.855, 50.0);
-    flywheelSpeed.put(8.314, 58.0);
-    flywheelSpeed.put(9.516, 58.0);
-    flywheelSpeed.put(10.9, 80.0);
+    flywheelSpeed.put(1.701, 48.0);
+flywheelSpeed.put(2.045, 49.5);
+flywheelSpeed.put(2.344, 49.5);
+flywheelSpeed.put(2.771, 55.0);
+flywheelSpeed.put(3.305, 55.0);
+flywheelSpeed.put(3.613, 61.0);
+flywheelSpeed.put(4.096, 61.0);
+flywheelSpeed.put(4.412, 62.0);
+flywheelSpeed.put(4.752, 64.0);
+flywheelSpeed.put(5.1, 64.0);
+flywheelSpeed.put(5.2, 50.0);
+flywheelSpeed.put(5.3604, 50.0);
+flywheelSpeed.put(6.855, 50.0);
+flywheelSpeed.put(8.314, 58.0);
+flywheelSpeed.put(9.516, 58.0);
+flywheelSpeed.put(10.9, 80.0);
+
     hopperMotorBeltdrive =
         Motor.fromTalonFX(
             WiringConstants.HopperMotors.hopperMotorBeltdrive,

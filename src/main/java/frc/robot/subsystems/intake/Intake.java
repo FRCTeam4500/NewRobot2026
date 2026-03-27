@@ -78,8 +78,8 @@ public class Intake extends SubsystemBase implements Loggable {
             WiringConstants.IntakeMotors.IntakeMotor1,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimit = 100;
+              config.CurrentLimits.SupplyCurrentLimit = 70;
+              config.CurrentLimits.StatorCurrentLimit = 90;
               config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
@@ -104,8 +104,8 @@ public class Intake extends SubsystemBase implements Loggable {
             WiringConstants.IntakeMotors.IntakeMotor2,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 80;
-              config.CurrentLimits.StatorCurrentLimit = 100;
+              config.CurrentLimits.SupplyCurrentLimit = 70;
+              config.CurrentLimits.StatorCurrentLimit = 90;
               config.CurrentLimits.StatorCurrentLimitEnable = false;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
@@ -270,7 +270,7 @@ public class Intake extends SubsystemBase implements Loggable {
     //     .andThen(Commands.waitSeconds(0.25))
     //     .andThen(moveIntake(0))
     //     .andThen(Commands.waitSeconds(0.25));
-    return moveIntake(2).withTimeout(1).andThen(killIntake()).withTimeout(1).repeatedly();
+    return moveIntake(4).withTimeout(1).andThen(killIntake()).withTimeout(1).repeatedly();
   }
 
   private Command moveIntake(double position) {
