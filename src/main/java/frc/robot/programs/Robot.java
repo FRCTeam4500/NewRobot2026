@@ -9,9 +9,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -54,15 +54,15 @@ public class Robot extends LoggedRobot {
   }
 
   private Command rumble(XboxController xbox, double timeSeconds) {
-		return Commands.startEnd(
-			() -> {
-        xbox.setRumble(RumbleType.kBothRumble, 0.5);
-      },
-			() -> {
-        xbox.setRumble(RumbleType.kBothRumble, 0);
-      }
-		).withTimeout(timeSeconds);
-	}
+    return Commands.startEnd(
+            () -> {
+              xbox.setRumble(RumbleType.kBothRumble, 0.5);
+            },
+            () -> {
+              xbox.setRumble(RumbleType.kBothRumble, 0);
+            })
+        .withTimeout(timeSeconds);
+  }
 
   private void setupOperatorController() {
 
