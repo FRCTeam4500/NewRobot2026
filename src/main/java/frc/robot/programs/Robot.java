@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Timer;
@@ -45,6 +46,7 @@ public class Robot extends LoggedRobot {
     swerve.setDefaultCommand(swerve.angleCentric(xbox.getHID()));
     RobotModeTriggers.teleop().onTrue(structure.stow().alongWith(structure.StopIntake()));
     ShiftUtil.rumble.onTrue(rumble(xbox.getHID(), 1).alongWith(rumble(xbox2.getHID(), 1)));
+    RobotController.setBrownoutVoltage(6);
 
     setupDriveController();
     setupOperatorController();
