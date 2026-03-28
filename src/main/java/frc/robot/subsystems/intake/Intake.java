@@ -269,19 +269,27 @@ public class Intake extends SubsystemBase implements Loggable {
     //     .andThen(Commands.waitSeconds(0.25))
     //     .andThen(moveIntake(0))
     //     .andThen(Commands.waitSeconds(0.25));
-    return moveIntake(3).alongWith(Commands.runOnce(
-            () -> {
-              intakeMotorDrive.setVoltage(intakeVoltage);
-              intakeMotorDrive2.setVoltage(intakeVoltage);
-              ;
-            })).withTimeout(1).andThen(moveIntake(maxExtention1).alongWith(Commands.runOnce(
-            () -> {
-              intakeMotorDrive.setVoltage(0);
-              intakeMotorDrive2.setVoltage(0);
-              ;
-            })).withTimeout(1)).repeatedly();
-         
-        }
+    return moveIntake(3)
+        .alongWith(
+            Commands.runOnce(
+                () -> {
+                  intakeMotorDrive.setVoltage(intakeVoltage);
+                  intakeMotorDrive2.setVoltage(intakeVoltage);
+                  ;
+                }))
+        .withTimeout(1)
+        .andThen(
+            moveIntake(maxExtention1)
+                .alongWith(
+                    Commands.runOnce(
+                        () -> {
+                          intakeMotorDrive.setVoltage(0);
+                          intakeMotorDrive2.setVoltage(0);
+                          ;
+                        }))
+                .withTimeout(1))
+        .repeatedly();
+  }
 
   private Command moveIntake(double position) {
     return Commands.runOnce(
