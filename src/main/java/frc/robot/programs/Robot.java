@@ -10,7 +10,9 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Superstructure;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.utilities.ShiftUtil;
 import frc.robot.utilities.logging.HoundLog;
 
 public class Robot extends LoggedRobot {
@@ -41,11 +44,23 @@ public class Robot extends LoggedRobot {
     xbox2 = new CommandXboxController(1);
     swerve.setDefaultCommand(swerve.angleCentric(xbox.getHID()));
     RobotModeTriggers.teleop().onTrue(structure.stow().alongWith(structure.StopIntake()));
+    ShiftUtil.rumble.onTrue(rumble(xbox.getHID(), 1).alongWith(rumble(xbox2.getHID(), 1)));
 
     setupDriveController();
     setupOperatorController();
     setupAuto();
   }
+
+  private Command rumble(XboxController xbox, double timeSeconds) {
+		return Commands.startEnd(
+			() -> {
+        xbox.setRumble(RumbleType.kBothRumble, 0.5);
+      },
+			() -> {
+        xbox.setRumble(RumbleType.kBothRumble, 0);
+      }
+		).withTimeout(timeSeconds);
+	}
 
   private void setupOperatorController() {
 

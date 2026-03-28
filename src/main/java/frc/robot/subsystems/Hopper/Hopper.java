@@ -67,7 +67,7 @@ public class Hopper extends SubsystemBase implements Loggable {
               config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
               MotorFx.getConfigurator().apply(config);
             },
-            null,
+            sim -> {},
             0,
             FeedbackController.fromPID(
                 .3,
