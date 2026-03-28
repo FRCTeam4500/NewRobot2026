@@ -100,7 +100,7 @@ public class SwerveConstants {
   /** Configuration for FRONT_LEFT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig FRONT_LEFT_CONFIG =
       new ModuleConfig(
-          50,
+          40,
           true,
           60,
           true,
@@ -118,7 +118,7 @@ public class SwerveConstants {
   /** Configuration for FRONT_RIGHT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig FRONT_RIGHT_CONFIG =
       new ModuleConfig(
-          50,
+          40,
           true,
           60,
           true,
@@ -135,7 +135,7 @@ public class SwerveConstants {
   /** Configuration for BACK_LEFT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig BACK_LEFT_CONFIG =
       new ModuleConfig(
-          50,
+          40,
           true,
           60,
           true,
@@ -152,7 +152,7 @@ public class SwerveConstants {
   /** Configuration for BACK_RIGHT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig BACK_RIGHT_CONFIG =
       new ModuleConfig(
-          50,
+          40,
           true,
           60,
           true,

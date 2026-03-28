@@ -73,7 +73,7 @@ public class Robot extends LoggedRobot {
     // intake flexing
     Trigger FlexIntake = xbox2.x();
     FlexIntake.whileTrue(structure.PulseIntake());
-    FlexIntake.onFalse(structure.ExtendIntake());
+    FlexIntake.onFalse(structure.ExtendIntake().andThen(structure.StopIntake()));
     // stow shooter
     Trigger StowShooter = xbox2.b();
     StowShooter.onTrue(structure.stow());

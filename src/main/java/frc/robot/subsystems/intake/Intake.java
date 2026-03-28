@@ -78,9 +78,9 @@ public class Intake extends SubsystemBase implements Loggable {
             WiringConstants.IntakeMotors.IntakeMotor1,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 70;
-              config.CurrentLimits.StatorCurrentLimit = 90;
-              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimit = 45;
+              config.CurrentLimits.StatorCurrentLimit = 70;
+              config.CurrentLimits.StatorCurrentLimitEnable = true;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -104,9 +104,9 @@ public class Intake extends SubsystemBase implements Loggable {
             WiringConstants.IntakeMotors.IntakeMotor2,
             (TalonFX MotorFx) -> {
               TalonFXConfiguration config = new TalonFXConfiguration();
-              config.CurrentLimits.SupplyCurrentLimit = 70;
-              config.CurrentLimits.StatorCurrentLimit = 90;
-              config.CurrentLimits.StatorCurrentLimitEnable = false;
+              config.CurrentLimits.SupplyCurrentLimit = 45;
+              config.CurrentLimits.StatorCurrentLimit = 70;
+              config.CurrentLimits.StatorCurrentLimitEnable = true;
               config.CurrentLimits.SupplyCurrentLimitEnable = true;
               config.Feedback.SensorToMechanismRatio = 1;
               config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -269,8 +269,19 @@ public class Intake extends SubsystemBase implements Loggable {
     //     .andThen(Commands.waitSeconds(0.25))
     //     .andThen(moveIntake(0))
     //     .andThen(Commands.waitSeconds(0.25));
-    return moveIntake(4).withTimeout(1).andThen(killIntake()).withTimeout(1).repeatedly();
-  }
+    return moveIntake(3).alongWith(Commands.runOnce(
+            () -> {
+              intakeMotorDrive.setVoltage(intakeVoltage);
+              intakeMotorDrive2.setVoltage(intakeVoltage);
+              ;
+            })).withTimeout(1).andThen(moveIntake(maxExtention1).alongWith(Commands.runOnce(
+            () -> {
+              intakeMotorDrive.setVoltage(0);
+              intakeMotorDrive2.setVoltage(0);
+              ;
+            })).withTimeout(1)).repeatedly();
+         
+        }
 
   private Command moveIntake(double position) {
     return Commands.runOnce(
@@ -339,7 +350,7 @@ public class Intake extends SubsystemBase implements Loggable {
   @Override
   public void log(String path) {
     HoundLog.log(path, "IntakeDriveMotor", intakeMotorDrive);
-    HoundLog.log(path, "IntakeDriveMotor", intakeMotorDrive2);
+    HoundLog.log(path, "IntakeDriveMotor2", intakeMotorDrive2);
     HoundLog.log(path, "intakeExtention1", intakeMotorExtension);
     HoundLog.log(path, "intakeExtention2", intakeMotorExtension2);
     HoundLog.log(path, "intakeMotorDriveAtTarget", intakeMotorDrive.atTarget());

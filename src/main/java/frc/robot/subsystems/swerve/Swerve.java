@@ -474,7 +474,7 @@ public class Swerve extends SubsystemBase implements Loggable {
     targetHeading =
         Rotation2d.fromRadians(
             targetHeading.getRadians()
-                - signedSquare(withHardDeadzone(xbox.getRightX(), 0.1))
+                - (withHardDeadzone(xbox.getRightX(), 0.1))
                     * speedCoefficient
                     * MAX_TELEOP_SPEEDS.omegaRadiansPerSecond
                     * 0.02);
