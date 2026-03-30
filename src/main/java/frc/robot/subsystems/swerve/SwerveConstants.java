@@ -109,7 +109,7 @@ public class SwerveConstants {
           FeedforwardController.forConstantGravity(0, 0.17731, 2.9428, 0.2812), // drive sysID
           20,
           25,
-          0.080, //old 
+          0.080, // old
           new FeedbackConstants(0.1, 0, 0), // angle PID
           1,
           FeedforwardController.forConstantGravity(
@@ -227,9 +227,9 @@ public class SwerveConstants {
           },
           sim -> {},
           /*(new AnalogEncoder(SwerveWiring.FRONT_LEFT_ENCODER_ID).get()
-                  - FRONT_LEFT_CONFIG.angleAbsoluteEncoderOffset())
-              * 360,*/
-           0,
+              - FRONT_LEFT_CONFIG.angleAbsoluteEncoderOffset())
+          * 360,*/
+          0,
           FeedbackController.fromPID(
               FRONT_LEFT_CONFIG.anglePID(),
               controller -> {

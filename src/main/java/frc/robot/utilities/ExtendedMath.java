@@ -280,7 +280,6 @@ public class ExtendedMath {
       }
       return new Translation2d(4.625594, 4.034536); // blue hub
     }
-    
   }
 
   public static Rotation2d getTargetAngle(Translation2d current) {

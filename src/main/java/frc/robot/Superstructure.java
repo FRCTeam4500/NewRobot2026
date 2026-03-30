@@ -139,7 +139,7 @@ public class Superstructure implements Loggable {
     return intake.flexIntake();
   }
 
-  public Command SlightRetract(){
+  public Command SlightRetract() {
     return intake.moveIntake(6);
   }
 
