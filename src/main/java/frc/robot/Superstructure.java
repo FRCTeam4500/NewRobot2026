@@ -83,8 +83,8 @@ public class Superstructure implements Loggable {
             distanceToTimeMap));*/
   }
 
-  public Command zeroIntakeOnFloor() {
-    return intake.zeroAtFloor();
+  public Command ZeroHood() {
+    return shooter.RestetHood();
   }
 
   public Command StartShooterTest() {
@@ -94,6 +94,14 @@ public class Superstructure implements Loggable {
 
   public Command StopShooter() {
     return shooter.idle().alongWith(hopper.beltDriveStop());
+  }
+
+  public Command increaseDistance() {
+    return shooter.adjustDistance(0.1).alongWith(hopper.adjustDistance(0.1));
+  }
+
+  public Command decreaseDistance() {
+    return shooter.adjustDistance(-0.1).alongWith(hopper.adjustDistance(-0.1));
   }
 
   public Command shoot() {
@@ -129,6 +137,10 @@ public class Superstructure implements Loggable {
 
   public Command PulseIntake() {
     return intake.flexIntake();
+  }
+
+  public Command SlightRetract(){
+    return intake.moveIntake(6);
   }
 
   // ---------------------------------------TagAlign-----------------------------------------

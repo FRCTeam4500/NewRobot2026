@@ -48,6 +48,7 @@ public class Shooter extends SubsystemBase implements Loggable {
   private DoubleSupplier PIDHood;
   private SysIDCommands angleSysId;
   private DoubleSubscriber hoodGravityFeedforward;
+  private double distanceOffset;
 
   public Shooter() {
 
@@ -219,7 +220,7 @@ public class Shooter extends SubsystemBase implements Loggable {
     return Commands.run(
         () -> {
           // a lot of math
-          double distance = robotPose.get().getTranslation().getDistance(target.get());
+          double distance = robotPose.get().getTranslation().getDistance(target.get()) + distanceOffset;
           flywheelSpeedlog = flywheelSpeed.get(distance);
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
@@ -230,6 +231,10 @@ public class Shooter extends SubsystemBase implements Loggable {
           this.distance = distance;
         },
         this);
+  }
+
+  public Command adjustDistance(double change) {
+    return Commands.runOnce(() -> distanceOffset += change);
   }
 
   public Command test(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
@@ -265,6 +270,10 @@ public class Shooter extends SubsystemBase implements Loggable {
             this)
         .andThen(Commands.idle());
   }
+  public Command RestetHood(){
+    return Commands.runOnce(
+      ()->hood.resetPosition(0), this);
+  }
 
   @Override
   public void log(String path) {
@@ -279,5 +288,6 @@ public class Shooter extends SubsystemBase implements Loggable {
     HoundLog.log(path, "HoodAtTarget", hood.atTarget());
     HoundLog.log(path, "robotDistance", this.distance);
     HoundLog.log(path, "hoodPValue", PIDHood.getAsDouble());
+    HoundLog.log(path, "distance offset", distanceOffset);
   }
 }

@@ -32,6 +32,7 @@ public class Hopper extends SubsystemBase implements Loggable {
   private double beltSpeed = 60;
 
   public static int beltdrivespeed = 50;
+  private double distanceOffset;
 
   public Hopper() {
     hopperSpeed = HoundLog.tunable("Hopper Speed", 50.0);
@@ -107,10 +108,14 @@ public class Hopper extends SubsystemBase implements Loggable {
     angleSysId = hopperMotorBeltdrive.getSysIDCommands("hopper belt drive neo", 1, 10, 10);
   }
 
+  public Command adjustDistance(double change) {
+    return Commands.runOnce(() -> distanceOffset += change);
+  }
+
   public Command beltDriveShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
     return Commands.runOnce(
             () -> {
-              double distance = robotPose.get().getTranslation().getDistance(target.get());
+              double distance = robotPose.get().getTranslation().getDistance(target.get()) + distanceOffset;
               hopperMotorBeltdrive.setTarget(
                   flywheelSpeed.get(distance)); // flywheelSpeed.get(distance)
               hopperMotorBeltdrive2.setVoltage(10);
@@ -144,5 +149,6 @@ public class Hopper extends SubsystemBase implements Loggable {
     HoundLog.log(path, "HopperFeedatTarget", hopperMotorBeltdrive.atTarget());
     HoundLog.log(path, "BeltDriveSpeed", hopperMotorBeltdrive2.getVelocity());
     HoundLog.log(path, "hopperMotorBeltDrive", hopperMotorBeltdrive2.atTarget());
+    HoundLog.log(path, "distance offset", distanceOffset);
   }
 }

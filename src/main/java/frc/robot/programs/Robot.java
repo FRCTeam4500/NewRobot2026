@@ -96,7 +96,7 @@ public class Robot extends LoggedRobot {
     StowShooter.onTrue(structure.stow());
 
     Trigger zeroIntake = xbox2.povDown();
-    zeroIntake.onTrue(structure.zeroIntakeOnFloor());
+    zeroIntake.onTrue(structure.ZeroHood());
   }
 
   private void setupDriveController() {
@@ -121,11 +121,13 @@ public class Robot extends LoggedRobot {
 
     // auto align: dpad
     // to climb
-    Trigger AlignClimb = xbox.povDown().debounce(0.2);
-    AlignClimb.whileTrue(structure.AlignClimb());
+    // Trigger AlignClimb = xbox.povDown().debounce(0.2);
+    // AlignClimb.whileTrue(structure.AlignClimb());
+    xbox.povUp().onTrue(structure.increaseDistance());
+    xbox.povDown().onTrue(structure.decreaseDistance());
     // center
-    Trigger AlignCenter = xbox.povDown().debounce(0.2);
-    AlignCenter.whileTrue(structure.AlignCenter());
+    // Trigger AlignCenter = xbox.povDown().debounce(0.2);
+    // AlignCenter.whileTrue(structure.AlignCenter());
     // left trench
     Trigger AlignLeftTrench = xbox.povLeft().debounce(0.2);
     AlignLeftTrench.whileTrue(structure.AlignLeft());
@@ -158,6 +160,8 @@ public class Robot extends LoggedRobot {
     NamedCommands.registerCommand("StartIntake", structure.StartIntake());
     NamedCommands.registerCommand("StopIntake", structure.StopIntake());
     NamedCommands.registerCommand("ExtendIntake", structure.ExtendIntake());
+    NamedCommands.registerCommand("SlightRetract", structure.SlightRetract());
+
     NamedCommands.registerCommand("RetractIntake", structure.RetractIntake());
     NamedCommands.registerCommand("PulseIntake", structure.PulseIntake());
     NamedCommands.registerCommand("HubCentric", swerve.hubCentricDrive(xbox.getHID()));

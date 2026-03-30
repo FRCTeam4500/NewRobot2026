@@ -291,7 +291,7 @@ public class Intake extends SubsystemBase implements Loggable {
         .repeatedly();
   }
 
-  private Command moveIntake(double position) {
+  public Command moveIntake(double position) {
     return Commands.runOnce(
             () -> {
               if (intakeMotorExtension.getPosition() > position) {
