@@ -10,7 +10,10 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Superstructure;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.utilities.ShiftUtil;
 import frc.robot.utilities.logging.HoundLog;
 
 public class Robot extends LoggedRobot {
@@ -41,17 +45,30 @@ public class Robot extends LoggedRobot {
     xbox2 = new CommandXboxController(1);
     swerve.setDefaultCommand(swerve.angleCentric(xbox.getHID()));
     RobotModeTriggers.teleop().onTrue(structure.stow().alongWith(structure.StopIntake()));
+    ShiftUtil.rumble.onTrue(rumble(xbox.getHID(), 1).alongWith(rumble(xbox2.getHID(), 1)));
+    RobotController.setBrownoutVoltage(6);
 
     setupDriveController();
     setupOperatorController();
     setupAuto();
   }
 
+  private Command rumble(XboxController xbox, double timeSeconds) {
+    return Commands.startEnd(
+            () -> {
+              xbox.setRumble(RumbleType.kBothRumble, 0.5);
+            },
+            () -> {
+              xbox.setRumble(RumbleType.kBothRumble, 0);
+            })
+        .withTimeout(timeSeconds);
+  }
+
   private void setupOperatorController() {
 
     // rev shooter
     Trigger revShooter = xbox2.rightTrigger();
-    revShooter.whileTrue(structure.StartShooterTest());
+    revShooter.whileTrue(structure.StartShooter());
 
     // intake
     Trigger ActivateIntake = xbox2.leftTrigger();
@@ -73,13 +90,13 @@ public class Robot extends LoggedRobot {
     // intake flexing
     Trigger FlexIntake = xbox2.x();
     FlexIntake.whileTrue(structure.PulseIntake());
-    FlexIntake.onFalse(structure.ExtendIntake());
+    FlexIntake.onFalse(structure.ExtendIntake().andThen(structure.StopIntake()));
     // stow shooter
     Trigger StowShooter = xbox2.b();
     StowShooter.onTrue(structure.stow());
 
     Trigger zeroIntake = xbox2.povDown();
-    zeroIntake.onTrue(structure.zeroIntakeOnFloor());
+    zeroIntake.onTrue(structure.ZeroHood());
   }
 
   private void setupDriveController() {
@@ -104,11 +121,13 @@ public class Robot extends LoggedRobot {
 
     // auto align: dpad
     // to climb
-    Trigger AlignClimb = xbox.povDown().debounce(0.2);
-    AlignClimb.whileTrue(structure.AlignClimb());
+    // Trigger AlignClimb = xbox.povDown().debounce(0.2);
+    // AlignClimb.whileTrue(structure.AlignClimb());
+    xbox.povUp().onTrue(structure.increaseDistance());
+    xbox.povDown().onTrue(structure.decreaseDistance());
     // center
-    Trigger AlignCenter = xbox.povDown().debounce(0.2);
-    AlignCenter.whileTrue(structure.AlignCenter());
+    // Trigger AlignCenter = xbox.povDown().debounce(0.2);
+    // AlignCenter.whileTrue(structure.AlignCenter());
     // left trench
     Trigger AlignLeftTrench = xbox.povLeft().debounce(0.2);
     AlignLeftTrench.whileTrue(structure.AlignLeft());
@@ -141,13 +160,18 @@ public class Robot extends LoggedRobot {
     NamedCommands.registerCommand("StartIntake", structure.StartIntake());
     NamedCommands.registerCommand("StopIntake", structure.StopIntake());
     NamedCommands.registerCommand("ExtendIntake", structure.ExtendIntake());
+    NamedCommands.registerCommand("SlightRetract", structure.SlightRetract());
+
     NamedCommands.registerCommand("RetractIntake", structure.RetractIntake());
     NamedCommands.registerCommand("PulseIntake", structure.PulseIntake());
     NamedCommands.registerCommand("HubCentric", swerve.hubCentricDrive(xbox.getHID()));
     SmartDashboard.putData("Auto Chooser", chooser);
     chooser.setDefaultOption("None", Commands.none());
-    chooser.addOption("Left Trench Single Swipe", new PathPlannerAuto("Left Trench Single Swipe"));
-    chooser.addOption("Left Trench Single Swipe no pre", new PathPlannerAuto("Left Trench Single Swipe no pre"));
+    chooser.addOption(
+        "Right Trench Single Swipe no pre",
+        new PathPlannerAuto("Right Trench Single Swipe no pre"));
+    chooser.addOption(
+        "Left Trench Single Swipe no pre", new PathPlannerAuto("Left Trench Single Swipe no pre"));
 
     // chooser.addOption("2 midle cycle alt", new PathPlannerAuto("Auto 5b"));
     // chooser.addOption("5 M auto", new PathPlannerAuto("New Auto"));

@@ -100,17 +100,16 @@ public class SwerveConstants {
   /** Configuration for FRONT_LEFT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig FRONT_LEFT_CONFIG =
       new ModuleConfig(
-          50,
+          60,
           true,
-          70,
+          80,
           true,
           18.6,
           new FeedbackConstants(0.1, 0, 0), // drive PID
           FeedforwardController.forConstantGravity(0, 0.17731, 2.9428, 0.2812), // drive sysID
-          
           20,
           25,
-          0.080,
+          0.080, // old
           new FeedbackConstants(0.1, 0, 0), // angle PID
           1,
           FeedforwardController.forConstantGravity(
@@ -119,9 +118,9 @@ public class SwerveConstants {
   /** Configuration for FRONT_RIGHT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig FRONT_RIGHT_CONFIG =
       new ModuleConfig(
-          50,
+          60,
           true,
-          70,
+          80,
           true,
           18.6,
           new FeedbackConstants(0.1, 0, 0),
@@ -136,9 +135,9 @@ public class SwerveConstants {
   /** Configuration for BACK_LEFT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig BACK_LEFT_CONFIG =
       new ModuleConfig(
-          50,
+          60,
           true,
-          70,
+          80,
           true,
           18.6,
           new FeedbackConstants(0.1, 0, 0),
@@ -153,9 +152,9 @@ public class SwerveConstants {
   /** Configuration for BACK_RIGHT_MODULE. see ModuleConfig to see what values correspond to. */
   public static final ModuleConfig BACK_RIGHT_CONFIG =
       new ModuleConfig(
-          50,
+          60,
           true,
-          70,
+          80,
           true,
           18.6,
           new FeedbackConstants(0.1, 0, 0), // drive PID
@@ -230,6 +229,7 @@ public class SwerveConstants {
           (new AnalogEncoder(SwerveWiring.FRONT_LEFT_ENCODER_ID).get()
                   - FRONT_LEFT_CONFIG.angleAbsoluteEncoderOffset())
               * 360,
+           //0,
           FeedbackController.fromPID(
               FRONT_LEFT_CONFIG.anglePID(),
               controller -> {

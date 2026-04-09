@@ -474,7 +474,7 @@ public class Swerve extends SubsystemBase implements Loggable {
     targetHeading =
         Rotation2d.fromRadians(
             targetHeading.getRadians()
-                - signedSquare(withHardDeadzone(xbox.getRightX(), 0.1))
+                - (withHardDeadzone(xbox.getRightX(), 0.1))
                     * speedCoefficient
                     * MAX_TELEOP_SPEEDS.omegaRadiansPerSecond
                     * 0.02);
@@ -588,7 +588,8 @@ public class Swerve extends SubsystemBase implements Loggable {
     estimator.update(gyro.getAngle(), getModulePositions());
     for (Limelight camera : tagCameras) {
       PoseEstimate estimate =
-          //camera.getPoseMT2(estimator.getEstimatedPosition().getRotation(), Rotation2d.fromDegrees(0));
+          // camera.getPoseMT2(estimator.getEstimatedPosition().getRotation(),
+          // Rotation2d.fromDegrees(0));
           camera.getPoseMT1();
       if (estimate.exists()
           && (estimate.tagCount() > 1 // sees more than one tag
