@@ -220,7 +220,8 @@ public class Shooter extends SubsystemBase implements Loggable {
     return Commands.run(
         () -> {
           // a lot of math
-          double distance = robotPose.get().getTranslation().getDistance(target.get()) + distanceOffset;
+          double distance =
+              robotPose.get().getTranslation().getDistance(target.get()) + distanceOffset;
           flywheelSpeedlog = flywheelSpeed.get(distance);
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
@@ -270,9 +271,9 @@ public class Shooter extends SubsystemBase implements Loggable {
             this)
         .andThen(Commands.idle());
   }
-  public Command RestetHood(){
-    return Commands.runOnce(
-      ()->hood.resetPosition(0), this);
+
+  public Command RestetHood() {
+    return Commands.runOnce(() -> hood.resetPosition(0), this);
   }
 
   @Override

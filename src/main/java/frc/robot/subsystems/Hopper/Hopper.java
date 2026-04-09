@@ -115,7 +115,8 @@ public class Hopper extends SubsystemBase implements Loggable {
   public Command beltDriveShoot(Supplier<Pose2d> robotPose, Supplier<Translation2d> target) {
     return Commands.runOnce(
             () -> {
-              double distance = robotPose.get().getTranslation().getDistance(target.get()) + distanceOffset;
+              double distance =
+                  robotPose.get().getTranslation().getDistance(target.get()) + distanceOffset;
               hopperMotorBeltdrive.setTarget(
                   flywheelSpeed.get(distance)); // flywheelSpeed.get(distance)
               hopperMotorBeltdrive2.setVoltage(10);
