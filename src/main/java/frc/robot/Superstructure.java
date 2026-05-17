@@ -69,7 +69,8 @@ public class Superstructure implements Loggable {
 
   // ------------------SHOOTER+HOPPER-------------------------------------------
   public Command StartShooter() {
-    // return shooterFly.speedup();
+   
+    //return shooter.RestetHood().andThen(Commands.waitSeconds(.5)).andThen(
     return shooter.readyShoot(
         this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
     /*this.robotPose,
@@ -88,12 +89,18 @@ public class Superstructure implements Loggable {
   }
 
   public Command StartShooterTest() {
-    return shooter.test(
+    
+    return 
+    shooter.test(
         this.robotPose, () -> ExtendedMath.getCurrentTarget(robotPose.get().getTranslation()));
   }
 
-  public Command StopShooter() {
-    return shooter.idle().alongWith(hopper.beltDriveStop());
+  public Command StopShooterRev() {
+    return shooter.idle();
+  }
+
+  public Command StopShooter(){
+    return hopper.beltDriveStop();
   }
 
   public Command increaseDistance() {
