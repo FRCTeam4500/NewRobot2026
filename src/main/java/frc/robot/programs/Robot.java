@@ -67,7 +67,6 @@ public class Robot extends LoggedRobot {
   private void setupOperatorController() {
 
     // rev shooter
-    
 
     // intake
     Trigger ActivateIntake = xbox2.leftTrigger();
@@ -135,7 +134,8 @@ public class Robot extends LoggedRobot {
     AlignRightTrench.whileTrue(structure.AlignRight());
     // angle centric lb
     Trigger SetAngleCentric = xbox.leftBumper();
-    SetAngleCentric.onTrue(swerve.angleCentric(xbox.getHID()).alongWith(structure.StopShooterRev()));
+    SetAngleCentric.onTrue(
+        swerve.angleCentric(xbox.getHID()).alongWith(structure.StopShooterRev()));
     // hub centric rb
     Trigger SetHubCentric = xbox.rightBumper();
     SetHubCentric.onTrue(swerve.hubCentricDrive(xbox.getHID()).alongWith(structure.StartShooter()));
@@ -154,7 +154,8 @@ public class Robot extends LoggedRobot {
 
     NamedCommands.registerCommand("StartShooter", structure.StartShooter());
     NamedCommands.registerCommand("Shoot", structure.shoot());
-    NamedCommands.registerCommand("StopShooter", structure.StopShooter().alongWith(structure.StopShooterRev()));
+    NamedCommands.registerCommand(
+        "StopShooter", structure.StopShooter().alongWith(structure.StopShooterRev()));
 
     NamedCommands.registerCommand("StartIntake", structure.StartIntake());
     NamedCommands.registerCommand("StopIntake", structure.StopIntake());
