@@ -223,7 +223,7 @@ public class Shooter extends SubsystemBase implements Loggable {
           double distance =
               robotPose.get().getTranslation().getDistance(target.get()) + distanceOffset;
           flywheelSpeedlog = flywheelSpeed.get(distance);
-          
+
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
           flywheel2.setTarget(flywheelSpeed.get(distance));
