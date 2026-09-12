@@ -58,7 +58,7 @@ public class Shooter extends SubsystemBase implements Loggable {
     PIDP = HoundLog.tunable("PID P value", 0.3);
     hoodGravityFeedforward = HoundLog.tunable("Hood Gravity Feedforward", 0.0);
 
-    /*// find flywheel speed
+    // find flywheel speed
     flywheelSpeed.put(1.73166, 47.0);
     flywheelSpeed.put(2.059, 48.0);
     flywheelSpeed.put(2.375, 48.0);
@@ -98,43 +98,43 @@ public class Shooter extends SubsystemBase implements Loggable {
     hoodAngle.put(6.855, 24.0);
     hoodAngle.put(8.314, 24.0);
     hoodAngle.put(9.516, 24.0);
-    hoodAngle.put(10.9, 24.0); */
-
-    // find flywheel speed
-    flywheelSpeed.put(1.789, 47.0);
-    flywheelSpeed.put(1.997, 49.0);
-    flywheelSpeed.put(2.378, 50.0);
-    flywheelSpeed.put(2.771, 55.0);
-    flywheelSpeed.put(3.324, 57.5);
-    flywheelSpeed.put(3.613, 61.0);
-    flywheelSpeed.put(4.096, 61.0);
-    flywheelSpeed.put(4.412, 62.0);
-    flywheelSpeed.put(4.752, 64.0);
-    flywheelSpeed.put(5.1, 64.0);
-    flywheelSpeed.put(5.2, 50.0);
-    flywheelSpeed.put(5.3604, 50.0);
-    flywheelSpeed.put(6.855, 50.0);
-    flywheelSpeed.put(8.314, 58.0);
-    flywheelSpeed.put(9.516, 58.0);
-    flywheelSpeed.put(10.9, 80.0);
-
-    // find hood angle
-    hoodAngle.put(1.789, 0.0);
-    hoodAngle.put(1.997, 2.0);
-    hoodAngle.put(2.378, 6.0);
-    hoodAngle.put(2.771, 6.0);
-    hoodAngle.put(3.324, 9.0);
-    hoodAngle.put(3.613, 10.0);
-    hoodAngle.put(4.096, 12.0);
-    hoodAngle.put(4.412, 16.0);
-    hoodAngle.put(4.752, 17.0);
-    hoodAngle.put(5.1, 17.0);
-    hoodAngle.put(5.2, 20.0);
-    hoodAngle.put(5.3604, 20.0);
-    hoodAngle.put(6.855, 24.0);
-    hoodAngle.put(8.314, 24.0);
-    hoodAngle.put(9.516, 24.0);
     hoodAngle.put(10.9, 24.0);
+
+    // find flywheel speed -NEW
+    // flywheelSpeed.put(1.789, 47.0);
+    // flywheelSpeed.put(1.997, 49.0);
+    // flywheelSpeed.put(2.378, 50.0);
+    // flywheelSpeed.put(2.771, 55.0);
+    // flywheelSpeed.put(3.324, 57.5);
+    // flywheelSpeed.put(3.613, 61.0);
+    // flywheelSpeed.put(4.096, 61.0);
+    // flywheelSpeed.put(4.412, 62.0);
+    // flywheelSpeed.put(4.752, 64.0);
+    // flywheelSpeed.put(5.1, 64.0);
+    // flywheelSpeed.put(5.2, 50.0);
+    // flywheelSpeed.put(5.3604, 50.0);
+    // flywheelSpeed.put(6.855, 50.0);
+    // flywheelSpeed.put(8.314, 58.0);
+    // flywheelSpeed.put(9.516, 58.0);
+    // flywheelSpeed.put(10.9, 80.0);
+
+    // find hood angle -NEW
+    // hoodAngle.put(1.789, 0.0);
+    // hoodAngle.put(1.997, 2.0);
+    // hoodAngle.put(2.378, 6.0);
+    // hoodAngle.put(2.771, 6.0);
+    // hoodAngle.put(3.324, 9.0);
+    // hoodAngle.put(3.613, 10.0);
+    // hoodAngle.put(4.096, 12.0);
+    // hoodAngle.put(4.412, 16.0);
+    // hoodAngle.put(4.752, 17.0);
+    // hoodAngle.put(5.1, 17.0);
+    // hoodAngle.put(5.2, 20.0);
+    // hoodAngle.put(5.3604, 20.0);
+    // hoodAngle.put(6.855, 24.0);
+    // hoodAngle.put(8.314, 24.0);
+    // hoodAngle.put(9.516, 24.0);
+    // hoodAngle.put(10.9, 24.0);
 
     // for testing
     PIDController FlywheelPID = new PIDController(0, 0, 0);
@@ -223,6 +223,7 @@ public class Shooter extends SubsystemBase implements Loggable {
           double distance =
               robotPose.get().getTranslation().getDistance(target.get()) + distanceOffset;
           flywheelSpeedlog = flywheelSpeed.get(distance);
+          
           hoodAngleLog = hoodAngle.get(distance);
           flywheel1.setTarget(flywheelSpeed.get(distance));
           flywheel2.setTarget(flywheelSpeed.get(distance));
